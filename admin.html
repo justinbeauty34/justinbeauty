@@ -1,0 +1,1560 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- ══ SÉCURITÉ ══ -->
+<meta http-equiv="Content-Security-Policy" content="
+  default-src 'self';
+  script-src 'self' 'unsafe-inline';
+  style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+  font-src https://fonts.gstatic.com;
+  img-src 'self' data: blob:;
+  frame-src 'none';
+  connect-src 'none';
+  object-src 'none';
+  base-uri 'self';
+  form-action 'none';
+">
+<meta http-equiv="X-Frame-Options" content="DENY">
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+<meta http-equiv="Referrer-Policy" content="no-referrer">
+<meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(), payment=()">
+<!-- Empêche l'indexation de l'admin par les moteurs de recherche -->
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+
+<title>Just&#39;In Beauty &#8212; Administration</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+/* ── RESET & ROOT ── */
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --terra:#C1593A; --terra-light:#E8866A; --terra-pale:#F5E8E0;
+  --beige:#FAF5EE; --beige-dark:#EDE5D8;
+  --dark:#2A1F1A; --muted:#7A6558;
+  --white:#FFFFFF;
+  --sidebar:#1E1510;
+  --sidebar-hover:rgba(193,89,58,0.15);
+  --success:#3D7A4A; --success-bg:#EAF3EC;
+  --warn:#B07A1A; --warn-bg:#FDF6E3;
+  --border:#E8E0D8;
+  --shadow:0 2px 12px rgba(42,31,26,0.08);
+  --shadow-md:0 4px 24px rgba(42,31,26,0.12);
+}
+html{scroll-behavior:smooth}
+body{font-family:'Jost',sans-serif;background:var(--beige);color:var(--dark);min-height:100vh;display:flex;flex-direction:column}
+
+/* ── LOGIN SCREEN ── */
+#login-screen{
+  position:fixed;inset:0;z-index:1000;background:var(--dark);
+  display:flex;align-items:center;justify-content:center;
+  animation:fadeIn .4s ease;
+}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.login-box{
+  background:var(--white);width:100%;max-width:420px;padding:48px;border-radius:4px;
+  box-shadow:0 24px 64px rgba(0,0,0,0.4);
+  animation:slideUp .4s ease;
+}
+@keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.login-logo{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:300;color:var(--terra);text-align:center;margin-bottom:8px;letter-spacing:.04em}
+.login-sub{font-size:12px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);text-align:center;margin-bottom:40px}
+.login-box label{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:6px;margin-top:20px}
+.login-box input{width:100%;padding:12px 14px;border:1px solid var(--border);border-radius:2px;font-family:'Jost',sans-serif;font-size:14px;color:var(--dark);background:var(--beige);outline:none;transition:border-color .2s}
+.login-box input:focus{border-color:var(--terra);background:var(--white)}
+.login-btn{width:100%;margin-top:32px;padding:14px;background:var(--terra);color:#fff;font-family:'Jost',sans-serif;font-size:12px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;border:none;border-radius:2px;cursor:pointer;transition:background .2s}
+.login-btn:hover{background:var(--terra-light)}
+.login-error{display:none;background:#FEE;color:#C0392B;font-size:13px;padding:10px 14px;border-radius:2px;margin-top:16px;border-left:3px solid #C0392B}
+
+/* ── LAYOUT ── */
+#admin-app{display:none;flex:1}
+.app-wrap{display:flex;min-height:100vh}
+
+/* ── SIDEBAR ── */
+.sidebar{
+  width:240px;background:var(--sidebar);flex-shrink:0;
+  display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow-y:auto;
+}
+.sidebar-brand{padding:28px 24px 24px;border-bottom:1px solid rgba(255,255,255,.06)}
+.sidebar-brand-name{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:300;color:var(--white);letter-spacing:.04em}
+.sidebar-brand-name em{font-style:italic;color:var(--terra-light)}
+.sidebar-brand-sub{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-top:4px}
+.sidebar-nav{flex:1;padding:16px 0}
+.nav-section-label{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.25);padding:16px 24px 8px}
+.nav-item{
+  display:flex;align-items:center;gap:12px;padding:11px 24px;cursor:pointer;
+  font-size:13px;font-weight:400;color:rgba(255,255,255,.55);letter-spacing:.02em;
+  transition:all .2s;border-left:3px solid transparent;
+}
+.nav-item:hover{background:var(--sidebar-hover);color:rgba(255,255,255,.9)}
+.nav-item.active{background:var(--sidebar-hover);color:var(--terra-light);border-left-color:var(--terra)}
+.nav-icon{font-size:15px;width:20px;text-align:center;flex-shrink:0}
+.sidebar-footer{padding:20px 24px;border-top:1px solid rgba(255,255,255,.06)}
+.logout-btn{
+  display:flex;align-items:center;gap:8px;width:100%;padding:10px 14px;
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);
+  border-radius:2px;color:rgba(255,255,255,.5);font-size:12px;
+  font-family:'Jost',sans-serif;cursor:pointer;transition:all .2s;letter-spacing:.06em;
+}
+.logout-btn:hover{background:rgba(193,89,58,.2);color:var(--terra-light);border-color:var(--terra)}
+
+/* ── MAIN CONTENT ── */
+.main{flex:1;min-width:0;padding:32px 40px;overflow-y:auto}
+.page-header{margin-bottom:32px}
+.page-title{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;color:var(--dark)}
+.page-title em{font-style:italic;color:var(--terra)}
+.page-desc{font-size:13px;font-weight:300;color:var(--muted);margin-top:6px;line-height:1.6}
+
+/* ── PANELS ── */
+.panel{display:none}
+.panel.active{display:block}
+
+/* ── CARDS ── */
+.card{background:var(--white);border:1px solid var(--border);border-radius:4px;padding:28px 32px;margin-bottom:24px;box-shadow:var(--shadow)}
+.card-title{font-size:13px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--terra);margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid var(--beige-dark);display:flex;align-items:center;gap:8px}
+.card-title span{font-size:16px}
+
+/* ── FORM ELEMENTS ── */
+.field{margin-bottom:20px}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
+.field-row.three{grid-template-columns:1fr 1fr 1fr}
+label.field-label{
+  display:flex;align-items:center;gap:6px;
+  font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:7px;font-weight:500;
+}
+.field-input{
+  width:100%;padding:11px 14px;border:1px solid var(--border);border-radius:2px;
+  font-family:'Jost',sans-serif;font-size:14px;color:var(--dark);background:var(--beige);
+  outline:none;transition:border-color .2s;
+}
+.field-input:focus{border-color:var(--terra);background:var(--white)}
+textarea.field-input{resize:vertical;min-height:90px;line-height:1.6}
+.field-hint{font-size:11px;color:var(--muted);margin-top:5px;font-weight:300}
+
+/* ── TOOLTIP ── */
+.tooltip-wrap{position:relative;display:inline-flex;align-items:center}
+.tooltip-icon{
+  width:16px;height:16px;border-radius:50%;background:var(--terra-pale);
+  color:var(--terra);font-size:10px;font-weight:600;display:inline-flex;
+  align-items:center;justify-content:center;cursor:help;flex-shrink:0;
+  border:1px solid rgba(193,89,58,.3);
+}
+.tooltip-box{
+  display:none;position:absolute;left:24px;top:-4px;z-index:200;
+  background:var(--dark);color:#fff;font-size:12px;font-weight:300;
+  line-height:1.5;padding:12px 14px;border-radius:4px;width:280px;
+  box-shadow:var(--shadow-md);pointer-events:none;
+}
+.tooltip-box::before{content:'';position:absolute;left:-6px;top:12px;border:6px solid transparent;border-right-color:var(--dark);border-left:0;margin-top:-3px}
+.tooltip-wrap:hover .tooltip-box{display:block}
+.tooltip-format{font-size:11px;color:var(--terra-light);margin-top:6px;padding-top:6px;border-top:1px solid rgba(255,255,255,.1)}
+
+/* ── PHOTO UPLOAD ── */
+.photo-upload-area{
+  border:2px dashed var(--border);border-radius:4px;padding:28px 20px;
+  text-align:center;cursor:pointer;transition:all .2s;background:var(--beige);
+  position:relative;
+}
+.photo-upload-area:hover,.photo-upload-area.drag{border-color:var(--terra);background:var(--terra-pale)}
+.photo-upload-area input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.upload-icon{font-size:28px;margin-bottom:10px;display:block}
+.upload-title{font-size:13px;font-weight:400;color:var(--dark);margin-bottom:4px}
+.upload-sub{font-size:11px;color:var(--muted);font-weight:300}
+.photo-preview{
+  width:100%;height:160px;object-fit:cover;border-radius:2px;
+  margin-top:12px;display:none;border:1px solid var(--border);
+}
+.photo-preview.visible{display:block}
+.upload-format-badge{
+  display:inline-block;margin-top:10px;padding:4px 10px;border-radius:20px;
+  background:var(--terra-pale);color:var(--terra);font-size:10px;
+  font-weight:500;letter-spacing:.08em;text-transform:uppercase;
+}
+
+/* ── CAROUSEL GRID ── */
+.carousel-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:8px}
+.carousel-item{background:var(--beige);border:1px solid var(--border);border-radius:4px;padding:16px}
+.carousel-item-num{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;color:var(--terra-light);margin-bottom:10px}
+.carousel-item .photo-upload-area{padding:18px 10px}
+.carousel-item .upload-icon{font-size:20px}
+
+/* ── TARIF TABLE ── */
+.tarif-table{width:100%;border-collapse:collapse;font-size:13px}
+.tarif-table th{
+  font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted);font-weight:500;padding:10px 12px;text-align:left;
+  background:var(--beige);border-bottom:1px solid var(--border);
+}
+.tarif-table td{padding:8px 12px;border-bottom:1px solid var(--beige-dark);vertical-align:middle}
+.tarif-table tr:last-child td{border-bottom:none}
+.tarif-table input{
+  border:1px solid transparent;background:transparent;font-family:'Jost',sans-serif;
+  font-size:13px;color:var(--dark);padding:5px 8px;border-radius:2px;width:100%;
+  outline:none;transition:all .2s;
+}
+.tarif-table input:focus{border-color:var(--terra);background:var(--white)}
+.tarif-table .price-input{font-family:'Cormorant Garamond',serif;font-size:17px;color:var(--terra);width:80px}
+.add-row-btn{
+  display:flex;align-items:center;gap:6px;padding:9px 16px;
+  background:var(--beige);border:1px dashed var(--border);border-radius:2px;
+  color:var(--muted);font-size:12px;font-family:'Jost',sans-serif;
+  cursor:pointer;margin-top:12px;transition:all .2s;letter-spacing:.04em;
+}
+.add-row-btn:hover{border-color:var(--terra);color:var(--terra);background:var(--terra-pale)}
+.del-row-btn{
+  background:none;border:none;color:#ccc;cursor:pointer;font-size:16px;
+  padding:2px 4px;transition:color .2s;line-height:1;
+}
+.del-row-btn:hover{color:#E74C3C}
+
+/* ── TARIF TABS ── */
+.tarif-tabs{display:flex;gap:2px;margin-bottom:0;border-bottom:1px solid var(--border)}
+.tarif-tab{
+  font-size:11px;font-weight:400;letter-spacing:.08em;text-transform:uppercase;
+  padding:10px 18px;cursor:pointer;color:var(--muted);
+  border-bottom:2px solid transparent;margin-bottom:-1px;
+  transition:all .2s;background:none;border-top:none;border-left:none;border-right:none;
+  font-family:'Jost',sans-serif;
+}
+.tarif-tab.active{color:var(--terra);border-bottom-color:var(--terra)}
+.tarif-tab:hover{color:var(--terra)}
+.tarif-pane{display:none;padding-top:20px}
+.tarif-pane.active{display:block}
+
+/* ── SAVE BUTTON ── */
+.save-bar{
+  position:sticky;bottom:0;background:rgba(250,245,238,.95);
+  backdrop-filter:blur(8px);border-top:1px solid var(--border);
+  padding:16px 0;margin-top:32px;display:flex;align-items:center;gap:16px;
+}
+.save-btn{
+  padding:12px 32px;background:var(--terra);color:#fff;
+  font-family:'Jost',sans-serif;font-size:12px;font-weight:500;
+  letter-spacing:.12em;text-transform:uppercase;border:none;border-radius:2px;
+  cursor:pointer;transition:background .2s;display:flex;align-items:center;gap:8px;
+}
+.save-btn:hover{background:var(--terra-light)}
+.save-note{font-size:12px;color:var(--muted);font-weight:300}
+.toast{
+  display:none;position:fixed;bottom:32px;right:32px;z-index:999;
+  background:var(--dark);color:#fff;padding:14px 20px;border-radius:4px;
+  font-size:13px;box-shadow:var(--shadow-md);border-left:4px solid var(--terra);
+  animation:slideIn .3s ease;
+}
+@keyframes slideIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+
+/* ── CREDENTIALS ── */
+.cred-section{background:var(--warn-bg);border:1px solid #F0D88A;border-radius:4px;padding:20px 24px;margin-bottom:20px}
+.cred-section-title{font-size:12px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--warn);margin-bottom:14px;display:flex;align-items:center;gap:6px}
+
+/* ── DASHBOARD STATS ── */
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px}
+.stat-card{background:var(--white);border:1px solid var(--border);border-radius:4px;padding:20px 24px;border-top:3px solid var(--terra)}
+.stat-num{font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:300;color:var(--terra);line-height:1}
+.stat-label{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:4px}
+
+/* ── PREVIEW SECTION ── */
+.preview-link{
+  display:inline-flex;align-items:center;gap:8px;padding:10px 20px;
+  background:var(--terra-pale);color:var(--terra);border:1px solid rgba(193,89,58,.3);
+  border-radius:2px;font-size:12px;font-weight:500;letter-spacing:.08em;
+  text-transform:uppercase;text-decoration:none;cursor:pointer;transition:all .2s;
+  font-family:'Jost',sans-serif;
+}
+.preview-link:hover{background:var(--terra);color:#fff}
+
+/* ── COLOR PICKER ── */
+.color-row{display:flex;align-items:center;gap:12px}
+.color-swatch{width:40px;height:40px;border-radius:2px;border:1px solid var(--border);cursor:pointer;padding:0;flex-shrink:0}
+.color-hex{font-family:'Jost',sans-serif;font-size:13px}
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  .sidebar{width:0;overflow:hidden}
+  .main{padding:20px}
+  .stats-grid{grid-template-columns:1fr 1fr}
+  .field-row,.field-row.three{grid-template-columns:1fr}
+  .carousel-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════
+     LOGIN SCREEN
+════════════════════════════════════════ -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">Just'In <em>Beauty</em></div>
+    <div class="login-sub">Espace administration</div>
+    <label for="l-user">Identifiant</label>
+    <input type="text" id="l-user" placeholder="admin" autocomplete="username">
+    <label for="l-pass">Mot de passe</label>
+    <input type="password" id="l-pass" placeholder="••••••••" autocomplete="current-password">
+    <button class="login-btn" onclick="doLogin()">Accéder à mon espace →</button>
+    <div class="login-error" id="login-error">Identifiant ou mot de passe incorrect.</div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     ADMIN APP
+════════════════════════════════════════ -->
+<div id="admin-app" style="display:flex">
+  <div class="app-wrap" style="width:100%">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <div class="sidebar-brand-name">Just'In <em>Beauty</em></div>
+        <div class="sidebar-brand-sub">Administration</div>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="nav-section-label">Vue générale</div>
+        <div class="nav-item active" onclick="showPanel('dashboard',this)">
+          <span class="nav-icon">🏠</span> Tableau de bord
+        </div>
+        <div class="nav-section-label">Contenu du site</div>
+        <div class="nav-item" onclick="showPanel('identite',this)">
+          <span class="nav-icon">✦</span> Identité & Logo
+        </div>
+        <div class="nav-item" onclick="showPanel('hero',this)">
+          <span class="nav-icon">🖼</span> Bannière principale
+        </div>
+        <div class="nav-item" onclick="showPanel('univers',this)">
+          <span class="nav-icon">🌿</span> L'univers du salon
+        </div>
+        <div class="nav-item" onclick="showPanel('expertise',this)">
+          <span class="nav-icon">💎</span> Expertises
+        </div>
+        <div class="nav-item" onclick="showPanel('tarifs',this)">
+          <span class="nav-icon">💶</span> Tarifs
+        </div>
+        <div class="nav-item" onclick="showPanel('galerie',this)">
+          <span class="nav-icon">📸</span> Galerie photos
+        </div>
+        <div class="nav-item" onclick="showPanel('avis',this)">
+          <span class="nav-icon">⭐</span> Avis clients
+        </div>
+        <div class="nav-item" onclick="showPanel('acces',this)">
+          <span class="nav-icon">📍</span> Accès & Contact
+        </div>
+        <div class="nav-section-label">Paramètres</div>
+        <div class="nav-item" onclick="showPanel('compte',this)">
+          <span class="nav-icon">🔑</span> Mon compte
+        </div>
+      </nav>
+      <div class="sidebar-footer">
+        <button class="logout-btn" onclick="doLogout()">↩ Se déconnecter</button>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+
+      <!-- ── DASHBOARD ── -->
+      <div class="panel active" id="panel-dashboard">
+        <div class="page-header">
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
+            <div>
+              <h1 class="page-title">Bonjour <em>Justine</em> 👋</h1>
+              <p class="page-desc">Gérez facilement votre site Just'In Beauty depuis cet espace. Cliquez sur une section dans le menu à gauche pour commencer.</p>
+            </div>
+            <button class="preview-link" onclick="alert('Ouvrez le fichier justin_beauty.html dans votre navigateur pour prévisualiser votre site.')">👁 Prévisualiser le site</button>
+          </div>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-card"><div class="stat-num">7</div><div class="stat-label">Sections modifiables</div></div>
+          <div class="stat-card"><div class="stat-num">6</div><div class="stat-label">Photos galerie</div></div>
+          <div class="stat-card"><div class="stat-num">4</div><div class="stat-label">Catégories tarifaires</div></div>
+          <div class="stat-card"><div class="stat-num">3</div><div class="stat-label">Avis clients</div></div>
+        </div>
+        <div class="card">
+          <div class="card-title"><span>🚀</span> Guide de démarrage rapide</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+            <div style="background:var(--beige);padding:18px;border-radius:4px;border-left:3px solid var(--terra)">
+              <div style="font-size:13px;font-weight:500;color:var(--dark);margin-bottom:8px">1. Commencez par les photos</div>
+              <div style="font-size:12px;font-weight:300;color:var(--muted);line-height:1.6">Allez dans <strong>Bannière principale</strong> et <strong>Galerie photos</strong> pour uploader vos vraies photos. Survolez l'icône ℹ pour voir le format idéal.</div>
+            </div>
+            <div style="background:var(--beige);padding:18px;border-radius:4px;border-left:3px solid var(--terra)">
+              <div style="font-size:13px;font-weight:500;color:var(--dark);margin-bottom:8px">2. Vérifiez vos tarifs</div>
+              <div style="font-size:12px;font-weight:300;color:var(--muted);line-height:1.6">Dans <strong>Tarifs</strong>, parcourez chaque onglet et corrigez les prix. Cliquez sur n'importe quel texte pour le modifier.</div>
+            </div>
+            <div style="background:var(--beige);padding:18px;border-radius:4px;border-left:3px solid var(--terra)">
+              <div style="font-size:13px;font-weight:500;color:var(--dark);margin-bottom:8px">3. Personnalisez les textes</div>
+              <div style="font-size:12px;font-weight:300;color:var(--muted);line-height:1.6">Chaque section du site est éditable. Les zones de texte contiennent déjà les contenus du site, prêts à être retouchés.</div>
+            </div>
+            <div style="background:var(--beige);padding:18px;border-radius:4px;border-left:3px solid var(--terra)">
+              <div style="font-size:13px;font-weight:500;color:var(--dark);margin-bottom:8px">4. Sauvegardez toujours</div>
+              <div style="font-size:12px;font-weight:300;color:var(--muted);line-height:1.6">Après chaque modification, cliquez sur <strong>Enregistrer les modifications</strong> en bas de page. Vos données sont conservées même après fermeture.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── IDENTITÉ & LOGO ── -->
+      <div class="panel" id="panel-identite">
+        <div class="page-header">
+          <h1 class="page-title">Identité &amp; <em>Logo</em></h1>
+          <p class="page-desc">Le nom du salon et les éléments visuels de marque affichés sur tout le site.</p>
+        </div>
+        <div class="card">
+          <div class="card-title"><span>✏️</span> Nom &amp; slogan du salon</div>
+          <div class="field-row">
+            <div class="field">
+              <label class="field-label">Nom du salon
+                <div class="tooltip-wrap">
+                  <div class="tooltip-icon">ℹ</div>
+                  <div class="tooltip-box">Ce nom apparaît dans la barre de navigation et le footer du site. Il est affiché avec la police Cormorant Garamond.</div>
+                </div>
+              </label>
+              <input type="text" class="field-input" id="salon-nom" value="Just'In Beauty">
+            </div>
+            <div class="field">
+              <label class="field-label">Sous-titre navigation</label>
+              <input type="text" class="field-input" id="salon-soustitre" value="Salon Privé d'Esthétique à Bassan">
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-label">Slogan principal (Hero)</label>
+            <input type="text" class="field-input" id="salon-slogan" value="Révélez votre éclat naturel.">
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title"><span>🎨</span> Couleur principale du site</div>
+          <div class="field">
+            <label class="field-label">Couleur terracotta
+              <div class="tooltip-wrap">
+                <div class="tooltip-icon">ℹ</div>
+                <div class="tooltip-box">Cette couleur est utilisée sur tous les boutons, titres en italique et accents du site. La valeur par défaut #C1593A est la teinte terracotta signature de Just'In Beauty.</div>
+              </div>
+            </label>
+            <div class="color-row">
+              <input type="color" class="color-swatch" id="color-terra" value="#C1593A">
+              <input type="text" class="field-input color-hex" id="color-terra-hex" value="#C1593A" style="max-width:120px" oninput="syncColor('terra-hex','terra')">
+              <span style="font-size:12px;color:var(--muted);font-weight:300">Couleur actuelle du site</span>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title"><span>🔗</span> Lien de réservation Planity</div>
+          <div class="field">
+            <label class="field-label">URL Planity
+              <div class="tooltip-wrap">
+                <div class="tooltip-icon">ℹ</div>
+                <div class="tooltip-box">Collez ici l'URL complète de votre page Planity (ex: https://www.planity.com/just-in-beauty-34290-bassan). Ce lien est utilisé sur tous les boutons "Prendre rendez-vous" du site.</div>
+              </div>
+            </label>
+            <input type="url" class="field-input" id="planity-url" value="https://www.planity.com" placeholder="https://www.planity.com/votre-salon">
+            <div class="field-hint">Copiez-collez l'URL depuis votre espace Planity → Profil → Lien public</div>
+          </div>
+        </div>
+        <div class="save-bar">
+          <button class="save-btn" onclick="saveSection('identite')">💾 Enregistrer les modifications</button>
+          <span class="save-note">Les changements seront appliqués au site</span>
+        </div>
+      </div>
+
+      <!-- ── HERO / BANNIÈRE ── -->
+      <div class="panel" id="panel-hero">
+        <div class="page-header">
+          <h1 class="page-title">Bannière <em>principale</em></h1>
+          <p class="page-desc">La première chose que voient vos visiteurs — textes d'accroche et grande photo.</p>
+        </div>
+        <div class="card">
+          <div class="card-title"><span>✏️</span> Textes de la bannière</div>
+          <div class="field">
+            <label class="field-label">Étiquette (petit texte au-dessus du titre)</label>
+            <input type="text" class="field-input" id="hero-eyebrow" value="Salon privé · Bassan, Hérault">
+          </div>
+          <div class="field-row three">
+            <div class="field" style="grid-column:span 1">
+              <label class="field-label">Titre ligne 1</label>
+              <input type="text" class="field-input" id="hero-h1a" value="Révélez">
+            </div>
+            <div class="field" style="grid-column:span 1">
+              <label class="field-label">Titre ligne 2 (en italique coloré)</label>
+              <input type="text" class="field-input" id="hero-h1b" value="votre éclat">
+            </div>
+            <div class="field" style="grid-column:span 1">
+              <label class="field-label">Titre ligne 3</label>
+              <input type="text" class="field-input" id="hero-h1c" value="naturel.">
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-label">Texte d'introduction</label>
+            <textarea class="field-input" id="hero-sub">Un écrin dédié à votre beauté, à deux pas de Béziers. Épilation haute précision, beauté du regard et soins visage dans une atmosphère terracotta enveloppante.</textarea>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label class="field-label">Bouton principal (texte)</label>
+              <input type="text" class="field-input" id="hero-btn1" value="Prendre rendez-vous">
+            </div>
+            <div class="field">
+              <label class="field-label">Bouton secondaire (texte)</label>
+              <input type="text" class="field-input" id="hero-btn2" value="Découvrir l'univers">
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title"><span>🖼</span> Grande photo de bannière (droite)
+            <div class="tooltip-wrap" style="margin-left:4px">
+              <div class="tooltip-icon">ℹ</div>
+              <div class="tooltip-box">
+                Photo principale du site, très importante pour la première impression.
+                <div class="tooltip-format">
+                  📐 Format idéal : Vertical (portrait)<br>
+                  📏 Dimensions : 800 × 1100 px minimum<br>
+                  ⚖️ Poids : Moins de 500 Ko<br>
+                  🎨 Ambiance : Lumière naturelle, tons chauds<br>
+                  💡 Conseil : Photo de vous au travail ou du salon
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="photo-upload-area" id="hero-upload-area" ondragover="dragOver(event,'hero-upload-area')" ondragleave="dragLeave('hero-upload-area')" ondrop="dropFile(event,'hero-preview','hero-upload-area')">
+            <input type="file" accept="image/*" onchange="previewPhoto(this,'hero-preview')">
+            <span class="upload-icon">📷</span>
+            <div class="upload-title">Cliquez ou glissez votre photo ici</div>
+            <div class="upload-sub">JPG, PNG ou WebP</div>
+            <span class="upload-format-badge">800×1100 px recommandé</span>
+          </div>
+          <img class="photo-preview" id="hero-preview" src="" alt="Prévisualisation">
+        </div>
+        <div class="save-bar">
+          <button class="save-btn" onclick="saveSection('hero')">💾 Enregistrer les modifications</button>
+          <span class="save-note">Les changements seront appliqués au site</span>
+        </div>
+      </div>
+
+      <!-- ── UNIVERS ── -->
+      <div class="panel" id="panel-univers">
+        <div class="page-header">
+          <h1 class="page-title">L'univers <em>du salon</em></h1>
+          <p class="page-desc">La section qui présente l'ambiance et les atouts de votre salon privé.</p>
+        </div>
+        <div class="card">
+          <div class="card-title"><span>✏️</span> Textes principaux</div>
+          <div class="field-row">
+            <div class="field">
+              <label class="field-label">Titre ligne 1</label>
+              <input type="text" class="field-input" id="univ-h2a" value="Un salon privé,">
+            </div>
+            <div class="field">
+              <label class="field-label">Titre ligne 2 (en italique)</label>
+              <input type="text" class="field-input" id="univ-h2b" value="une parenthèse rien que pour vous.">
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-label">Texte de présentation</label>
+            <textarea class="field-input" id="univ-desc" style="min-height:110px">Bienvenue dans un espace pensé pour votre sérénité. Ici, vous n'êtes pas un numéro — vous êtes ma seule cliente du moment. Dans une atmosphère terracotta aux tons chauds et boisés, chaque détail est orchestré pour que vous repartiez ressourcée, embellie, et pleinement vous-même.</textarea>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title"><span>🌿</span> Les 4 atouts mis en avant</div>
+          <div id="features-list">
+            <div class="field-row" id="feat-0">
+              <div class="field"><label class="field-label">Titre atout 1</label><input type="text" class="field-input" value="Intimité totale"></div>
+              <div class="field"><label class="field-label">Description</label><input type="text" class="field-input" value="Un seul rendez-vous à la fois, pour une écoute exclusive et une attention absolue."></div>
+            </div>
+            <div class="field-row" id="feat-1">
+              <div class="field"><label class="field-label">Titre atout 2</label><input type="text" class="field-input" value="Ambiance cocooning"></div>
+              <div class="field"><label class="field-label">Description</label><input type="text" class="field-input" value="Tons terracotta, lumière douce et musique apaisante — un cadre conçu pour lâcher prise."></div>
+            </div>
+            <div class="field-row" id="feat-2">
+              <div class="field"><label class="field-label">Titre atout 3</label><input type="text" class="field-input" value="Hygiène irréprochable"></div>
+              <div class="field"><label class="field-label">Description</label><input type="text" class="field-input" value="Protocoles de désinfection stricts et matériel à usage unique pour votre sécurité."></div>
+            </div>
+            <div class="field-row" id="feat-3">
+              <div class="field"><label class="field-label">Titre atout 4</label><input type="text" class="field-input" value="Expertise certifiée"></div>
+              <div class="field"><label class="field-label">Description</label><input type="text" class="field-input" value="Formations continues pour vous offrir des techniques à la pointe de la beauté professionnelle."></div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title"><span>🖼</span> Photo du salon (section univers)
+            <div class="tooltip-wrap" style="margin-left:4px">
+              <div class="tooltip-icon">ℹ</div>
+              <div class="tooltip-box">
+                Photo de l'intérieur de votre salon pour créer l'ambiance.
+                <div class="tooltip-format">
+                  📐 Format idéal : Vertical ou carré<br>
+                  📏 Dimensions : 700 × 900 px minimum<br>
+                  ⚖️ Poids : Moins de 400 Ko<br>
+                  🎨 Ambiance : Terracotta, lumière douce, chaleureuse<br>
+                  💡 Conseil : Montrez votre espace de travail ou l'entrée du salon
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="photo-upload-area" id="univ-upload-area" ondragover="dragOver(event,'univ-upload-area')" ondragleave="dragLeave('univ-upload-area')" ondrop="dropFile(event,'univ-preview','univ-upload-area')">
+            <input type="file" accept="image/*" onchange="previewPhoto(this,'univ-preview')">
+            <span class="upload-icon">🏡</span>
+            <div class="upload-title">Photo intérieur du salon</div>
+            <div class="upload-sub">JPG, PNG ou WebP · max 400 Ko</div>
+            <span class="upload-format-badge">700×900 px recommandé</span>
+          </div>
+          <img class="photo-preview" id="univ-preview" src="" alt="Prévisualisation">
+        </div>
+        <div class="save-bar">
+          <button class="save-btn" onclick="saveSection('univers')">💾 Enregistrer les modifications</button>
+          <span class="save-note">Les changements seront appliqués au site</span>
+        </div>
+      </div>
+
+      <!-- ── EXPERTISES ── -->
+      <div class="panel" id="panel-expertise">
+        <div class="page-header">
+          <h1 class="page-title">Mes <em>expertises</em></h1>
+          <p class="page-desc">Les 3 grandes spécialités présentées sur le site avec leurs bénéfices.</p>
+        </div>
+        <div class="card">
+          <div class="card-title"><span>✏️</span> Titre de la section</div>
+          <div class="field-row">
+            <div class="field">
+              <label class="field-label">Titre (partie normale)</label>
+              <input type="text" class="field-input" id="exp-h2a" value="L'art du">
+            </div>
+            <div class="field">
+              <label class="field-label">Titre (en italique coloré)</label>
+              <input type="text" class="field-input" id="exp-h2b" value="regard">
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-label">Sous-titre</label>
+            <input type="text" class="field-input" id="exp-sub" value="Des prestations millimétrées, des résultats qui durent. Découvrez mes spécialités.">
+          </div>
+        </div>
+        <!-- Expertise 1 -->
+        <div class="card">
+          <div class="card-title"><span>💎</span> Spécialité 01 — Beauté du Regard</div>
+          <div class="field-row">
+            <div class="field">
+              <label class="field-label">Titre</label>
+              <input type="text" class="field-input" id="exp1-title" value="Beauté du Regard">
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-label">Description</label>
+            <textarea class="field-input" id="exp1-desc">Des yeux qui parlent d'eux-mêmes. Extensions cil à cil, volume mixte, rehaussement — je façonne votre regard en accord avec votre morphologie et votre style de vie.</textarea>
+          </div>
+          <label class="field-label" style="margin-bottom:10px">Points forts (un par ligne)</label>
+          <textarea class="field-input" id="exp1-benefits" style="min-height:100px">Cil à cil & Volume Russe / Mixte
+Rehaussement de cils — courbure naturelle
+Regard ouvert sans mascara
+Tenue jusqu'à 6 semaines</textarea>
+        </div>
+        <!-- Expertise 2 -->
+        <div class="card">
+          <div class="card-title"><span>💎</span> Spécialité 02 — Browlift &amp; Sourcils</div>
+          <div class="field">
+            <label class="field-label">Titre</label>
+            <input type="text" class="field-input" id="exp2-title" value="Browlift & Sourcils">
+          </div>
+          <div class="field">
+            <label class="field-label">Description</label>
+            <textarea class="field-input" id="exp2-desc">La tendance qui métamorphose. Le Browlift lisse, discipline et structure vos sourcils pour un effet liftant naturel qui redéfinit l'ovale du visage.</textarea>
+          </div>
+          <label class="field-label" style="margin-bottom:10px">Points forts (un par ligne)</label>
+          <textarea class="field-input" id="exp2-benefits" style="min-height:100px">Sourcils disciplinés et parfaitement posés
+Effet liftant immédiat du regard
+Tenue 6 à 8 semaines
+Zéro entretien au quotidien</textarea>
+        </div>
+        <!-- Expertise 3 -->
+        <div class="card">
+          <div class="card-title"><span>💎</span> Spécialité 03 — Soins &amp; Épilation</div>
+          <div class="field">
+            <label class="field-label">Titre</label>
+            <input type="text" class="field-input" id="exp3-title" value="Soins & Épilation">
+          </div>
+          <div class="field">
+            <label class="field-label">Description</label>
+            <textarea class="field-input" id="exp3-desc">Des soins visage techniques adaptés à chaque peau, et une épilation haute précision pour une peau impeccablement douce, dans le confort le plus total.</textarea>
+          </div>
+          <label class="field-label" style="margin-bottom:10px">Points forts (un par ligne)</label>
+          <textarea class="field-input" id="exp3-benefits" style="min-height:100px">Soins hydratants, éclat, anti-âge
+Épilation visage & corps à la cire
+Douceur et efficacité durables
+Protocoles peaux sensibles disponibles</textarea>
+        </div>
+        <div class="save-bar">
+          <button class="save-btn" onclick="saveSection('expertise')">💾 Enregistrer les modifications</button>
+          <span class="save-note">Les changements seront appliqués au site</span>
+        </div>
+      </div>
+
+      <!-- ── TARIFS ── -->
+      <div class="panel" id="panel-tarifs">
+        <div class="page-header">
+          <h1 class="page-title">Gestion des <em>tarifs</em></h1>
+          <p class="page-desc">Modifiez les prix et prestations directement dans les tableaux. Cliquez sur un texte ou prix pour l'éditer.</p>
+        </div>
+        <div class="card">
+          <div class="card-title"><span>💶</span> Titre de la section</div>
+          <div class="field-row">
+            <div class="field">
+              <label class="field-label">Titre (partie normale)</label>
+              <input type="text" class="field-input" id="tarif-h2a" value="Des soins d'exception à des">
+            </div>
+            <div class="field">
+              <label class="field-label">Titre (en italique)</label>
+              <input type="text" class="field-input" id="tarif-h2b" value="prix transparents.">
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="tarif-tabs">
+            <button class="tarif-tab active" onclick="showTarifTab(event,'t-regard')">Regard &amp; Sourcils</button>
+            <button class="tarif-tab" onclick="showTarifTab(event,'t-soins')">Soins Visage</button>
+            <button class="tarif-tab" onclick="showTarifTab(event,'t-epil')">Épilation</button>
+            <button class="tarif-tab" onclick="showTarifTab(event,'t-mains')">Mains &amp; Pieds</button>
+          </div>
+
+          <!-- REGARD -->
+          <div class="tarif-pane active" id="t-regard">
+            <table class="tarif-table" id="tbl-regard">
+              <thead><tr><th style="width:38%">Prestation</th><th style="width:32%">Détail / durée</th><th style="width:15%">Prix</th><th style="width:40px"></th></tr></thead>
+              <tbody>
+                <tr><td><input value="Pose Extensions Cil à Cil"></td><td><input value="Pose complète · 1h30–2h"></td><td><input class="price-input" value="95 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
+                <tr><td><input value="Retouche Extensions"></td><td><input value="Infill 2–3 semaines"></td><td><input class="price-input" value="50 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
+                <tr><td><input value="Volume Mixte / Russe"></td><td><input value="Pose complète · 2h–2h30"></td><td><input class="price-input" value="110 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
+                <tr><td><input value="Rehaussement de Cils"></td><td><input value="Kératine incluse · 1h"></td><td><input class="price-input" value="55 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
+                <tr><td><input value="Browlift"></td><td><input value="Lamination + mise en forme · 45 min"></td><td><input class="price-input" value="45 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
+                <tr><td><input value="Browlift + Rehaussement"></td><td><input value="Duo yeux · 1h30"></td><td><input class="price-input" value="90 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
+                <tr><td><input value="Teinture Sourcils / Cils"></td><td><input value="Teinte végétale · 20 min"></td><td><input class="price-input" value="12 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
+              </tbody>
+            </table>
+            <button class="add-row-btn" onclick="addRow('tbl-regard')">+ Ajouter une prestation</button>
+          </div>
+
+          <!-- SOINS -->
+          <div class="tarif-pane" id="t-soins">
+            <table class="tarif-table" id="tbl-soins">
+              <thead><tr><th>Prestation</th><th>Détail / durée</th><th>Prix</th><th></th></tr></thead>
+              <tbody>
+                <tr><td><input value="Soin Visage Hydratation Intense"></td><td><input value="Peau sèche / déshydratée · 50 min"></td><td><input class="price-input" value="55 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
+                <tr><td><input value="Soin Visage Éclat & Unification"></td><td><input value="Teint terne / irrégulier · 50 min"></td><td><input class="price-input" value="55 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
+                <tr><td><input value="Soin Anti-Âge Liftant"></td><td><input value="Fermeté & éclat · 60 min"></td><td><input class="price-input" value="65 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
+                <tr><td><input value="Épilation Sourcils"></td><td><input value="Mise en forme à la cire · 15 min"></td><td><input class="price-input" value="10 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
+                <tr><td><input value="Épilation Lèvre Supérieure"></td><td><input value="Cire douce · 10 min"></td><td><input class="price-input" value="8 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
+              </tbody>
+            </table>
+            <button class="add-row-btn" onclick="addRow('tbl-soins')">+ Ajouter une prestation</button>
+          </div>
+
+          <!-- EPILATION -->
+          <div class="tarif-pane" id="t-epil">
+            <table class="tarif-table" id="tbl-epil">
+              <thead><tr><th>Prestation</th><th>Détail / durée</th><th>Prix</th><th></th></tr></thead>
+              <tbody>
+                <tr><td><input value="Demi-jambes"></td><td><input value="Chevilles → genoux"></td><td><input class="price-input" value="22 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
+                <tr><td><input value="Jambes complètes"></td><td><input value="+ maillot simple offert"></td><td><input class="price-input" value="38 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
+                <tr><td><input value="Maillot simple / brésilien / intégral"></td><td><input value="Selon formule choisie"></td><td><input class="price-input" value="14 / 22 / 30 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
+                <tr><td><input value="Aisselles"></td><td><input value="Cire chaude"></td><td><input class="price-input" value="12 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
+                <tr><td><input value="Bras complets"></td><td><input value="Épaules incluses sur demande"></td><td><input class="price-input" value="20 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
+                <tr><td><input value="Dos / Torse"></td><td><input value="Sur devis selon densité"></td><td><input class="price-input" value="dès 20 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
+              </tbody>
+            </table>
+            <button class="add-row-btn" onclick="addRow('tbl-epil')">+ Ajouter une prestation</button>
+          </div>
+
+          <!-- MAINS -->
+          <div class="tarif-pane" id="t-mains">
+            <table class="tarif-table" id="tbl-mains">
+              <thead><tr><th>Prestation</th><th>Détail / durée</th><th>Prix</th><th></th></tr></thead>
+              <tbody>
+                <tr><td><input value="Pose Vernis Semi-Permanent Mains"></td><td><input value="Préparation + pose + top coat"></td><td><input class="price-input" value="30 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
+                <tr><td><input value="Dépose Vernis Semi-Permanent"></td><td><input value="Sans pose incluse"></td><td><input class="price-input" value="10 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
+                <tr><td><input value="Pose Semi-Permanent Pieds"></td><td><input value="Soin des ongles inclus"></td><td><input class="price-input" value="28 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
+                <tr><td><input value="Pédicure complète"></td><td><input value="Soin + vernis classique"></td><td><input class="price-input" value="35 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
+              </tbody>
+            </table>
+            <button class="add-row-btn" onclick="addRow('tbl-mains')">+ Ajouter une prestation</button>
+          </div>
+        </div>
+        <div class="save-bar">
+          <button class="save-btn" onclick="saveSection('tarifs')">💾 Enregistrer les modifications</button>
+          <span class="save-note">Cliquez sur un prix pour le modifier · × pour supprimer une ligne</span>
+        </div>
+      </div>
+
+      <!-- ── GALERIE ── -->
+      <div class="panel" id="panel-galerie">
+        <div class="page-header">
+          <h1 class="page-title">Galerie <em>photos</em></h1>
+          <p class="page-desc">Les 6 photos de vos réalisations. La photo 1 est plus grande (occupe 2 lignes à gauche).</p>
+        </div>
+        <div class="card">
+          <div class="card-title"><span>✏️</span> Titre de la section</div>
+          <div class="field-row">
+            <div class="field">
+              <label class="field-label">Titre (partie normale)</label>
+              <input type="text" class="field-input" id="gal-h2a" value="Vos regards,">
+            </div>
+            <div class="field">
+              <label class="field-label">Titre (en italique)</label>
+              <input type="text" class="field-input" id="gal-h2b" value="ma passion.">
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-label">Sous-titre</label>
+            <input type="text" class="field-input" id="gal-sub" value="Chaque résultat est unique, façonné selon vos traits et vos envies.">
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title"><span>📸</span> Photos du carousel
+            <div class="tooltip-wrap" style="margin-left:4px">
+              <div class="tooltip-icon">ℹ</div>
+              <div class="tooltip-box">
+                Photos de vos réalisations — la vitrine de votre talent !
+                <div class="tooltip-format">
+                  📐 Photo 1 (grande) : Vertical 600×900 px<br>
+                  📐 Photos 2 à 6 : Carré 600×600 px<br>
+                  ⚖️ Poids : Moins de 300 Ko par photo<br>
+                  🎨 Conseil : Avant/après, gros plan sur le regard<br>
+                  💡 Lumière naturelle ou ring light recommandée
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="carousel-grid">
+            <div class="carousel-item" style="grid-row:span 1">
+              <div class="carousel-item-num">01 <span style="font-size:11px;color:var(--muted);font-family:'Jost',sans-serif;font-weight:300">(grande)</span></div>
+              <div class="photo-upload-area" id="gal1-area" ondragover="dragOver(event,'gal1-area')" ondragleave="dragLeave('gal1-area')" ondrop="dropFile(event,'gal1-prev','gal1-area')">
+                <input type="file" accept="image/*" onchange="previewPhoto(this,'gal1-prev')">
+                <span class="upload-icon">📷</span>
+                <div class="upload-title">Photo principale</div>
+                <span class="upload-format-badge">600×900 px</span>
+              </div>
+              <img class="photo-preview" id="gal1-prev" src="" alt="">
+              <div class="field" style="margin-top:12px">
+                <label class="field-label">Légende</label>
+                <input type="text" class="field-input" value="Rehaussement Kératine — « Des cils naturels, sublimés »" style="font-size:12px">
+              </div>
+            </div>
+            <div class="carousel-item">
+              <div class="carousel-item-num">02</div>
+              <div class="photo-upload-area" id="gal2-area" ondragover="dragOver(event,'gal2-area')" ondragleave="dragLeave('gal2-area')" ondrop="dropFile(event,'gal2-prev','gal2-area')">
+                <input type="file" accept="image/*" onchange="previewPhoto(this,'gal2-prev')">
+                <span class="upload-icon">📷</span>
+                <div class="upload-title">Photo 2</div>
+                <span class="upload-format-badge">600×600 px</span>
+              </div>
+              <img class="photo-preview" id="gal2-prev" src="" alt="">
+              <div class="field" style="margin-top:12px">
+                <label class="field-label">Légende</label>
+                <input type="text" class="field-input" value="Browlift — « Sourcils posés, regard ouvert »" style="font-size:12px">
+              </div>
+            </div>
+            <div class="carousel-item">
+              <div class="carousel-item-num">03</div>
+              <div class="photo-upload-area" id="gal3-area" ondragover="dragOver(event,'gal3-area')" ondragleave="dragLeave('gal3-area')" ondrop="dropFile(event,'gal3-prev','gal3-area')">
+                <input type="file" accept="image/*" onchange="previewPhoto(this,'gal3-prev')">
+                <span class="upload-icon">📷</span>
+                <div class="upload-title">Photo 3</div>
+                <span class="upload-format-badge">600×600 px</span>
+              </div>
+              <img class="photo-preview" id="gal3-prev" src="" alt="">
+              <div class="field" style="margin-top:12px">
+                <label class="field-label">Légende</label>
+                <input type="text" class="field-input" value="Volume Mixte — « L'intensité à l'état pur »" style="font-size:12px">
+              </div>
+            </div>
+            <div class="carousel-item">
+              <div class="carousel-item-num">04</div>
+              <div class="photo-upload-area" id="gal4-area" ondragover="dragOver(event,'gal4-area')" ondragleave="dragLeave('gal4-area')" ondrop="dropFile(event,'gal4-prev','gal4-area')">
+                <input type="file" accept="image/*" onchange="previewPhoto(this,'gal4-prev')">
+                <span class="upload-icon">📷</span>
+                <div class="upload-title">Photo 4</div>
+                <span class="upload-format-badge">600×600 px</span>
+              </div>
+              <img class="photo-preview" id="gal4-prev" src="" alt="">
+              <div class="field" style="margin-top:12px">
+                <label class="field-label">Légende</label>
+                <input type="text" class="field-input" value="Soin Éclat — « Peau lumineuse, regard frais »" style="font-size:12px">
+              </div>
+            </div>
+            <div class="carousel-item">
+              <div class="carousel-item-num">05</div>
+              <div class="photo-upload-area" id="gal5-area" ondragover="dragOver(event,'gal5-area')" ondragleave="dragLeave('gal5-area')" ondrop="dropFile(event,'gal5-prev','gal5-area')">
+                <input type="file" accept="image/*" onchange="previewPhoto(this,'gal5-prev')">
+                <span class="upload-icon">📷</span>
+                <div class="upload-title">Photo 5</div>
+                <span class="upload-format-badge">600×600 px</span>
+              </div>
+              <img class="photo-preview" id="gal5-prev" src="" alt="">
+              <div class="field" style="margin-top:12px">
+                <label class="field-label">Légende</label>
+                <input type="text" class="field-input" value="Volume Russe — « Dramatique. Parfait. »" style="font-size:12px">
+              </div>
+            </div>
+            <div class="carousel-item">
+              <div class="carousel-item-num">06</div>
+              <div class="photo-upload-area" id="gal6-area" ondragover="dragOver(event,'gal6-area')" ondragleave="dragLeave('gal6-area')" ondrop="dropFile(event,'gal6-prev','gal6-area')">
+                <input type="file" accept="image/*" onchange="previewPhoto(this,'gal6-prev')">
+                <span class="upload-icon">📷</span>
+                <div class="upload-title">Photo 6</div>
+                <span class="upload-format-badge">600×600 px</span>
+              </div>
+              <img class="photo-preview" id="gal6-prev" src="" alt="">
+              <div class="field" style="margin-top:12px">
+                <label class="field-label">Légende</label>
+                <input type="text" class="field-input" value="Teinture & Mise en Forme — « La base de tout »" style="font-size:12px">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="save-bar">
+          <button class="save-btn" onclick="saveSection('galerie')">💾 Enregistrer les modifications</button>
+          <span class="save-note">Les photos sont sauvegardées localement</span>
+        </div>
+      </div>
+
+      <!-- ── AVIS ── -->
+      <div class="panel" id="panel-avis">
+        <div class="page-header">
+          <h1 class="page-title">Avis <em>clients</em></h1>
+          <p class="page-desc">Les 3 témoignages affichés sur votre site. Utilisez de vrais avis Google pour plus d'authenticité.</p>
+        </div>
+        <div class="card">
+          <div class="card-title"><span>✏️</span> Titre de la section</div>
+          <div class="field-row">
+            <div class="field">
+              <label class="field-label">Titre (partie normale)</label>
+              <input type="text" class="field-input" id="avis-h2a" value="Elles en">
+            </div>
+            <div class="field">
+              <label class="field-label">Titre (en italique)</label>
+              <input type="text" class="field-input" id="avis-h2b" value="parlent mieux que moi.">
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-label">Note Google (badge)</label>
+            <input type="text" class="field-input" id="avis-note" value="5 / 5" style="max-width:120px">
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title"><span>⭐</span> Avis 1</div>
+          <div class="field">
+            <label class="field-label">Texte du témoignage</label>
+            <textarea class="field-input" id="avis1-text">« J'avais peur pour mes extensions — ma précédente expérience était désastreuse. Justine a pris le temps de bien m'écouter, et le résultat est bluffant. Naturel, léger, exactement ce que je voulais. Je ne vais plus nulle part ailleurs. »</textarea>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label class="field-label">Prénom &amp; initiale</label>
+              <input type="text" class="field-input" id="avis1-name" value="Amélie R.">
+            </div>
+            <div class="field">
+              <label class="field-label">Prestation concernée</label>
+              <input type="text" class="field-input" id="avis1-presta" value="Extensions Cil à Cil">
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title"><span>⭐</span> Avis 2</div>
+          <div class="field">
+            <label class="field-label">Texte du témoignage</label>
+            <textarea class="field-input" id="avis2-text">« Un salon propre, chaleureux, et une praticienne vraiment à l'écoute. Le browlift que j'ai fait il y a deux mois tient encore parfaitement. Je gagne 10 minutes chaque matin ! Le cadre terracotta est tellement apaisant, on a envie de rester. »</textarea>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label class="field-label">Prénom &amp; initiale</label>
+              <input type="text" class="field-input" id="avis2-name" value="Marie-Christine L.">
+            </div>
+            <div class="field">
+              <label class="field-label">Prestation concernée</label>
+              <input type="text" class="field-input" id="avis2-presta" value="Browlift">
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title"><span>⭐</span> Avis 3</div>
+          <div class="field">
+            <label class="field-label">Texte du témoignage</label>
+            <textarea class="field-input" id="avis3-text">« Justine est une professionnelle hors pair. Mon épilation jambes + maillot s'est passée dans la douceur totale — j'avais très peur avec ma peau sensible. Propre, rapide, efficace. Et la peau reste douce bien plus longtemps qu'ailleurs. »</textarea>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label class="field-label">Prénom &amp; initiale</label>
+              <input type="text" class="field-input" id="avis3-name" value="Sarah M.">
+            </div>
+            <div class="field">
+              <label class="field-label">Prestation concernée</label>
+              <input type="text" class="field-input" id="avis3-presta" value="Épilation Corps">
+            </div>
+          </div>
+        </div>
+        <div class="save-bar">
+          <button class="save-btn" onclick="saveSection('avis')">💾 Enregistrer les modifications</button>
+          <span class="save-note">Les changements seront appliqués au site</span>
+        </div>
+      </div>
+
+      <!-- ── ACCÈS ── -->
+      <div class="panel" id="panel-acces">
+        <div class="page-header">
+          <h1 class="page-title">Accès &amp; <em>Contact</em></h1>
+          <p class="page-desc">Les informations pratiques pour que vos clientes vous trouvent facilement.</p>
+        </div>
+        <div class="card">
+          <div class="card-title"><span>📍</span> Adresse &amp; infos pratiques</div>
+          <div class="field-row">
+            <div class="field">
+              <label class="field-label">Numéro et rue</label>
+              <input type="text" class="field-input" id="acces-rue" value="6 rue des Genêts">
+            </div>
+            <div class="field">
+              <label class="field-label">Code postal et ville</label>
+              <input type="text" class="field-input" id="acces-ville" value="34290 Bassan (près de Béziers)">
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label class="field-label">Téléphone</label>
+              <input type="tel" class="field-input" id="acces-tel" placeholder="06 xx xx xx xx">
+            </div>
+            <div class="field">
+              <label class="field-label">Email de contact</label>
+              <input type="email" class="field-input" id="acces-email" placeholder="contact@justinbeauty.fr">
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-label">Information stationnement</label>
+            <input type="text" class="field-input" id="acces-parking" value="Parking gratuit devant le salon · Accès PMR possible">
+          </div>
+          <div class="field">
+            <label class="field-label">Mode de réservation</label>
+            <input type="text" class="field-input" id="acces-rdv" value="Sur rendez-vous uniquement via Planity ou par téléphone">
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title"><span>🗺</span> Carte Google Maps
+            <div class="tooltip-wrap" style="margin-left:4px">
+              <div class="tooltip-icon">ℹ</div>
+              <div class="tooltip-box">
+                Pour intégrer Google Maps : allez sur maps.google.fr, cherchez votre adresse, cliquez sur "Partager" → "Intégrer une carte" → copiez le lien src="..." et collez-le ici.
+                <div class="tooltip-format">Le lien doit commencer par https://www.google.com/maps/embed?...</div>
+              </div>
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-label">URL d'intégration Google Maps (iframe src)</label>
+            <input type="url" class="field-input" id="acces-maps" placeholder="https://www.google.com/maps/embed?pb=...">
+            <div class="field-hint">Allez sur Google Maps → Partager → Intégrer une carte → copiez le lien dans l'attribut src="..."</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title"><span>📱</span> Réseaux sociaux</div>
+          <div class="field-row">
+            <div class="field">
+              <label class="field-label">URL Instagram</label>
+              <input type="url" class="field-input" id="rs-insta" placeholder="https://www.instagram.com/justinbeauty">
+            </div>
+            <div class="field">
+              <label class="field-label">URL Facebook</label>
+              <input type="url" class="field-input" id="rs-fb" placeholder="https://www.facebook.com/justinbeauty">
+            </div>
+          </div>
+        </div>
+        <div class="save-bar">
+          <button class="save-btn" onclick="saveSection('acces')">💾 Enregistrer les modifications</button>
+          <span class="save-note">Les changements seront appliqués au site</span>
+        </div>
+      </div>
+
+      <!-- ── COMPTE ── -->
+      <div class="panel" id="panel-compte">
+        <div class="page-header">
+          <h1 class="page-title">Mon <em>compte</em></h1>
+          <p class="page-desc">Modifiez vos identifiants de connexion à l'espace d'administration.</p>
+        </div>
+        <div class="cred-section">
+          <div class="cred-section-title">⚠️ Sécurité importante</div>
+          <p style="font-size:13px;font-weight:300;color:var(--dark);line-height:1.6">Changez votre mot de passe dès votre première connexion. Choisissez un mot de passe difficile à deviner (mélangez lettres, chiffres et symboles comme <strong>MonSalon34!</strong>).</p>
+        </div>
+        <div class="card">
+          <div class="card-title"><span>👤</span> Identifiant de connexion</div>
+          <div class="field">
+            <label class="field-label">Identifiant actuel</label>
+            <input type="text" class="field-input" id="cred-user" value="admin">
+            <div class="field-hint">Cet identifiant est demandé à chaque connexion</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title"><span>🔑</span> Changer le mot de passe</div>
+          <div class="field">
+            <label class="field-label">Mot de passe actuel</label>
+            <input type="password" class="field-input" id="pass-current" placeholder="••••••••">
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label class="field-label">Nouveau mot de passe</label>
+              <input type="password" class="field-input" id="pass-new" placeholder="Minimum 6 caractères" oninput="checkPassStrength(this.value)">
+            </div>
+            <div class="field">
+              <label class="field-label">Confirmer le nouveau mot de passe</label>
+              <input type="password" class="field-input" id="pass-confirm" placeholder="Répétez le mot de passe">
+            </div>
+          </div>
+          <div id="pass-strength" style="font-size:12px;font-weight:400;margin-top:-8px;margin-bottom:12px;display:none"></div>
+        </div>
+        <div class="save-bar">
+          <button class="save-btn" onclick="saveCredentials()">💾 Enregistrer les nouveaux identifiants</button>
+          <span class="save-note">Vous devrez vous reconnecter après la sauvegarde</span>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">✅ Modifications enregistrées avec succès !</div>
+
+<!-- ════════════════════════════════════════
+     JAVASCRIPT
+════════════════════════════════════════ -->
+<script>
+// ══════════════════════════════════════════
+// SÉCURITÉ — Authentification durcie
+// ══════════════════════════════════════════
+const STORE_KEY = 'jib_admin_data';
+const MAX_ATTEMPTS = 5;          // blocage après 5 tentatives
+const LOCKOUT_MS   = 5 * 60 * 1000; // 5 minutes
+
+function load(){try{return JSON.parse(localStorage.getItem(STORE_KEY))||{};}catch{return {};}}
+function save(data){
+  // Validation basique : on ne sauvegarde que des chaînes / objets simples
+  if(typeof data !== 'object' || data === null) return;
+  try{localStorage.setItem(STORE_KEY, JSON.stringify(data));}catch(e){console.warn('Stockage plein');}
+}
+
+// Hashage SHA-256 via SubtleCrypto (API native du navigateur, pas de bibliothèque externe)
+async function hashPassword(str){
+  const enc = new TextEncoder().encode(str);
+  const buf = await crypto.subtle.digest('SHA-256', enc);
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+
+// Initialisation : si premiers accès, on hache le mot de passe par défaut
+async function initCredentials(){
+  const d = load();
+  if(!d.credentials || !d.credentials.passHash){
+    const defaultHash = await hashPassword('admin');
+    d.credentials = {user:'admin', passHash: defaultHash};
+    d.loginAttempts = 0;
+    d.lockoutUntil = 0;
+    save(d);
+  }
+}
+initCredentials();
+
+// ── LOGIN ──
+async function doLogin(){
+  const d = load();
+  const now = Date.now();
+
+  // Vérification du verrouillage
+  if(d.lockoutUntil && now < d.lockoutUntil){
+    const remaining = Math.ceil((d.lockoutUntil - now) / 60000);
+    document.getElementById('login-error').textContent =
+      'Trop de tentatives. Réessayez dans ' + remaining + ' min.';
+    document.getElementById('login-error').style.display='block';
+    return;
+  }
+
+  const u = (document.getElementById('l-user').value || '').trim();
+  const p = document.getElementById('l-pass').value || '';
+
+  // Validation minimale des entrées
+  if(!u || !p || u.length > 100 || p.length > 200){
+    document.getElementById('login-error').textContent = 'Identifiant ou mot de passe incorrect.';
+    document.getElementById('login-error').style.display='block';
+    return;
+  }
+
+  const creds = d.credentials || {};
+  const inputHash = await hashPassword(p);
+
+  // Comparaison sécurisée (timing-safe approximatif côté JS)
+  const userMatch = creds.user === u;
+  const passMatch = creds.passHash === inputHash;
+
+  if(userMatch && passMatch){
+    d.loginAttempts = 0;
+    d.lockoutUntil = 0;
+    save(d);
+    document.getElementById('login-screen').style.display='none';
+    document.getElementById('admin-app').style.display='flex';
+    document.getElementById('l-pass').value=''; // effacer le mdp du DOM
+    restoreAllFields();
+  } else {
+    d.loginAttempts = (d.loginAttempts || 0) + 1;
+    if(d.loginAttempts >= MAX_ATTEMPTS){
+      d.lockoutUntil = now + LOCKOUT_MS;
+      d.loginAttempts = 0;
+      document.getElementById('login-error').textContent =
+        'Compte bloqué 5 minutes après trop de tentatives.';
+    } else {
+      const left = MAX_ATTEMPTS - d.loginAttempts;
+      document.getElementById('login-error').textContent =
+        'Identifiant ou mot de passe incorrect. (' + left + ' essai(s) restant(s))';
+    }
+    document.getElementById('login-error').style.display='block';
+    document.getElementById('l-pass').value='';
+    save(d);
+  }
+}
+document.getElementById('l-pass').addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();doLogin();}});
+document.getElementById('l-user').addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();doLogin();}});
+
+// ── LOGOUT ──
+function doLogout(){
+  if(confirm('Se déconnecter de l\'administration ?')){
+    document.getElementById('login-screen').style.display='flex';
+    document.getElementById('admin-app').style.display='none';
+    document.getElementById('l-user').value='';
+    document.getElementById('l-pass').value='';
+    document.getElementById('login-error').style.display='none';
+    document.getElementById('login-error').textContent='';
+  }
+}
+
+// ── PANEL NAVIGATION ──
+const ALLOWED_PANELS = ['dashboard','identite','hero','univers','expertise','tarifs','galerie','avis','acces','compte'];
+function showPanel(id, el){
+  if(!ALLOWED_PANELS.includes(id)) return;
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  const target = document.getElementById('panel-'+id);
+  if(target) target.classList.add('active');
+  el.classList.add('active');
+  window.scrollTo(0,0);
+}
+
+// ── TARIF TABS ──
+function showTarifTab(e, id){
+  document.querySelectorAll('.tarif-pane').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tarif-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  e.target.classList.add('active');
+}
+
+// ── PHOTO PREVIEW (validation type + taille) ──
+const ALLOWED_IMAGE_TYPES = ['image/jpeg','image/png','image/webp','image/gif'];
+const MAX_IMAGE_SIZE = 5 * 1024 * 1024; // 5 Mo max
+
+function previewPhoto(input, previewId){
+  const file = input.files[0];
+  if(!file) return;
+  if(!ALLOWED_IMAGE_TYPES.includes(file.type)){
+    showToast('❌ Format non autorisé. Utilisez JPG, PNG ou WebP.','err'); return;
+  }
+  if(file.size > MAX_IMAGE_SIZE){
+    showToast('❌ Image trop lourde (max 5 Mo). Compressez-la d\'abord.','err'); return;
+  }
+  const reader = new FileReader();
+  reader.onload = e => {
+    const img = document.getElementById(previewId);
+    if(!img) return;
+    img.src = e.target.result;
+    img.classList.add('visible');
+    try{
+      const d = load();
+      if(!d.photos) d.photos={};
+      d.photos[previewId]=e.target.result;
+      save(d);
+    }catch(err){showToast('⚠️ Image trop lourde pour le stockage local. Elle est visible mais ne sera pas sauvegardée.','err');}
+  };
+  reader.readAsDataURL(file);
+}
+
+// ── DRAG & DROP ──
+function dragOver(e, areaId){e.preventDefault();document.getElementById(areaId).classList.add('drag');}
+function dragLeave(areaId){document.getElementById(areaId).classList.remove('drag');}
+function dropFile(e, previewId, areaId){
+  e.preventDefault();
+  dragLeave(areaId);
+  const file = e.dataTransfer.files[0];
+  if(!file) return;
+  if(!ALLOWED_IMAGE_TYPES.includes(file.type)){
+    showToast('❌ Format non autorisé. Utilisez JPG, PNG ou WebP.','err'); return;
+  }
+  if(file.size > MAX_IMAGE_SIZE){
+    showToast('❌ Image trop lourde (max 5 Mo). Compressez-la d\'abord.','err'); return;
+  }
+  const reader = new FileReader();
+  reader.onload = ev => {
+    const img = document.getElementById(previewId);
+    if(!img) return;
+    img.src = ev.target.result;
+    img.classList.add('visible');
+    try{
+      const d = load();
+      if(!d.photos) d.photos={};
+      d.photos[previewId]=ev.target.result;
+      save(d);
+    }catch(err){showToast('⚠️ Image trop lourde pour le stockage local.','err');}
+  };
+  reader.readAsDataURL(file);
+}
+
+// ── ADD / DEL TABLE ROW (DOM safe — pas d'innerHTML avec données utilisateur) ──
+function addRow(tableId){
+  const ALLOWED_TABLES = ['tbl-regard','tbl-soins','tbl-epil','tbl-mains'];
+  if(!ALLOWED_TABLES.includes(tableId)) return;
+  const tbody = document.querySelector('#'+tableId+' tbody');
+  if(!tbody) return;
+  const tr = document.createElement('tr');
+  const tdName = document.createElement('td');
+  const inName = document.createElement('input'); inName.value='Nouvelle prestation'; tdName.appendChild(inName);
+  const tdDetail = document.createElement('td');
+  const inDetail = document.createElement('input'); inDetail.value='D\u00e9tail \u00b7 dur\u00e9e'; tdDetail.appendChild(inDetail);
+  const tdPrice = document.createElement('td');
+  const inPrice = document.createElement('input'); inPrice.className='price-input'; inPrice.value='0 \u20ac'; tdPrice.appendChild(inPrice);
+  const tdDel = document.createElement('td');
+  const btnDel = document.createElement('button'); btnDel.className='del-row-btn'; btnDel.textContent='\u00d7';
+  btnDel.addEventListener('click', function(){ delRow(this); }); tdDel.appendChild(btnDel);
+  tr.appendChild(tdName); tr.appendChild(tdDetail); tr.appendChild(tdPrice); tr.appendChild(tdDel);
+  tbody.appendChild(tr);
+}
+function delRow(btn){
+  const tr = btn.closest('tr');
+  if(tr.parentElement.children.length > 1){
+    if(confirm('Supprimer cette prestation ?')) tr.remove();
+  } else {
+    alert('Il faut garder au moins une prestation dans chaque catégorie.');
+  }
+}
+
+// ── COLOR SYNC ──
+function syncColor(fromId, toId){
+  const val = document.getElementById(fromId).value;
+  if(/^#[0-9a-fA-F]{6}$/.test(val)) document.getElementById(toId).value = val;
+}
+document.getElementById('color-terra').addEventListener('input',function(){
+  document.getElementById('color-terra-hex').value = this.value;
+});
+
+// ── SAVE SECTION (LocalStorage) ──
+function sanitizeUrl(url){
+  const s = (url||'').trim().slice(0,500);
+  // N'accepter que http(s)
+  if(s && !/^https?:\/\//i.test(s)) return '';
+  return s;
+}
+function saveSection(section){
+  const d = load();
+  if(!d.sections) d.sections={};
+
+  if(section==='identite'){
+    d.sections.identite={
+      nom: v('salon-nom'), soustitre: v('salon-soustitre'),
+      slogan: v('salon-slogan'), planity: sanitizeUrl(v('planity-url')),
+      colorTerra: /^#[0-9a-fA-F]{6}$/.test(v('color-terra-hex')) ? v('color-terra-hex') : '#C1593A'
+    };
+  } else if(section==='hero'){
+    d.sections.hero={
+      eyebrow:v('hero-eyebrow'), h1a:v('hero-h1a'), h1b:v('hero-h1b'),
+      h1c:v('hero-h1c'), sub:v('hero-sub'), btn1:v('hero-btn1'), btn2:v('hero-btn2')
+    };
+  } else if(section==='univers'){
+    d.sections.univers={h2a:v('univ-h2a'),h2b:v('univ-h2b'),desc:v('univ-desc')};
+  } else if(section==='expertise'){
+    d.sections.expertise={
+      h2a:v('exp-h2a'),h2b:v('exp-h2b'),sub:v('exp-sub'),
+      exp1:{title:v('exp1-title'),desc:v('exp1-desc'),benefits:v('exp1-benefits')},
+      exp2:{title:v('exp2-title'),desc:v('exp2-desc'),benefits:v('exp2-benefits')},
+      exp3:{title:v('exp3-title'),desc:v('exp3-desc'),benefits:v('exp3-benefits')}
+    };
+  } else if(section==='tarifs'){
+    d.sections.tarifs={h2a:v('tarif-h2a'),h2b:v('tarif-h2b'),tables:saveTables()};
+  } else if(section==='galerie'){
+    d.sections.galerie={h2a:v('gal-h2a'),h2b:v('gal-h2b'),sub:v('gal-sub')};
+  } else if(section==='avis'){
+    d.sections.avis={
+      h2a:v('avis-h2a'),h2b:v('avis-h2b'),note:v('avis-note'),
+      avis1:{text:v('avis1-text'),name:v('avis1-name'),presta:v('avis1-presta')},
+      avis2:{text:v('avis2-text'),name:v('avis2-name'),presta:v('avis2-presta')},
+      avis3:{text:v('avis3-text'),name:v('avis3-name'),presta:v('avis3-presta')}
+    };
+  } else if(section==='acces'){
+    d.sections.acces={
+      rue:v('acces-rue'),ville:v('acces-ville'),
+      tel:(v('acces-tel')||'').replace(/[^0-9+\s\-().]/g,'').slice(0,20),
+      email:(v('acces-email')||'').slice(0,200),
+      parking:v('acces-parking'),rdv:v('acces-rdv'),
+      maps:sanitizeUrl(v('acces-maps')),
+      insta:sanitizeUrl(v('rs-insta')),fb:sanitizeUrl(v('rs-fb'))
+    };
+  }
+
+  save(d);
+  showToast('✅ Section "'+section+'" enregistrée avec succès !');
+}
+
+function v(id){
+  const el=document.getElementById(id);
+  if(!el) return '';
+  // Tronquer à 2000 caractères max, retirer les balises HTML
+  return (el.value||'').slice(0,2000).replace(/<[^>]*>/g,'');
+}
+function saveTables(){
+  const ids=['tbl-regard','tbl-soins','tbl-epil','tbl-mains'];
+  const result={};
+  ids.forEach(id=>{
+    const rows=[];
+    document.querySelectorAll('#'+id+' tbody tr').forEach(tr=>{
+      const inputs=tr.querySelectorAll('input');
+      rows.push({name:inputs[0]?.value||'',detail:inputs[1]?.value||'',price:inputs[2]?.value||''});
+    });
+    result[id]=rows;
+  });
+  return result;
+}
+
+// ── RESTORE ALL FIELDS FROM STORAGE ──
+function restoreAllFields(){
+  const d = load();
+  if(!d.sections) return;
+  const s = d.sections;
+
+  if(s.identite){
+    sv('salon-nom',s.identite.nom);sv('salon-soustitre',s.identite.soustitre);
+    sv('salon-slogan',s.identite.slogan);sv('planity-url',s.identite.planity);
+    sv('color-terra-hex',s.identite.colorTerra);sv('color-terra',s.identite.colorTerra);
+  }
+  if(s.hero){
+    sv('hero-eyebrow',s.hero.eyebrow);sv('hero-h1a',s.hero.h1a);
+    sv('hero-h1b',s.hero.h1b);sv('hero-h1c',s.hero.h1c);
+    sv('hero-sub',s.hero.sub);sv('hero-btn1',s.hero.btn1);sv('hero-btn2',s.hero.btn2);
+  }
+  if(s.univers){sv('univ-h2a',s.univers.h2a);sv('univ-h2b',s.univers.h2b);sv('univ-desc',s.univers.desc);}
+  if(s.expertise){
+    sv('exp-h2a',s.expertise.h2a);sv('exp-h2b',s.expertise.h2b);sv('exp-sub',s.expertise.sub);
+    if(s.expertise.exp1){sv('exp1-title',s.expertise.exp1.title);sv('exp1-desc',s.expertise.exp1.desc);sv('exp1-benefits',s.expertise.exp1.benefits);}
+    if(s.expertise.exp2){sv('exp2-title',s.expertise.exp2.title);sv('exp2-desc',s.expertise.exp2.desc);sv('exp2-benefits',s.expertise.exp2.benefits);}
+    if(s.expertise.exp3){sv('exp3-title',s.expertise.exp3.title);sv('exp3-desc',s.expertise.exp3.desc);sv('exp3-benefits',s.expertise.exp3.benefits);}
+  }
+  if(s.tarifs){
+    sv('tarif-h2a',s.tarifs.h2a);sv('tarif-h2b',s.tarifs.h2b);
+    if(s.tarifs.tables) restoreTables(s.tarifs.tables);
+  }
+  if(s.galerie){sv('gal-h2a',s.galerie.h2a);sv('gal-h2b',s.galerie.h2b);sv('gal-sub',s.galerie.sub);}
+  if(s.avis){
+    sv('avis-h2a',s.avis.h2a);sv('avis-h2b',s.avis.h2b);sv('avis-note',s.avis.note);
+    if(s.avis.avis1){sv('avis1-text',s.avis.avis1.text);sv('avis1-name',s.avis.avis1.name);sv('avis1-presta',s.avis.avis1.presta);}
+    if(s.avis.avis2){sv('avis2-text',s.avis.avis2.text);sv('avis2-name',s.avis.avis2.name);sv('avis2-presta',s.avis.avis2.presta);}
+    if(s.avis.avis3){sv('avis3-text',s.avis.avis3.text);sv('avis3-name',s.avis.avis3.name);sv('avis3-presta',s.avis.avis3.presta);}
+  }
+  if(s.acces){
+    sv('acces-rue',s.acces.rue);sv('acces-ville',s.acces.ville);
+    sv('acces-tel',s.acces.tel);sv('acces-email',s.acces.email);
+    sv('acces-parking',s.acces.parking);sv('acces-rdv',s.acces.rdv);
+    sv('acces-maps',s.acces.maps);sv('rs-insta',s.acces.insta);sv('rs-fb',s.acces.fb);
+  }
+  // restore photos
+  if(d.photos){
+    Object.entries(d.photos).forEach(([id,src])=>{
+      const img=document.getElementById(id);
+      if(img){img.src=src;img.classList.add('visible');}
+    });
+  }
+}
+
+function sv(id,val){const el=document.getElementById(id);if(el&&val!==undefined)el.value=val;}
+
+function restoreTables(tables){
+  const ALLOWED_TABLES = ['tbl-regard','tbl-soins','tbl-epil','tbl-mains'];
+  Object.entries(tables).forEach(([tblId, rows])=>{
+    if(!ALLOWED_TABLES.includes(tblId)) return;
+    const tbody=document.querySelector('#'+tblId+' tbody');
+    if(!tbody) return;
+    tbody.innerHTML='';
+    if(!Array.isArray(rows)) return;
+    rows.slice(0,50).forEach(row=>{
+      if(typeof row !== 'object' || row === null) return;
+      const tr=document.createElement('tr');
+      const tdN=document.createElement('td'); const iN=document.createElement('input'); iN.value=String(row.name||'').slice(0,200); tdN.appendChild(iN);
+      const tdD=document.createElement('td'); const iD=document.createElement('input'); iD.value=String(row.detail||'').slice(0,200); tdD.appendChild(iD);
+      const tdP=document.createElement('td'); const iP=document.createElement('input'); iP.className='price-input'; iP.value=String(row.price||'').slice(0,50); tdP.appendChild(iP);
+      const tdX=document.createElement('td'); const bX=document.createElement('button'); bX.className='del-row-btn'; bX.textContent='\u00d7';
+      bX.addEventListener('click',function(){delRow(this);}); tdX.appendChild(bX);
+      tr.appendChild(tdN); tr.appendChild(tdD); tr.appendChild(tdP); tr.appendChild(tdX);
+      tbody.appendChild(tr);
+    });
+  });
+}
+
+function esc(str){return (str||'').replace(/"/g,'&quot;').replace(/</g,'&lt;');}
+
+// ── SAVE CREDENTIALS ──
+async function saveCredentials(){
+  const curr = document.getElementById('pass-current').value || '';
+  const newP  = document.getElementById('pass-new').value || '';
+  const conf  = document.getElementById('pass-confirm').value || '';
+  const newUser = (document.getElementById('cred-user').value || '').trim();
+  const d = load();
+  const creds = d.credentials || {};
+
+  // Vérifier l'ancien mot de passe
+  const currHash = await hashPassword(curr);
+  if(currHash !== creds.passHash){ showToast('❌ Mot de passe actuel incorrect','err'); return; }
+  if(!newP){ showToast('❌ Le nouveau mot de passe est vide','err'); return; }
+  if(newP.length < 8){ showToast('❌ Le mot de passe doit faire au moins 8 caractères','err'); return; }
+  if(newP !== conf){ showToast('❌ Les deux mots de passe ne correspondent pas','err'); return; }
+  if(!newUser || newUser.length < 3){ showToast('❌ L\'identifiant doit faire au moins 3 caractères','err'); return; }
+  if(newUser.length > 50){ showToast('❌ Identifiant trop long','err'); return; }
+  // Politique de mot de passe
+  if(!/[A-Z]/.test(newP) || !/[0-9]/.test(newP)){
+    showToast('❌ Le mot de passe doit contenir au moins 1 majuscule et 1 chiffre','err'); return;
+  }
+
+  const newHash = await hashPassword(newP);
+  d.credentials = { user: newUser, passHash: newHash };
+  save(d);
+  document.getElementById('pass-current').value='';
+  document.getElementById('pass-new').value='';
+  document.getElementById('pass-confirm').value='';
+  document.getElementById('pass-strength').style.display='none';
+  showToast('✅ Identifiants mis à jour ! Reconnectez-vous avec les nouveaux identifiants.');
+}
+
+// ── PASSWORD STRENGTH ──
+function checkPassStrength(val){
+  const el = document.getElementById('pass-strength');
+  if(!val){el.style.display='none';return;}
+  el.style.display='block';
+  let score=0;
+  if(val.length>=8) score++;
+  if(val.length>=12) score++;
+  if(/[A-Z]/.test(val)) score++;
+  if(/[0-9]/.test(val)) score++;
+  if(/[^a-zA-Z0-9]/.test(val)) score++;
+  const labels=[['Très faible','#E74C3C'],['Faible','#E67E22'],['Correct','#F1C40F'],['Bon','#27AE60'],['Excellent','#1E8449']];
+  const [label,color]=labels[Math.min(score,4)];
+  // textContent pour éviter tout XSS
+  el.textContent='';
+  el.appendChild(document.createTextNode('Force : '));
+  const strong=document.createElement('strong');
+  strong.style.color=color; strong.textContent=label;
+  el.appendChild(strong);
+  if(val.length<8) el.appendChild(document.createTextNode(' — 8 caractères minimum'));
+  if(!/[A-Z]/.test(val)) el.appendChild(document.createTextNode(' — ajouter une majuscule'));
+  if(!/[0-9]/.test(val)) el.appendChild(document.createTextNode(' — ajouter un chiffre'));
+}
+
+// ── TOAST ──
+function showToast(msg, type){
+  const t = document.getElementById('toast');
+  t.textContent = String(msg).slice(0,200); // textContent = jamais de XSS
+  t.style.borderLeftColor = type==='err' ? '#E74C3C' : 'var(--terra)';
+  t.style.display='block';
+  setTimeout(()=>t.style.display='none', 3500);
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,26 @@
+DOSSIER IMAGES — Just'In Beauty
+================================
+
+Placez vos photos dans ce dossier avec les noms suivants :
+
+BANNIÈRE PRINCIPALE
+  hero-salon.jpg          → 800 × 1100 px  |  max 500 Ko  |  format portrait
+
+SECTION UNIVERS
+  interieur-salon.jpg     → 700 × 900 px   |  max 400 Ko  |  ambiance terracotta
+
+GALERIE RÉALISATIONS
+  galerie-1.jpg           → 600 × 900 px   |  max 300 Ko  |  grande photo (portrait)
+  galerie-2.jpg           → 600 × 600 px   |  max 300 Ko  |  carré
+  galerie-3.jpg           → 600 × 600 px   |  max 300 Ko  |  carré
+  galerie-4.jpg           → 600 × 600 px   |  max 300 Ko  |  carré
+  galerie-5.jpg           → 600 × 600 px   |  max 300 Ko  |  carré
+  galerie-6.jpg           → 600 × 600 px   |  max 300 Ko  |  carré
+
+FORMATS ACCEPTÉS : JPG (recommandé), PNG, WebP
+
+CONSEILS :
+- Utilisez une lumière naturelle ou un ring light
+- Fond neutre ou ambiance terracotta
+- Netteté maximale (pas de flou)
+- Pour réduire la taille : https://squoosh.app (gratuit, en ligne)
