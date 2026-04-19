@@ -514,6 +514,9 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--terra);outline-offs
 (function() {
   'use strict';
 
+  /* ═══════════════════════════════════════════
+     CAROUSEL D'AVIS GOOGLE
+  ═══════════════════════════════════════════ */
   var STORE_KEY   = 'jib_admin_data';
   var INTERVAL_MS = 30000;
   var TRANS_MS    = 600;
@@ -525,21 +528,19 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--terra);outline-offs
   var autoTimer   = null;
   var isPaused    = false;
 
-  // Vrais avis Google Just'In Beauty — mis a jour automatiquement par GitHub Actions
-  // Note globale : 4.9/5 · 50 avis verifies
   var DEFAULT_REVIEWS = [
-    {text: 'J\'ai r\u00e9cemment visit\u00e9 le salon de Justine et je suis absolument ravie ! L\'ambiance est chaleureuse et accueillante. Justine est extr\u00eamement professionnelle et attentive, prenant le temps de comprendre exactement ce que je souhaitais. Ma manucure est magnifique. Je reviendrai sans h\u00e9siter, c\'est un r\u00e9el coup de c\u0153ur !', name: 'Lothy F', presta: 'Ongles', date: 'Il y a 6 mois'},
-    {text: 'Si vous recherchez quelqu\'un de confiance, gentille, douce et souriante, qui aime son m\u00e9tier — foncez ! J\'avais un peu peur de retourner me faire \u00e9piler apr\u00e8s des soucis de sant\u00e9 et j\'ai trouv\u00e9 mon endroit parfait \uD83E\uDD70', name: 'Oceane Carpentier', presta: '\u00c9pilation', date: 'Il y a 4 mois'},
-    {text: 'Un moment super ! C\'\u00e9tait une premi\u00e8re fois avec Justine mais elle m\'a mise \u00e0 l\'aise de suite et a \u00e9t\u00e9 tr\u00e8s douce ! La cabine est tr\u00e8s chaleureuse et tr\u00e8s propre. Je reviendrai vite.', name: 'Adeline Rousseau', presta: 'Soin corps', date: 'Il y a 4 mois'},
-    {text: 'C\'\u00e9tait la premi\u00e8re \u00e9pilation de sourcils de ma fille et Justine a su la mettre parfaitement \u00e0 l\'aise. Tr\u00e8s douce, agr\u00e9able et extr\u00eamement professionnelle. Le r\u00e9sultat est impeccable, ma fille est ravie. Je recommande \u00e0 100% !', name: 'Adeline B.', presta: 'Sourcils', date: 'Il y a 7 mois'},
-    {text: 'J\'ai fait mes cils en volume mixte, elle montre et explique tous les produits qu\'elle va utiliser, ce qui met en confiance. Elle travaille rapidement et nous donne un petit sachet pour prendre soin de nos cils ! Je recommande fortement !!', name: 'Candice Marques', presta: 'Extensions Cils', date: 'Il y a 8 mois'},
-    {text: 'Un vrai moment de bien-\u00eatre chez Justine \u00e0 Bassan ! Accueil chaleureux, prestation de grande qualit\u00e9 \u00e0 petit prix. Justine est \u00e0 l\'\u00e9coute, professionnelle et tr\u00e8s minutieuse. Ma p\u00e9dicure est impeccable.', name: 'Gwenaelle', presta: 'P\u00e9dicure', date: 'Il y a 9 mois'},
-    {text: 'Je recommande les yeux ferm\u00e9s ! Une esth\u00e9ticienne adorable, douce, \u00e0 l\'\u00e9coute et tr\u00e8s professionnelle. Elle met tout de suite \u00e0 l\'aise et travaille avec beaucoup de soin et de pr\u00e9cision.', name: 'Cliente Google', presta: '\u00c9pilation', date: 'Il y a 9 mois'},
-    {text: 'Je vais chez Justine pour des extensions de cils et j\'en suis ravie. De plus elle est tr\u00e8s sympathique. Je reviendrai sans h\u00e9siter !', name: 'Cliente Google', presta: 'Extensions Cils', date: 'Il y a 6 mois'},
-    {text: 'Premi\u00e8re exp\u00e9rience absolument parfaite ! Accueil avec beaucoup de gentillesse et de professionnalisme. Justine est \u00e0 l\'\u00e9coute, douce et tr\u00e8s attentionn\u00e9e. Je recommande vivement !', name: 'Cliente Google', presta: 'Premi\u00e8re visite', date: 'Il y a 2 semaines'},
-    {text: 'Un vrai moment de bonheur \u00e0 chaque rendez-vous ! Les soins sont r\u00e9alis\u00e9s avec beaucoup de pr\u00e9cision, l\'ambiance est apaisante et on ressort vraiment ressourc\u00e9e. Je recommande \u00e0 100%.', name: 'Cliente Google', presta: 'Soin visage', date: 'Il y a 3 semaines'},
-    {text: 'Justine est adorable, d\'une grande douceur. Joli petit institut pr\u00e8s de la maison. J\'ai b\u00e9n\u00e9fici\u00e9 de semi-permanent avec en prime un petit massage des mains. Super !', name: 'Cliente Google', presta: 'Vernis semi-permanent', date: 'Il y a 4 semaines'},
-    {text: 'Je suis vraiment tr\u00e8s contente de la prestation pour du volume russe ! Mes cils \u00e9taient magnifiques, naturels comme je le souhaitais. Justine a \u00e9t\u00e9 \u00e0 mon \u00e9coute. Une adresse que je recommande sans h\u00e9siter.', name: 'Cliente Google', presta: 'Volume Russe', date: 'Il y a un an'}
+    {text:'J\'ai r\u00e9cemment visit\u00e9 le salon de Justine et je suis absolument ravie ! L\'ambiance est chaleureuse. Justine est extr\u00eamement professionnelle et attentive. Ma manucure est magnifique. Je reviendrai sans h\u00e9siter !',name:'Lothy F',presta:'Ongles',date:'Il y a 6 mois'},
+    {text:'Si vous recherchez quelqu\'un de confiance, gentille, douce et souriante — foncez ! J\'avais un peu peur de retourner me faire \u00e9piler apr\u00e8s des soucis de sant\u00e9 et j\'ai trouv\u00e9 mon endroit parfait.',name:'Oceane Carpentier',presta:'\u00c9pilation',date:'Il y a 4 mois'},
+    {text:'Un moment super ! C\'\u00e9tait une premi\u00e8re fois avec Justine mais elle m\'a mise \u00e0 l\'aise de suite et a \u00e9t\u00e9 tr\u00e8s douce ! La cabine est tr\u00e8s chaleureuse et tr\u00e8s propre. Je reviendrai vite.',name:'Adeline Rousseau',presta:'Soin corps',date:'Il y a 4 mois'},
+    {text:'C\'\u00e9tait la premi\u00e8re \u00e9pilation de sourcils de ma fille et Justine a su la mettre parfaitement \u00e0 l\'aise. Tr\u00e8s douce et extr\u00eamement professionnelle. Le r\u00e9sultat est impeccable. Je recommande \u00e0 100% !',name:'Adeline B.',presta:'Sourcils',date:'Il y a 7 mois'},
+    {text:'J\'ai fait mes cils en volume mixte, elle montre et explique tous les produits. Elle travaille rapidement et nous donne un petit sachet pour prendre soin de nos cils ! Je recommande fortement !!',name:'Candice Marques',presta:'Extensions Cils',date:'Il y a 8 mois'},
+    {text:'Un vrai moment de bien-\u00eatre ! Accueil chaleureux, prestation de grande qualit\u00e9 \u00e0 petit prix. Justine est \u00e0 l\'\u00e9coute, professionnelle et tr\u00e8s minutieuse. Ma p\u00e9dicure est impeccable.',name:'Gwenaelle',presta:'P\u00e9dicure',date:'Il y a 9 mois'},
+    {text:'Je recommande les yeux ferm\u00e9s ! Une esth\u00e9ticienne adorable, douce, \u00e0 l\'\u00e9coute et tr\u00e8s professionnelle. Elle met tout de suite \u00e0 l\'aise et travaille avec beaucoup de soin.',name:'Cliente Google',presta:'\u00c9pilation',date:'Il y a 9 mois'},
+    {text:'Premi\u00e8re exp\u00e9rience absolument parfaite ! Accueil avec beaucoup de gentillesse. Justine est \u00e0 l\'\u00e9coute, douce et tr\u00e8s attentionn\u00e9e. Je recommande vivement !',name:'Cliente Google',presta:'Premi\u00e8re visite',date:'Il y a 2 semaines'},
+    {text:'Justine est adorable, d\'une grande douceur. J\'ai b\u00e9n\u00e9fici\u00e9 de semi-permanent avec en prime un petit massage des mains. Je reviendrai avec plaisir !',name:'Cliente Google',presta:'Vernis semi-permanent',date:'Il y a 4 semaines'},
+    {text:'Un vrai moment de bonheur \u00e0 chaque rendez-vous ! Les soins sont r\u00e9alis\u00e9s avec beaucoup de pr\u00e9cision, l\'ambiance est apaisante. Je recommande \u00e0 100%.',name:'Cliente Google',presta:'Soin visage',date:'Il y a 3 semaines'},
+    {text:'Je vais chez Justine pour des extensions de cils et j\'en suis ravie. De plus elle est tr\u00e8s sympathique. Je reviendrai sans h\u00e9siter !',name:'Cliente Google',presta:'Extensions Cils',date:'Il y a 6 mois'},
+    {text:'Je suis vraiment tr\u00e8s contente de la prestation pour du volume russe ! Mes cils \u00e9taient magnifiques, naturels comme je le souhaitais. Une adresse que je recommande sans h\u00e9siter.',name:'Cliente Google',presta:'Volume Russe',date:'Il y a un an'}
   ];
 
   function sanitize(s){var d=document.createElement('div');d.textContent=String(s||'');return d.innerHTML;}
@@ -548,117 +549,103 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--terra);outline-offs
   function getAC(n){return AC[(n||'A').charCodeAt(0)%AC.length];}
   var GSVG='<svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>';
 
-  function buildCard(r,i){
-    var c=document.createElement('article');
-    c.className='review-card';c.setAttribute('role','listitem');
-    c.innerHTML='<div class="review-header"><div class="review-avatar" style="background:'+getAC(r.name)+'">'+getInitial(r.name)+'</div><div class="review-meta"><div class="review-name">'+sanitize(r.name)+'</div><div class="review-date">'+sanitize(r.date||'')+'</div></div>'+GSVG+'</div><div class="review-stars">'+('<span class="review-star" aria-hidden="true">&#9733;</span>').repeat(5)+'</div><p class="review-text">'+sanitize(r.text)+'</p>'+(r.presta?'<span class="review-presta">'+sanitize(r.presta)+'</span>':'')+'<div class="review-verified"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke="#4285F4" stroke-width="2" stroke-linecap="round"/></svg>Avis Google v&#233;rifi&#233;</div>';
+  function buildCard(r) {
+    var c = document.createElement('article');
+    c.className = 'review-card';
+    c.setAttribute('role','listitem');
+    c.innerHTML = '<div class="review-header"><div class="review-avatar" style="background:'+getAC(r.name)+'">'+getInitial(r.name)+'</div><div class="review-meta"><div class="review-name">'+sanitize(r.name)+'</div><div class="review-date">'+sanitize(r.date||'')+'</div></div>'+GSVG+'</div><div class="review-stars">'+('<span class="review-star" aria-hidden="true">&#9733;</span>').repeat(5)+'</div><p class="review-text">'+sanitize(r.text)+'</p>'+(r.presta?'<span class="review-presta">'+sanitize(r.presta)+'</span>':'')+'<div class="review-verified"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke="#4285F4" stroke-width="2" stroke-linecap="round"/></svg>Avis Google v&#233;rifi&#233;</div>';
     return c;
   }
 
   function getVC(){return window.innerWidth<700?1:window.innerWidth<1000?2:3;}
 
-  function buildTrack(){
-    var grid=document.getElementById('reviews-grid');
-    var wrap=document.getElementById('carousel-wrap');
-    if(!grid||!wrap)return;
-    visibleCount=getVC();
-    var ww=wrap.offsetWidth;
-    cardW=Math.floor((ww-gapW*(visibleCount-1))/visibleCount);
-    grid.innerHTML='';
-    var tripled=allReviews.concat(allReviews).concat(allReviews);
-    tripled.forEach(function(r,i){var c=buildCard(r,i);c.style.width=cardW+'px';c.style.minWidth=cardW+'px';grid.appendChild(c);});
-    var total=allReviews.length;
-    grid.style.width=(cardW*total*3+gapW*(total*3-1))+'px';
-    grid.style.transition='none';
-    currentIdx=total;
+  function buildTrack() {
+    var grid = document.getElementById('reviews-grid');
+    var wrap = document.getElementById('carousel-wrap');
+    if (!grid || !wrap) return;
+    visibleCount = getVC();
+    var ww = wrap.offsetWidth;
+    if (ww === 0) return; // pas encore rendu
+    cardW = Math.floor((ww - gapW * (visibleCount - 1)) / visibleCount);
+    grid.innerHTML = '';
+    var tripled = allReviews.concat(allReviews).concat(allReviews);
+    tripled.forEach(function(r) {
+      var c = buildCard(r);
+      c.style.width = cardW + 'px';
+      c.style.minWidth = cardW + 'px';
+      grid.appendChild(c);
+    });
+    var total = allReviews.length;
+    grid.style.width = (cardW * total * 3 + gapW * (total * 3 - 1)) + 'px';
+    grid.style.transition = 'none';
+    currentIdx = total;
     applyT(false);
     buildDots();
   }
 
-  function applyT(anim){
-    var grid=document.getElementById('reviews-grid');
-    if(!grid)return;
-    var off=currentIdx*(cardW+gapW);
-    grid.style.transition=anim?'transform '+TRANS_MS+'ms cubic-bezier(0.4,0,0.2,1)':'none';
-    grid.style.transform='translateX(-'+off+'px)';
+  function applyT(anim) {
+    var grid = document.getElementById('reviews-grid');
+    if (!grid) return;
+    grid.style.transition = anim ? 'transform '+TRANS_MS+'ms cubic-bezier(0.4,0,0.2,1)' : 'none';
+    grid.style.transform = 'translateX(-'+(currentIdx*(cardW+gapW))+'px)';
   }
 
-  function advance(dir){
-    var total=allReviews.length;
-    currentIdx+=(dir||1);
-    applyT(true);updateDots();
-    setTimeout(function(){
-      if(currentIdx>=total*2){currentIdx-=total;applyT(false);}
-      else if(currentIdx<total){currentIdx+=total;applyT(false);}
-    },TRANS_MS+50);
+  function advance(dir) {
+    var total = allReviews.length;
+    currentIdx += (dir || 1);
+    applyT(true);
+    updateDots();
+    setTimeout(function() {
+      if (currentIdx >= total*2) { currentIdx -= total; applyT(false); }
+      else if (currentIdx < total) { currentIdx += total; applyT(false); }
+    }, TRANS_MS + 50);
   }
 
-  function buildDots(){
-    var de=document.getElementById('carousel-dots');
-    if(!de)return;de.innerHTML='';
-    allReviews.forEach(function(_,i){
-      var d=document.createElement('button');
-      d.className='carousel-dot'+(i===0?' active':'');
+  function buildDots() {
+    var de = document.getElementById('carousel-dots');
+    if (!de) return;
+    de.innerHTML = '';
+    allReviews.forEach(function(_, i) {
+      var d = document.createElement('button');
+      d.className = 'carousel-dot' + (i===0?' active':'');
       d.setAttribute('aria-label','Avis '+(i+1));
-      d.addEventListener('click',function(){
-        var total=allReviews.length;
-        currentIdx=total+i;applyT(true);updateDots();restartTimer();
+      d.addEventListener('click', function() {
+        currentIdx = allReviews.length + i;
+        applyT(true);
+        updateDots();
+        restartTimer();
       });
       de.appendChild(d);
     });
   }
 
-  function updateDots(){
-    var dots=document.querySelectorAll('.carousel-dot');
-    var total=allReviews.length;
-    var ai=((currentIdx%total)+total)%total;
-    dots.forEach(function(d,i){d.classList.toggle('active',i===ai);});
+  function updateDots() {
+    var dots = document.querySelectorAll('.carousel-dot');
+    var total = allReviews.length;
+    var ai = ((currentIdx % total) + total) % total;
+    dots.forEach(function(d,i){ d.classList.toggle('active', i===ai); });
   }
 
-  function startTimer(){clearInterval(autoTimer);autoTimer=setInterval(function(){if(!isPaused)advance(1);},INTERVAL_MS);}
-  function restartTimer(){startTimer();}
+  function startTimer() {
+    clearInterval(autoTimer);
+    autoTimer = setInterval(function(){ if(!isPaused) advance(1); }, INTERVAL_MS);
+  }
+  function restartTimer(){ startTimer(); }
 
-  function init(){
-    try{
-      var stored=JSON.parse(localStorage.getItem(STORE_KEY)||'{}');
-      if(stored.sections&&stored.sections.avis&&Array.isArray(stored.sections.avis.reviews)){
-        var r=stored.sections.avis.reviews.filter(function(x){return x&&typeof x.text==='string'&&x.text.trim().length>0;});
-        if(r.length>=3)allReviews=r;else allReviews=DEFAULT_REVIEWS;
-      } else {allReviews=DEFAULT_REVIEWS;}
-      var ns=document.getElementById('badge-score');
-      if(ns&&stored.sections&&stored.sections.avis&&stored.sections.avis.note)ns.textContent=stored.sections.avis.note;
-    }catch(e){allReviews=DEFAULT_REVIEWS;}
-
-    // Attend le premier paint pour que offsetWidth soit correct
-    requestAnimationFrame(function(){
-      requestAnimationFrame(function(){
-        buildTrack();
-
-        var prev=document.getElementById('carousel-prev');
-        var next=document.getElementById('carousel-next');
-        if(prev)prev.addEventListener('click',function(){advance(-1);restartTimer();});
-        if(next)next.addEventListener('click',function(){advance(1);restartTimer();});
-
-        var outer=document.getElementById('carousel-outer');
-        if(outer){
-          outer.addEventListener('mouseenter',function(){isPaused=true;});
-          outer.addEventListener('mouseleave',function(){isPaused=false;});
-          var sx=0;
-          outer.addEventListener('touchstart',function(e){sx=e.touches[0].clientX;isPaused=true;},{passive:true});
-          outer.addEventListener('touchend',function(e){var d=sx-e.changedTouches[0].clientX;if(Math.abs(d)>40){advance(d>0?1:-1);restartTimer();}isPaused=false;},{passive:true});
-        }
-
-        startTimer();
-        var rt;window.addEventListener('resize',function(){clearTimeout(rt);rt=setTimeout(function(){currentIdx=0;buildTrack();startTimer();},200);});
-      });
-    });
+  function loadReviews() {
+    try {
+      var stored = JSON.parse(localStorage.getItem(STORE_KEY) || '{}');
+      if (stored.sections && stored.sections.avis && Array.isArray(stored.sections.avis.reviews)) {
+        var r = stored.sections.avis.reviews.filter(function(x){ return x && typeof x.text==='string' && x.text.trim().length>0; });
+        if (r.length >= 3) { allReviews = r; return; }
+      }
+    } catch(e) {}
+    allReviews = DEFAULT_REVIEWS;
   }
 
-  // ══════════════════════════════════════════════════════════
-  // MOTEUR D'APPLICATION ADMIN → SITE
-  // Lit les données sauvegardées dans l'admin (localStorage)
-  // et met à jour dynamiquement tous les éléments du site
-  // ══════════════════════════════════════════════════════════
+  /* ═══════════════════════════════════════════
+     MOTEUR ADMIN → SITE
+  ═══════════════════════════════════════════ */
   function applyAdminData() {
     var d;
     try { d = JSON.parse(localStorage.getItem('jib_admin_data') || '{}'); } catch(e) { return; }
@@ -669,137 +656,115 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--terra);outline-offs
       var el = document.getElementById(id);
       if (el) el.textContent = val;
     }
-    function setHref(id, val) {
-      if (!val) return;
-      var el = document.getElementById(id);
-      if (el) el.href = val;
-    }
-    function setAttr(el, attr, val) {
-      if (el && val) el.setAttribute(attr, val);
-    }
 
-    // ── Identité ──
+    // Identité
     if (s.identite) {
       if (s.identite.colorTerra && /^#[0-9a-fA-F]{6}$/.test(s.identite.colorTerra)) {
         document.documentElement.style.setProperty('--terra', s.identite.colorTerra);
       }
       if (s.identite.planity) {
-        document.querySelectorAll('a[href*="planity"]').forEach(function(a) { a.href = s.identite.planity; });
+        document.querySelectorAll('a[href*="planity"]').forEach(function(a){ a.href = s.identite.planity; });
       }
     }
 
-    // ── Hero ──
+    // Hero textes
     if (s.hero) {
       set('site-hero-eyebrow', s.hero.eyebrow);
       set('site-hero-h1a', s.hero.h1a);
-      if (s.hero.h1b) {
-        var h1b = document.getElementById('site-hero-h1b');
-        if (h1b) h1b.innerHTML = s.hero.h1b;
-      }
+      if (s.hero.h1b) { var h1b = document.getElementById('site-hero-h1b'); if(h1b) h1b.innerHTML = s.hero.h1b; }
       set('site-hero-h1c', s.hero.h1c);
       set('site-hero-sub', s.hero.sub);
       set('site-hero-btn1', s.hero.btn1);
       set('site-hero-btn2', s.hero.btn2);
-    // ── Photos (URLs depuis les sections) ──
+    }
 
-    // Photo bannière hero
+    // Hero photo
     var heroUrl = s.hero && s.hero.photoUrl;
     if (heroUrl) {
-      var heroPhoto = document.getElementById('site-hero-photo');
-      var heroPlaceholder = document.getElementById('site-hero-placeholder');
-      if (heroPhoto) {
-        var existImg = heroPhoto.querySelector('img.hero-real-img');
-        if (!existImg) { existImg = document.createElement('img'); existImg.className = 'hero-real-img'; existImg.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;'; heroPhoto.appendChild(existImg); }
-        existImg.src = heroUrl;
-        existImg.alt = 'Ambiance Just\'In Beauty';
-        if (heroPlaceholder) heroPlaceholder.style.display = 'none';
+      var hDiv = document.getElementById('site-hero-photo');
+      var hPh  = document.getElementById('site-hero-placeholder');
+      if (hDiv) {
+        var hImg = hDiv.querySelector('img.hero-real-img');
+        if (!hImg) { hImg = document.createElement('img'); hImg.className='hero-real-img'; hImg.style.cssText='position:absolute;inset:0;width:100%;height:100%;object-fit:cover;'; hDiv.appendChild(hImg); }
+        hImg.src = heroUrl;
+        if (hPh) hPh.style.display = 'none';
       }
     }
 
-    // Photo intérieur salon (section univers)
+    // Univers textes
+    if (s.univers) {
+      set('site-univ-h2a', s.univers.h2a);
+      set('site-univ-h2b', s.univers.h2b);
+      set('site-univ-desc', s.univers.desc);
+    }
+
+    // Univers photo
     var univUrl = s.univers && s.univers.photoUrl;
     if (univUrl) {
-      var univPhoto = document.getElementById('site-univ-photo');
-      if (univPhoto) {
-        var existUnivImg = univPhoto.querySelector('img.univ-real-img');
-        if (!existUnivImg) { existUnivImg = document.createElement('img'); existUnivImg.className = 'univ-real-img'; existUnivImg.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:2px;'; univPhoto.appendChild(existUnivImg); }
-        existUnivImg.src = univUrl;
-        existUnivImg.alt = 'Intérieur salon Just\'In Beauty';
-        var univPlaceholder = univPhoto.querySelector('.univers-img-inner');
-        if (univPlaceholder) univPlaceholder.style.display = 'none';
+      var uDiv = document.getElementById('site-univ-photo');
+      if (uDiv) {
+        var uImg = uDiv.querySelector('img.univ-real-img');
+        if (!uImg) { uImg = document.createElement('img'); uImg.className='univ-real-img'; uImg.style.cssText='position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:2px;'; uDiv.appendChild(uImg); }
+        uImg.src = univUrl;
+        var uPh = uDiv.querySelector('.univers-img-inner');
+        if (uPh) uPh.style.display = 'none';
       }
     }
 
-    // Photos galerie 1 à 6
-    if (s.galerie) {
-      [1,2,3,4,5,6].forEach(function(n) {
-        var p = s.galerie['p' + n];
-        if (!p || !p.url) return;
-        var fig = document.getElementById('site-gal' + n);
-        if (!fig) return;
-        var existImg = fig.querySelector('img.gal-real-img');
-        if (!existImg) { existImg = document.createElement('img'); existImg.className = 'gal-real-img'; existImg.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;'; fig.appendChild(existImg); }
-        existImg.src = p.url;
-        if (p.legend) {
-          var cap = fig.querySelector('.gallery-caption');
-          if (cap) cap.textContent = p.legend;
-        }
-        var placeholder = fig.querySelector('.gallery-item-inner');
-        if (placeholder) placeholder.style.display = 'none';
-      });
-    }
-
-    // ── Expertise ──
+    // Expertise
     if (s.expertise) {
       set('site-exp-h2a', s.expertise.h2a);
       set('site-exp-h2b', s.expertise.h2b);
       set('site-exp-sub',  s.expertise.sub);
-      if (s.expertise.exp1) {
-        set('site-exp1-title', s.expertise.exp1.title);
-        set('site-exp1-desc',  s.expertise.exp1.desc);
-        if (s.expertise.exp1.benefits) {
-          var ul1 = document.getElementById('site-exp1-benefits');
-          if (ul1) { ul1.innerHTML = ''; s.expertise.exp1.benefits.split('\n').forEach(function(b){ b=b.trim(); if(!b) return; var li=document.createElement('li'); li.textContent=b; ul1.appendChild(li); }); }
+      ['exp1','exp2','exp3'].forEach(function(key) {
+        var e = s.expertise[key];
+        if (!e) return;
+        set('site-'+key+'-title', e.title);
+        set('site-'+key+'-desc',  e.desc);
+        if (e.benefits) {
+          var ul = document.getElementById('site-'+key+'-benefits');
+          if (ul) {
+            ul.innerHTML = '';
+            e.benefits.split('\n').forEach(function(b){ b=b.trim(); if(!b) return; var li=document.createElement('li'); li.textContent=b; ul.appendChild(li); });
+          }
         }
-      }
-      if (s.expertise.exp2) {
-        set('site-exp2-title', s.expertise.exp2.title);
-        set('site-exp2-desc',  s.expertise.exp2.desc);
-        if (s.expertise.exp2.benefits) {
-          var ul2 = document.getElementById('site-exp2-benefits');
-          if (ul2) { ul2.innerHTML = ''; s.expertise.exp2.benefits.split('\n').forEach(function(b){ b=b.trim(); if(!b) return; var li=document.createElement('li'); li.textContent=b; ul2.appendChild(li); }); }
-        }
-      }
-      if (s.expertise.exp3) {
-        set('site-exp3-title', s.expertise.exp3.title);
-        set('site-exp3-desc',  s.expertise.exp3.desc);
-        if (s.expertise.exp3.benefits) {
-          var ul3 = document.getElementById('site-exp3-benefits');
-          if (ul3) { ul3.innerHTML = ''; s.expertise.exp3.benefits.split('\n').forEach(function(b){ b=b.trim(); if(!b) return; var li=document.createElement('li'); li.textContent=b; ul3.appendChild(li); }); }
-        }
-      }
+      });
     }
 
-    // ── Tarifs ──
+    // Tarifs
     if (s.tarifs) {
       set('site-tarif-h2a', s.tarifs.h2a);
       set('site-tarif-h2b', s.tarifs.h2b);
     }
 
-    // ── Galerie ──
+    // Galerie textes + photos
     if (s.galerie) {
       set('site-gal-h2a', s.galerie.h2a);
       set('site-gal-h2b', s.galerie.h2b);
       set('site-gal-sub', s.galerie.sub);
+      [1,2,3,4,5,6].forEach(function(n) {
+        var p = s.galerie['p'+n];
+        if (!p || !p.url) return;
+        var fig = document.getElementById('site-gal'+n);
+        if (!fig) return;
+        var gImg = fig.querySelector('img.gal-real-img');
+        if (!gImg) { gImg = document.createElement('img'); gImg.className='gal-real-img'; gImg.style.cssText='position:absolute;inset:0;width:100%;height:100%;object-fit:cover;'; fig.appendChild(gImg); }
+        gImg.src = p.url;
+        if (p.legend) { var cap = fig.querySelector('.gallery-caption'); if(cap) cap.textContent = p.legend; }
+        var ph = fig.querySelector('.gallery-item-inner');
+        if (ph) ph.style.display = 'none';
+      });
     }
 
-    // ── Avis ──
+    // Avis titres + note
     if (s.avis) {
       set('site-avis-h2a', s.avis.h2a);
       set('site-avis-h2b', s.avis.h2b);
+      var ns = document.getElementById('badge-score');
+      if (ns && s.avis.note) ns.textContent = s.avis.note;
     }
 
-    // ── Accès ──
+    // Accès
     if (s.acces) {
       set('site-acces-rue',     s.acces.rue);
       set('site-acces-ville',   s.acces.ville);
@@ -809,27 +774,29 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--terra);outline-offs
         var iframe = document.getElementById('site-acces-iframe');
         if (iframe) iframe.src = s.acces.maps;
       }
-      if (s.acces.insta) {
-        document.querySelectorAll('a[href*="instagram"]').forEach(function(a) { a.href = s.acces.insta; });
-      }
-      if (s.acces.fb) {
-        document.querySelectorAll('a[href*="facebook"]').forEach(function(a) { a.href = s.acces.fb; });
-      }
+      if (s.acces.insta) { document.querySelectorAll('a[href*="instagram"]').forEach(function(a){ a.href = s.acces.insta; }); }
+      if (s.acces.fb)    { document.querySelectorAll('a[href*="facebook"]').forEach(function(a){ a.href = s.acces.fb; }); }
+    }
   }
 
-  // Lance le carousel ET le moteur admin au chargement
+  /* ═══════════════════════════════════════════
+     INITIALISATION
+  ═══════════════════════════════════════════ */
   function startAll() {
-    init();
+    // 1. Charge les avis
+    loadReviews();
+
+    // 2. Met à jour les textes depuis l'admin
     applyAdminData();
 
-    // Onglets tarifs — initialisés après que le DOM est prêt
-    var tabs = document.querySelectorAll('.tab');
+    // 3. Onglets tarifs
+    var tabs  = document.querySelectorAll('.tab');
     var panes = document.querySelectorAll('.tarifs-content');
     tabs.forEach(function(tab) {
       tab.addEventListener('click', function() {
         var target = tab.getAttribute('aria-controls');
-        tabs.forEach(function(t) { t.classList.remove('active'); t.setAttribute('aria-selected','false'); });
-        panes.forEach(function(p) { p.classList.remove('active'); });
+        tabs.forEach(function(t){ t.classList.remove('active'); t.setAttribute('aria-selected','false'); });
+        panes.forEach(function(p){ p.classList.remove('active'); });
         tab.classList.add('active');
         tab.setAttribute('aria-selected','true');
         var pane = document.getElementById(target);
@@ -841,10 +808,40 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--terra);outline-offs
       tablist.addEventListener('keydown', function(e) {
         var at = Array.from(tabs);
         var idx = at.indexOf(document.activeElement);
-        if (e.key === 'ArrowRight') { var n = at[(idx+1)%at.length]; n.focus(); n.click(); }
-        else if (e.key === 'ArrowLeft') { var p = at[(idx-1+at.length)%at.length]; p.focus(); p.click(); }
+        if (e.key==='ArrowRight'){ var n=at[(idx+1)%at.length]; n.focus(); n.click(); }
+        else if (e.key==='ArrowLeft'){ var p=at[(idx-1+at.length)%at.length]; p.focus(); p.click(); }
       });
     }
+
+    // 4. Construit le carousel après le premier rendu (pour avoir offsetWidth correct)
+    requestAnimationFrame(function() {
+      requestAnimationFrame(function() {
+        buildTrack();
+
+        var prev  = document.getElementById('carousel-prev');
+        var next  = document.getElementById('carousel-next');
+        var outer = document.getElementById('carousel-outer');
+        if (prev)  prev.addEventListener('click',  function(){ advance(-1); restartTimer(); });
+        if (next)  next.addEventListener('click',  function(){ advance(1);  restartTimer(); });
+        if (outer) {
+          outer.addEventListener('mouseenter', function(){ isPaused = true; });
+          outer.addEventListener('mouseleave', function(){ isPaused = false; });
+          var sx = 0;
+          outer.addEventListener('touchstart', function(e){ sx = e.touches[0].clientX; isPaused = true; }, {passive:true});
+          outer.addEventListener('touchend',   function(e){
+            var diff = sx - e.changedTouches[0].clientX;
+            if (Math.abs(diff) > 40){ advance(diff>0?1:-1); restartTimer(); }
+            isPaused = false;
+          }, {passive:true});
+        }
+        startTimer();
+        var rt;
+        window.addEventListener('resize', function(){
+          clearTimeout(rt);
+          rt = setTimeout(function(){ currentIdx=0; buildTrack(); startTimer(); }, 200);
+        });
+      });
+    });
   }
 
   if (document.readyState === 'loading') {
@@ -855,5 +852,6 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--terra);outline-offs
 
 })();
 </script>
+
 </body>
 </html>
