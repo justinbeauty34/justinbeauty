@@ -137,14 +137,36 @@ async function main() {
   let html = fs.readFileSync(indexPath, 'utf8');
 
   // ── Remplace le bloc DEFAULT_REVIEWS ──
-  const regex = /\/\/ ── (Vrais avis Google|Avis par défaut)[\s\S]*?var DEFAULT_REVIEWS = \[[\s\S]*?\];/;
+  // Utilise le marqueur de début et cherche la fin du tableau
+  const startMarker = 'var DEFAULT_REVIEWS = [';
+  const startIdx = html.indexOf(startMarker);
 
-  if (!regex.test(html)) {
-    console.error('❌ Bloc DEFAULT_REVIEWS introuvable dans index.html');
+  if (startIdx === -1) {
+    console.error('Bloc DEFAULT_REVIEWS introuvable dans index.html');
+    console.error('Verifiez que index.html contient bien "var DEFAULT_REVIEWS = ["');
     process.exit(1);
   }
 
-  html = html.replace(regex, newBlock);
+  // Trouve la fin du tableau en comptant les crochets
+  let depth = 0;
+  let endIdx = startIdx;
+  let inStr = false;
+  let strChar = '';
+  for (let i = startIdx + startMarker.length - 1; i < html.length; i++) {
+    const ch = html[i];
+    if (inStr) {
+      if (ch === '\\') { i++; continue; }
+      if (ch === strChar) inStr = false;
+    } else {
+      if (ch === '"' || ch === "'") { inStr = true; strChar = ch; continue; }
+      if (ch === '[') depth++;
+      if (ch === ']') { depth--; if (depth === 0) { endIdx = i + 1; break; } }
+    }
+  }
+  // Avance après le ; final
+  while (endIdx < html.length && (html[endIdx] === ';' || html[endIdx] === ' ')) endIdx++;
+
+  html = html.slice(0, startIdx) + newBlock + html.slice(endIdx);
 
   // ── Met à jour la note dans le badge ──
   const ratingStr = rating.toFixed(1).replace('.', ',');
