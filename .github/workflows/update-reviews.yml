@@ -1,0 +1,32 @@
+name: Mise à jour automatique des avis Google
+
+# Se déclenche chaque lundi à 8h00 (heure Paris)
+on:
+  schedule:
+    - cron: '0 6 * * 1'   # 6h UTC = 8h Paris (heure été)
+  workflow_dispatch:        # Permet de lancer manuellement depuis GitHub
+
+jobs:
+  update-reviews:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write       # Autorise l'écriture dans le dépôt
+
+    steps:
+      - name: Récupérer le code du site
+        uses: actions/checkout@v4
+
+      - name: Récupérer les avis Google et mettre à jour index.html
+        env:
+          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+          PLACE_ID: ChIJ7dMx8IsNsRIRG1jVbga9JWI
+        run: |
+          node update-reviews.js
+
+      - name: Publier les modifications sur GitHub
+        run: |
+          git config user.name  "Just'In Beauty Bot"
+          git config user.email "bot@justinbeauty-institut.fr"
+          git add index.html
+          git diff --staged --quiet || git commit -m "🌸 Avis Google mis à jour automatiquement - $(date '+%d/%m/%Y')"
+          git push
