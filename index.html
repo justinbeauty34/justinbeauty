@@ -463,6 +463,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--terra);outline-offs
           <span class="google-score-star">&#9733;</span><span class="google-score-star">&#9733;</span><span class="google-score-star">&#9733;</span><span class="google-score-star">&#9733;</span><span class="google-score-star">&#9733;</span>
         </div>
         <div class="google-score-label">sur Google My Business</div>
+        <div class="google-score-label" id="badge-count" style="font-size:13px;color:var(--dark);font-weight:400;margin-top:2px">50 avis v&#233;rifi&#233;s</div>
       </div>
     </div>
     <a href="https://maps.app.goo.gl/rU1ExkTr3BmRSv9v9" class="btn-google-reviews" target="_blank" rel="noopener noreferrer">
@@ -527,60 +528,18 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--terra);outline-offs
   // Vrais avis Google Just'In Beauty — mis a jour automatiquement par GitHub Actions
   // Note globale : 4.9/5 · 50 avis verifies
   var DEFAULT_REVIEWS = [
-    {
-      text: 'J\'ai r\u00e9cemment visit\u00e9 le salon de Justine et je suis absolument ravie de mon exp\u00e9rience ! L\'ambiance est chaleureuse et accueillante. Justine est extr\u00eamement professionnelle et attentive, prenant le temps de comprendre exactement ce que je souhaitais. Ma manucure est magnifique, avec une finition parfaite. Je recommande vivement ! C\'est un r\u00e9el coup de c\u0153ur.',
-      name: 'Lothy F',
-      presta: 'Ongles',
-      date: 'Il y a 6 mois'
-    },
-    {
-      text: 'Si vous recherchez quelqu\'un de confiance, gentille, douce et souriante, qui aime son m\u00e9tier et s\'adapte selon votre besoin — foncez ! J\'avais un peu peur de retourner me faire \u00e9piler apr\u00e8s quelques soucis de sant\u00e9 et au final je pense avoir trouv\u00e9 mon endroit parfait \uD83E\uDD70',
-      name: 'Oceane Carpentier',
-      presta: '\u00c9pilation',
-      date: 'Il y a 4 mois'
-    },
-    {
-      text: 'Un moment super ! C\'\u00e9tait une premi\u00e8re fois avec Justine mais elle m\'a mise \u00e0 l\'aise de suite et a \u00e9t\u00e9 tr\u00e8s douce ! La cabine est tr\u00e8s chaleureuse et tr\u00e8s propre. Je reviendrai vite.',
-      name: 'Adeline Rousseau',
-      presta: 'Soin corps',
-      date: 'Il y a 4 mois'
-    },
-    {
-      text: 'C\'\u00e9tait la premi\u00e8re \u00e9pilation de sourcils de ma fille et Justine a su la mettre parfaitement \u00e0 l\'aise. Tr\u00e8s douce, agr\u00e9able et extr\u00eamement professionnelle, elle a pris le temps de tout expliquer. Le r\u00e9sultat est impeccable, ma fille est ravie. Je recommande \u00e0 100% !',
-      name: 'Adeline B.',
-      presta: 'Sourcils',
-      date: 'Il y a 6 mois'
-    },
-    {
-      text: 'J\'ai \u00e9t\u00e9 tr\u00e8s tr\u00e8s bien re\u00e7ue, elle est tr\u00e8s agr\u00e9able et souriante. J\'ai fait mes cils en volume mixte, elle montre et explique tous les produits qu\'elle va utiliser, ce qui met en confiance. Elle nous donne \u00e0 la fin un petit sachet pour prendre soin de nos cils ! Je recommande fortement !!',
-      name: 'Candice Marques',
-      presta: 'Extensions Cils',
-      date: 'Il y a 6 mois'
-    },
-    {
-      text: 'Un vrai moment de bien-\u00eatre chez Justine \u00e0 Bassan ! Accueil chaleureux, une prestation de grande qualit\u00e9 \u00e0 petit prix. Justine est \u00e0 l\'\u00e9coute, professionnelle et tr\u00e8s minutieuse. Ma p\u00e9dicure est impeccable.',
-      name: 'Gwenaelle',
-      presta: 'P\u00e9dicure',
-      date: 'Il y a 9 mois'
-    },
-    {
-      text: 'Premi\u00e8re exp\u00e9rience absolument parfaite ! J\'ai \u00e9t\u00e9 accueillie avec beaucoup de gentillesse et de professionnalisme. Justine est \u00e0 l\'\u00e9coute, douce et tr\u00e8s attentionn\u00e9e, ce qui met tout de suite en confiance. Je recommande vivement !',
-      name: 'Cliente Google',
-      presta: 'Premi\u00e8re visite',
-      date: 'Il y a 2 semaines'
-    },
-    {
-      text: 'Un vrai moment de bonheur \u00e0 chaque rendez-vous ! Justine est une vraie professionnelle, douce et attentionn\u00e9e. Les soins sont r\u00e9alis\u00e9s avec beaucoup de pr\u00e9cision, l\'ambiance est apaisante et on ressort vraiment ressourc\u00e9e.',
-      name: 'Cliente Google',
-      presta: 'Soin visage',
-      date: 'Il y a 3 semaines'
-    },
-    {
-      text: 'Je suis vraiment tr\u00e8s contente de la prestation de Justine pour du volume russe ! Mes cils \u00e9taient magnifiques. C\'\u00e9tait naturel comme je le souhaitais et elle a \u00e9t\u00e9 \u00e0 mon \u00e9coute. Une adresse que je recommande sans h\u00e9siter.',
-      name: 'Cliente Google',
-      presta: 'Volume Russe',
-      date: 'Il y a un an'
-    }
+    {text: 'J\'ai r\u00e9cemment visit\u00e9 le salon de Justine et je suis absolument ravie ! L\'ambiance est chaleureuse et accueillante. Justine est extr\u00eamement professionnelle et attentive, prenant le temps de comprendre exactement ce que je souhaitais. Ma manucure est magnifique. Je reviendrai sans h\u00e9siter, c\'est un r\u00e9el coup de c\u0153ur !', name: 'Lothy F', presta: 'Ongles', date: 'Il y a 6 mois'},
+    {text: 'Si vous recherchez quelqu\'un de confiance, gentille, douce et souriante, qui aime son m\u00e9tier — foncez ! J\'avais un peu peur de retourner me faire \u00e9piler apr\u00e8s des soucis de sant\u00e9 et j\'ai trouv\u00e9 mon endroit parfait \uD83E\uDD70', name: 'Oceane Carpentier', presta: '\u00c9pilation', date: 'Il y a 4 mois'},
+    {text: 'Un moment super ! C\'\u00e9tait une premi\u00e8re fois avec Justine mais elle m\'a mise \u00e0 l\'aise de suite et a \u00e9t\u00e9 tr\u00e8s douce ! La cabine est tr\u00e8s chaleureuse et tr\u00e8s propre. Je reviendrai vite.', name: 'Adeline Rousseau', presta: 'Soin corps', date: 'Il y a 4 mois'},
+    {text: 'C\'\u00e9tait la premi\u00e8re \u00e9pilation de sourcils de ma fille et Justine a su la mettre parfaitement \u00e0 l\'aise. Tr\u00e8s douce, agr\u00e9able et extr\u00eamement professionnelle. Le r\u00e9sultat est impeccable, ma fille est ravie. Je recommande \u00e0 100% !', name: 'Adeline B.', presta: 'Sourcils', date: 'Il y a 7 mois'},
+    {text: 'J\'ai fait mes cils en volume mixte, elle montre et explique tous les produits qu\'elle va utiliser, ce qui met en confiance. Elle travaille rapidement et nous donne un petit sachet pour prendre soin de nos cils ! Je recommande fortement !!', name: 'Candice Marques', presta: 'Extensions Cils', date: 'Il y a 8 mois'},
+    {text: 'Un vrai moment de bien-\u00eatre chez Justine \u00e0 Bassan ! Accueil chaleureux, prestation de grande qualit\u00e9 \u00e0 petit prix. Justine est \u00e0 l\'\u00e9coute, professionnelle et tr\u00e8s minutieuse. Ma p\u00e9dicure est impeccable.', name: 'Gwenaelle', presta: 'P\u00e9dicure', date: 'Il y a 9 mois'},
+    {text: 'Je recommande les yeux ferm\u00e9s ! Une esth\u00e9ticienne adorable, douce, \u00e0 l\'\u00e9coute et tr\u00e8s professionnelle. Elle met tout de suite \u00e0 l\'aise et travaille avec beaucoup de soin et de pr\u00e9cision.', name: 'Cliente Google', presta: '\u00c9pilation', date: 'Il y a 9 mois'},
+    {text: 'Je vais chez Justine pour des extensions de cils et j\'en suis ravie. De plus elle est tr\u00e8s sympathique. Je reviendrai sans h\u00e9siter !', name: 'Cliente Google', presta: 'Extensions Cils', date: 'Il y a 6 mois'},
+    {text: 'Premi\u00e8re exp\u00e9rience absolument parfaite ! Accueil avec beaucoup de gentillesse et de professionnalisme. Justine est \u00e0 l\'\u00e9coute, douce et tr\u00e8s attentionn\u00e9e. Je recommande vivement !', name: 'Cliente Google', presta: 'Premi\u00e8re visite', date: 'Il y a 2 semaines'},
+    {text: 'Un vrai moment de bonheur \u00e0 chaque rendez-vous ! Les soins sont r\u00e9alis\u00e9s avec beaucoup de pr\u00e9cision, l\'ambiance est apaisante et on ressort vraiment ressourc\u00e9e. Je recommande \u00e0 100%.', name: 'Cliente Google', presta: 'Soin visage', date: 'Il y a 3 semaines'},
+    {text: 'Justine est adorable, d\'une grande douceur. Joli petit institut pr\u00e8s de la maison. J\'ai b\u00e9n\u00e9fici\u00e9 de semi-permanent avec en prime un petit massage des mains. Super !', name: 'Cliente Google', presta: 'Vernis semi-permanent', date: 'Il y a 4 semaines'},
+    {text: 'Je suis vraiment tr\u00e8s contente de la prestation pour du volume russe ! Mes cils \u00e9taient magnifiques, naturels comme je le souhaitais. Justine a \u00e9t\u00e9 \u00e0 mon \u00e9coute. Une adresse que je recommande sans h\u00e9siter.', name: 'Cliente Google', presta: 'Volume Russe', date: 'Il y a un an'}
   ];
 
   function sanitize(s){var d=document.createElement('div');d.textContent=String(s||'');return d.innerHTML;}
