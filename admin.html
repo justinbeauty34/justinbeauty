@@ -524,25 +524,27 @@ textarea.field-input{resize:vertical;min-height:90px;line-height:1.6}
             <div class="tooltip-wrap" style="margin-left:4px">
               <div class="tooltip-icon">ℹ</div>
               <div class="tooltip-box">
-                Photo principale du site, très importante pour la première impression.
+                Photo principale du site. Uploadez votre photo sur GitHub puis collez son URL ici.
                 <div class="tooltip-format">
                   📐 Format idéal : Vertical (portrait)<br>
                   📏 Dimensions : 800 × 1100 px minimum<br>
                   ⚖️ Poids : Moins de 500 Ko<br>
                   🎨 Ambiance : Lumière naturelle, tons chauds<br>
-                  💡 Conseil : Photo de vous au travail ou du salon
+                  💡 Comment uploader : GitHub → dépôt → Add file → Upload → copiez l'URL
                 </div>
               </div>
             </div>
           </div>
-          <div class="photo-upload-area" id="hero-upload-area" ondragover="dragOver(event,'hero-upload-area')" ondragleave="dragLeave('hero-upload-area')" ondrop="dropFile(event,'hero-preview','hero-upload-area')">
-            <input type="file" accept="image/*" onchange="previewPhoto(this,'hero-preview')">
-            <span class="upload-icon">📷</span>
-            <div class="upload-title">Cliquez ou glissez votre photo ici</div>
-            <div class="upload-sub">JPG, PNG ou WebP</div>
-            <span class="upload-format-badge">800×1100 px recommandé</span>
+          <div class="field">
+            <label class="field-label">URL de la photo (depuis GitHub ou autre hébergeur)</label>
+            <input type="url" class="field-input" id="hero-photo-url" placeholder="https://raw.githubusercontent.com/justinbeauty34/justinbeauty/main/images/hero.jpg">
+            <div style="font-size:11px;color:var(--muted);margin-top:6px;line-height:1.5">
+              💡 Sur GitHub : cliquez sur votre image → clic droit → "Copier l'adresse de l'image" → collez ici
+            </div>
           </div>
-          <img class="photo-preview" id="hero-preview" src="" alt="Prévisualisation">
+          <div id="hero-photo-preview-wrap" style="margin-top:12px;display:none">
+            <img id="hero-photo-preview-img" src="" alt="Prévisualisation" style="max-width:100%;max-height:200px;border-radius:4px;object-fit:cover;">
+          </div>
         </div>
         <div class="save-bar">
           <button class="save-btn" onclick="saveSection('hero')">💾 Enregistrer les modifications</button>
@@ -599,25 +601,27 @@ textarea.field-input{resize:vertical;min-height:90px;line-height:1.6}
             <div class="tooltip-wrap" style="margin-left:4px">
               <div class="tooltip-icon">ℹ</div>
               <div class="tooltip-box">
-                Photo de l'intérieur de votre salon pour créer l'ambiance.
+                Photo de l'intérieur de votre salon. Uploadez sur GitHub puis collez l'URL ici.
                 <div class="tooltip-format">
                   📐 Format idéal : Vertical ou carré<br>
                   📏 Dimensions : 700 × 900 px minimum<br>
                   ⚖️ Poids : Moins de 400 Ko<br>
                   🎨 Ambiance : Terracotta, lumière douce, chaleureuse<br>
-                  💡 Conseil : Montrez votre espace de travail ou l'entrée du salon
+                  💡 Comment uploader : GitHub → dépôt → Add file → Upload → copiez l'URL
                 </div>
               </div>
             </div>
           </div>
-          <div class="photo-upload-area" id="univ-upload-area" ondragover="dragOver(event,'univ-upload-area')" ondragleave="dragLeave('univ-upload-area')" ondrop="dropFile(event,'univ-preview','univ-upload-area')">
-            <input type="file" accept="image/*" onchange="previewPhoto(this,'univ-preview')">
-            <span class="upload-icon">🏡</span>
-            <div class="upload-title">Photo intérieur du salon</div>
-            <div class="upload-sub">JPG, PNG ou WebP · max 400 Ko</div>
-            <span class="upload-format-badge">700×900 px recommandé</span>
+          <div class="field">
+            <label class="field-label">URL de la photo intérieur salon</label>
+            <input type="url" class="field-input" id="univ-photo-url" placeholder="https://raw.githubusercontent.com/justinbeauty34/justinbeauty/main/images/salon.jpg">
+            <div style="font-size:11px;color:var(--muted);margin-top:6px;line-height:1.5">
+              💡 Sur GitHub : cliquez sur votre image → clic droit → "Copier l'adresse de l'image" → collez ici
+            </div>
           </div>
-          <img class="photo-preview" id="univ-preview" src="" alt="Prévisualisation">
+          <div id="univ-photo-preview-wrap" style="margin-top:12px;display:none">
+            <img id="univ-photo-preview-img" src="" alt="Prévisualisation" style="max-width:100%;max-height:200px;border-radius:4px;object-fit:cover;">
+          </div>
         </div>
         <div class="save-bar">
           <button class="save-btn" onclick="saveSection('univers')">💾 Enregistrer les modifications</button>
@@ -826,111 +830,67 @@ Protocoles peaux sensibles disponibles</textarea>
           </div>
         </div>
         <div class="card">
-          <div class="card-title"><span>📸</span> Photos du carousel
+          <div class="card-title"><span>📸</span> Photos de réalisations
             <div class="tooltip-wrap" style="margin-left:4px">
               <div class="tooltip-icon">ℹ</div>
               <div class="tooltip-box">
-                Photos de vos réalisations — la vitrine de votre talent !
+                Uploadez vos photos sur GitHub puis collez les URLs ici.
                 <div class="tooltip-format">
                   📐 Photo 1 (grande) : Vertical 600×900 px<br>
                   📐 Photos 2 à 6 : Carré 600×600 px<br>
                   ⚖️ Poids : Moins de 300 Ko par photo<br>
-                  🎨 Conseil : Avant/après, gros plan sur le regard<br>
-                  💡 Lumière naturelle ou ring light recommandée
+                  💡 GitHub → Add file → Upload files → copiez l'URL raw
                 </div>
               </div>
             </div>
           </div>
-          <div class="carousel-grid">
-            <div class="carousel-item" style="grid-row:span 1">
-              <div class="carousel-item-num">01 <span style="font-size:11px;color:var(--muted);font-family:'Jost',sans-serif;font-weight:300">(grande)</span></div>
-              <div class="photo-upload-area" id="gal1-area" ondragover="dragOver(event,'gal1-area')" ondragleave="dragLeave('gal1-area')" ondrop="dropFile(event,'gal1-prev','gal1-area')">
-                <input type="file" accept="image/*" onchange="previewPhoto(this,'gal1-prev')">
-                <span class="upload-icon">📷</span>
-                <div class="upload-title">Photo principale</div>
-                <span class="upload-format-badge">600×900 px</span>
-              </div>
-              <img class="photo-preview" id="gal1-prev" src="" alt="">
-              <div class="field" style="margin-top:12px">
-                <label class="field-label">Légende</label>
-                <input type="text" class="field-input" value="Rehaussement Kératine — « Des cils naturels, sublimés »" style="font-size:12px">
-              </div>
-            </div>
-            <div class="carousel-item">
-              <div class="carousel-item-num">02</div>
-              <div class="photo-upload-area" id="gal2-area" ondragover="dragOver(event,'gal2-area')" ondragleave="dragLeave('gal2-area')" ondrop="dropFile(event,'gal2-prev','gal2-area')">
-                <input type="file" accept="image/*" onchange="previewPhoto(this,'gal2-prev')">
-                <span class="upload-icon">📷</span>
-                <div class="upload-title">Photo 2</div>
-                <span class="upload-format-badge">600×600 px</span>
-              </div>
-              <img class="photo-preview" id="gal2-prev" src="" alt="">
-              <div class="field" style="margin-top:12px">
-                <label class="field-label">Légende</label>
-                <input type="text" class="field-input" value="Browlift — « Sourcils posés, regard ouvert »" style="font-size:12px">
-              </div>
-            </div>
-            <div class="carousel-item">
-              <div class="carousel-item-num">03</div>
-              <div class="photo-upload-area" id="gal3-area" ondragover="dragOver(event,'gal3-area')" ondragleave="dragLeave('gal3-area')" ondrop="dropFile(event,'gal3-prev','gal3-area')">
-                <input type="file" accept="image/*" onchange="previewPhoto(this,'gal3-prev')">
-                <span class="upload-icon">📷</span>
-                <div class="upload-title">Photo 3</div>
-                <span class="upload-format-badge">600×600 px</span>
-              </div>
-              <img class="photo-preview" id="gal3-prev" src="" alt="">
-              <div class="field" style="margin-top:12px">
-                <label class="field-label">Légende</label>
-                <input type="text" class="field-input" value="Volume Mixte — « L'intensité à l'état pur »" style="font-size:12px">
-              </div>
-            </div>
-            <div class="carousel-item">
-              <div class="carousel-item-num">04</div>
-              <div class="photo-upload-area" id="gal4-area" ondragover="dragOver(event,'gal4-area')" ondragleave="dragLeave('gal4-area')" ondrop="dropFile(event,'gal4-prev','gal4-area')">
-                <input type="file" accept="image/*" onchange="previewPhoto(this,'gal4-prev')">
-                <span class="upload-icon">📷</span>
-                <div class="upload-title">Photo 4</div>
-                <span class="upload-format-badge">600×600 px</span>
-              </div>
-              <img class="photo-preview" id="gal4-prev" src="" alt="">
-              <div class="field" style="margin-top:12px">
-                <label class="field-label">Légende</label>
-                <input type="text" class="field-input" value="Soin Éclat — « Peau lumineuse, regard frais »" style="font-size:12px">
-              </div>
-            </div>
-            <div class="carousel-item">
-              <div class="carousel-item-num">05</div>
-              <div class="photo-upload-area" id="gal5-area" ondragover="dragOver(event,'gal5-area')" ondragleave="dragLeave('gal5-area')" ondrop="dropFile(event,'gal5-prev','gal5-area')">
-                <input type="file" accept="image/*" onchange="previewPhoto(this,'gal5-prev')">
-                <span class="upload-icon">📷</span>
-                <div class="upload-title">Photo 5</div>
-                <span class="upload-format-badge">600×600 px</span>
-              </div>
-              <img class="photo-preview" id="gal5-prev" src="" alt="">
-              <div class="field" style="margin-top:12px">
-                <label class="field-label">Légende</label>
-                <input type="text" class="field-input" value="Volume Russe — « Dramatique. Parfait. »" style="font-size:12px">
-              </div>
-            </div>
-            <div class="carousel-item">
-              <div class="carousel-item-num">06</div>
-              <div class="photo-upload-area" id="gal6-area" ondragover="dragOver(event,'gal6-area')" ondragleave="dragLeave('gal6-area')" ondrop="dropFile(event,'gal6-prev','gal6-area')">
-                <input type="file" accept="image/*" onchange="previewPhoto(this,'gal6-prev')">
-                <span class="upload-icon">📷</span>
-                <div class="upload-title">Photo 6</div>
-                <span class="upload-format-badge">600×600 px</span>
-              </div>
-              <img class="photo-preview" id="gal6-prev" src="" alt="">
-              <div class="field" style="margin-top:12px">
-                <label class="field-label">Légende</label>
-                <input type="text" class="field-input" value="Teinture & Mise en Forme — « La base de tout »" style="font-size:12px">
-              </div>
-            </div>
+          <div style="background:var(--beige);border-radius:6px;padding:14px 16px;margin-bottom:20px;font-size:12px;color:var(--muted);line-height:1.6">
+            📋 <strong>Comment obtenir l'URL d'une photo GitHub :</strong><br>
+            1. Sur GitHub, cliquez sur votre image uploadée<br>
+            2. Clic droit sur l'image → <em>"Copier l'adresse de l'image"</em><br>
+            3. Collez l'URL dans le champ correspondant ci-dessous
+          </div>
+
+          <!-- Photo 1 -->
+          <div style="margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid var(--beige-dark)">
+            <div style="font-size:12px;font-weight:500;color:var(--dark);margin-bottom:8px">📷 Photo 01 — Grande (gauche) <span style="font-weight:300;color:var(--muted)">600×900 px</span></div>
+            <input type="url" class="field-input" id="gal1-url" placeholder="https://raw.githubusercontent.com/justinbeauty34/justinbeauty/main/images/real1.jpg">
+            <div class="field" style="margin-top:10px"><label class="field-label">Légende au survol</label><input type="text" class="field-input" id="gal1-legend" value="Rehaussement Kératine — « Des cils naturels, sublimés »" style="font-size:12px"></div>
+          </div>
+          <!-- Photo 2 -->
+          <div style="margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid var(--beige-dark)">
+            <div style="font-size:12px;font-weight:500;color:var(--dark);margin-bottom:8px">📷 Photo 02 <span style="font-weight:300;color:var(--muted)">600×600 px</span></div>
+            <input type="url" class="field-input" id="gal2-url" placeholder="https://raw.githubusercontent.com/...">
+            <div class="field" style="margin-top:10px"><label class="field-label">Légende</label><input type="text" class="field-input" id="gal2-legend" value="Browlift — « Sourcils posés, regard ouvert »" style="font-size:12px"></div>
+          </div>
+          <!-- Photo 3 -->
+          <div style="margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid var(--beige-dark)">
+            <div style="font-size:12px;font-weight:500;color:var(--dark);margin-bottom:8px">📷 Photo 03 <span style="font-weight:300;color:var(--muted)">600×600 px</span></div>
+            <input type="url" class="field-input" id="gal3-url" placeholder="https://raw.githubusercontent.com/...">
+            <div class="field" style="margin-top:10px"><label class="field-label">Légende</label><input type="text" class="field-input" id="gal3-legend" value="Volume Mixte — « L'intensité à l'état pur »" style="font-size:12px"></div>
+          </div>
+          <!-- Photo 4 -->
+          <div style="margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid var(--beige-dark)">
+            <div style="font-size:12px;font-weight:500;color:var(--dark);margin-bottom:8px">📷 Photo 04 <span style="font-weight:300;color:var(--muted)">600×600 px</span></div>
+            <input type="url" class="field-input" id="gal4-url" placeholder="https://raw.githubusercontent.com/...">
+            <div class="field" style="margin-top:10px"><label class="field-label">Légende</label><input type="text" class="field-input" id="gal4-legend" value="Soin Éclat — « Peau lumineuse, regard frais »" style="font-size:12px"></div>
+          </div>
+          <!-- Photo 5 -->
+          <div style="margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid var(--beige-dark)">
+            <div style="font-size:12px;font-weight:500;color:var(--dark);margin-bottom:8px">📷 Photo 05 <span style="font-weight:300;color:var(--muted)">600×600 px</span></div>
+            <input type="url" class="field-input" id="gal5-url" placeholder="https://raw.githubusercontent.com/...">
+            <div class="field" style="margin-top:10px"><label class="field-label">Légende</label><input type="text" class="field-input" id="gal5-legend" value="Volume Russe — « Dramatique. Parfait. »" style="font-size:12px"></div>
+          </div>
+          <!-- Photo 6 -->
+          <div>
+            <div style="font-size:12px;font-weight:500;color:var(--dark);margin-bottom:8px">📷 Photo 06 <span style="font-weight:300;color:var(--muted)">600×600 px</span></div>
+            <input type="url" class="field-input" id="gal6-url" placeholder="https://raw.githubusercontent.com/...">
+            <div class="field" style="margin-top:10px"><label class="field-label">Légende</label><input type="text" class="field-input" id="gal6-legend" value="Teinture & Mise en Forme — « La base de tout »" style="font-size:12px"></div>
           </div>
         </div>
         <div class="save-bar">
           <button class="save-btn" onclick="saveSection('galerie')">💾 Enregistrer les modifications</button>
-          <span class="save-note">Les photos sont sauvegardées localement</span>
+          <span class="save-note">Les changements seront appliqués au site</span>
         </div>
       </div>
 
@@ -938,7 +898,7 @@ Protocoles peaux sensibles disponibles</textarea>
       <div class="panel" id="panel-avis">
         <div class="page-header">
           <h1 class="page-title">Avis <em>clients</em></h1>
-          <p class="page-desc">Les 3 témoignages affichés sur votre site. Utilisez de vrais avis Google pour plus d'authenticité.</p>
+          <p class="page-desc">Saisissez jusqu'à 9 vrais avis Google. Le site en affichera 3 différents chaque semaine automatiquement — la rotation se fait toute seule !</p>
         </div>
         <div class="card">
           <div class="card-title"><span>✏️</span> Titre de la section</div>
@@ -957,60 +917,26 @@ Protocoles peaux sensibles disponibles</textarea>
             <input type="text" class="field-input" id="avis-note" value="5 / 5" style="max-width:120px">
           </div>
         </div>
-        <div class="card">
-          <div class="card-title"><span>⭐</span> Avis 1</div>
-          <div class="field">
-            <label class="field-label">Texte du témoignage</label>
-            <textarea class="field-input" id="avis1-text">« J'avais peur pour mes extensions — ma précédente expérience était désastreuse. Justine a pris le temps de bien m'écouter, et le résultat est bluffant. Naturel, léger, exactement ce que je voulais. Je ne vais plus nulle part ailleurs. »</textarea>
-          </div>
-          <div class="field-row">
-            <div class="field">
-              <label class="field-label">Prénom &amp; initiale</label>
-              <input type="text" class="field-input" id="avis1-name" value="Amélie R.">
-            </div>
-            <div class="field">
-              <label class="field-label">Prestation concernée</label>
-              <input type="text" class="field-input" id="avis1-presta" value="Extensions Cil à Cil">
-            </div>
+
+        <!-- Info rotation -->
+        <div style="background:var(--terra-pale);border:1px solid rgba(193,89,58,0.2);border-radius:4px;padding:16px 20px;margin-bottom:24px;display:flex;align-items:flex-start;gap:12px">
+          <span style="font-size:20px;flex-shrink:0">🔄</span>
+          <div>
+            <div style="font-size:13px;font-weight:500;color:var(--terra);margin-bottom:4px">Rotation automatique hebdomadaire</div>
+            <div style="font-size:12px;font-weight:300;color:var(--muted);line-height:1.6">Le site sélectionne automatiquement 3 avis différents chaque semaine parmi tous ceux que vous saisissez ici. Plus vous ajoutez d'avis, plus la rotation est variée. Minimum 3 avis requis.</div>
           </div>
         </div>
-        <div class="card">
-          <div class="card-title"><span>⭐</span> Avis 2</div>
-          <div class="field">
-            <label class="field-label">Texte du témoignage</label>
-            <textarea class="field-input" id="avis2-text">« Un salon propre, chaleureux, et une praticienne vraiment à l'écoute. Le browlift que j'ai fait il y a deux mois tient encore parfaitement. Je gagne 10 minutes chaque matin ! Le cadre terracotta est tellement apaisant, on a envie de rester. »</textarea>
-          </div>
-          <div class="field-row">
-            <div class="field">
-              <label class="field-label">Prénom &amp; initiale</label>
-              <input type="text" class="field-input" id="avis2-name" value="Marie-Christine L.">
-            </div>
-            <div class="field">
-              <label class="field-label">Prestation concernée</label>
-              <input type="text" class="field-input" id="avis2-presta" value="Browlift">
-            </div>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-title"><span>⭐</span> Avis 3</div>
-          <div class="field">
-            <label class="field-label">Texte du témoignage</label>
-            <textarea class="field-input" id="avis3-text">« Justine est une professionnelle hors pair. Mon épilation jambes + maillot s'est passée dans la douceur totale — j'avais très peur avec ma peau sensible. Propre, rapide, efficace. Et la peau reste douce bien plus longtemps qu'ailleurs. »</textarea>
-          </div>
-          <div class="field-row">
-            <div class="field">
-              <label class="field-label">Prénom &amp; initiale</label>
-              <input type="text" class="field-input" id="avis3-name" value="Sarah M.">
-            </div>
-            <div class="field">
-              <label class="field-label">Prestation concernée</label>
-              <input type="text" class="field-input" id="avis3-presta" value="Épilation Corps">
-            </div>
-          </div>
-        </div>
+
+        <!-- Les 9 avis -->
+        <div id="avis-list"></div>
+
+        <button class="add-row-btn" id="add-avis-btn" onclick="addAvisCard()" style="margin-bottom:24px;padding:14px 20px;font-size:13px">
+          + Ajouter un avis Google
+        </button>
+
         <div class="save-bar">
           <button class="save-btn" onclick="saveSection('avis')">💾 Enregistrer les modifications</button>
-          <span class="save-note">Les changements seront appliqués au site</span>
+          <span class="save-note" id="avis-count-label">3 avis saisis</span>
         </div>
       </div>
 
@@ -1463,10 +1389,14 @@ function saveSection(section){
   } else if(section==='hero'){
     d.sections.hero={
       eyebrow:v('hero-eyebrow'), h1a:v('hero-h1a'), h1b:v('hero-h1b'),
-      h1c:v('hero-h1c'), sub:v('hero-sub'), btn1:v('hero-btn1'), btn2:v('hero-btn2')
+      h1c:v('hero-h1c'), sub:v('hero-sub'), btn1:v('hero-btn1'), btn2:v('hero-btn2'),
+      photoUrl: sanitizeUrl(v('hero-photo-url'))
     };
   } else if(section==='univers'){
-    d.sections.univers={h2a:v('univ-h2a'),h2b:v('univ-h2b'),desc:v('univ-desc')};
+    d.sections.univers={
+      h2a:v('univ-h2a'), h2b:v('univ-h2b'), desc:v('univ-desc'),
+      photoUrl: sanitizeUrl(v('univ-photo-url'))
+    };
   } else if(section==='expertise'){
     d.sections.expertise={
       h2a:v('exp-h2a'),h2b:v('exp-h2b'),sub:v('exp-sub'),
@@ -1477,13 +1407,27 @@ function saveSection(section){
   } else if(section==='tarifs'){
     d.sections.tarifs={h2a:v('tarif-h2a'),h2b:v('tarif-h2b'),tables:saveTables()};
   } else if(section==='galerie'){
-    d.sections.galerie={h2a:v('gal-h2a'),h2b:v('gal-h2b'),sub:v('gal-sub')};
+    d.sections.galerie={
+      h2a:v('gal-h2a'), h2b:v('gal-h2b'), sub:v('gal-sub'),
+      p1:{url:sanitizeUrl(v('gal1-url')), legend:v('gal1-legend')},
+      p2:{url:sanitizeUrl(v('gal2-url')), legend:v('gal2-legend')},
+      p3:{url:sanitizeUrl(v('gal3-url')), legend:v('gal3-legend')},
+      p4:{url:sanitizeUrl(v('gal4-url')), legend:v('gal4-legend')},
+      p5:{url:sanitizeUrl(v('gal5-url')), legend:v('gal5-legend')},
+      p6:{url:sanitizeUrl(v('gal6-url')), legend:v('gal6-legend')}
+    };
   } else if(section==='avis'){
+    const reviews = [];
+    document.querySelectorAll('.avis-card').forEach(function(card){
+      reviews.push({
+        text: (card.querySelector('.avis-text')||{}).value||'',
+        name: (card.querySelector('.avis-name')||{}).value||'',
+        presta: (card.querySelector('.avis-presta')||{}).value||''
+      });
+    });
     d.sections.avis={
-      h2a:v('avis-h2a'),h2b:v('avis-h2b'),note:v('avis-note'),
-      avis1:{text:v('avis1-text'),name:v('avis1-name'),presta:v('avis1-presta')},
-      avis2:{text:v('avis2-text'),name:v('avis2-name'),presta:v('avis2-presta')},
-      avis3:{text:v('avis3-text'),name:v('avis3-name'),presta:v('avis3-presta')}
+      h2a:v('avis-h2a'), h2b:v('avis-h2b'), note:v('avis-note'),
+      reviews: reviews
     };
   } else if(section==='acces'){
     d.sections.acces={
@@ -1524,7 +1468,10 @@ function saveTables(){
 // ── RESTORE ALL FIELDS FROM STORAGE ──
 function restoreAllFields(){
   const d = load();
-  if(!d.sections) return;
+  if(!d.sections){
+    initDefaultAvis();
+    return;
+  }
   const s = d.sections;
 
   if(s.identite){
@@ -1536,8 +1483,14 @@ function restoreAllFields(){
     sv('hero-eyebrow',s.hero.eyebrow);sv('hero-h1a',s.hero.h1a);
     sv('hero-h1b',s.hero.h1b);sv('hero-h1c',s.hero.h1c);
     sv('hero-sub',s.hero.sub);sv('hero-btn1',s.hero.btn1);sv('hero-btn2',s.hero.btn2);
+    sv('hero-photo-url',s.hero.photoUrl);
+    if(s.hero.photoUrl){const w=document.getElementById('hero-photo-preview-wrap');const i=document.getElementById('hero-photo-preview-img');if(w&&i){i.src=s.hero.photoUrl;w.style.display='block';}}
   }
-  if(s.univers){sv('univ-h2a',s.univers.h2a);sv('univ-h2b',s.univers.h2b);sv('univ-desc',s.univers.desc);}
+  if(s.univers){
+    sv('univ-h2a',s.univers.h2a);sv('univ-h2b',s.univers.h2b);sv('univ-desc',s.univers.desc);
+    sv('univ-photo-url',s.univers.photoUrl);
+    if(s.univers.photoUrl){const w=document.getElementById('univ-photo-preview-wrap');const i=document.getElementById('univ-photo-preview-img');if(w&&i){i.src=s.univers.photoUrl;w.style.display='block';}}
+  }
   if(s.expertise){
     sv('exp-h2a',s.expertise.h2a);sv('exp-h2b',s.expertise.h2b);sv('exp-sub',s.expertise.sub);
     if(s.expertise.exp1){sv('exp1-title',s.expertise.exp1.title);sv('exp1-desc',s.expertise.exp1.desc);sv('exp1-benefits',s.expertise.exp1.benefits);}
@@ -1548,12 +1501,29 @@ function restoreAllFields(){
     sv('tarif-h2a',s.tarifs.h2a);sv('tarif-h2b',s.tarifs.h2b);
     if(s.tarifs.tables) restoreTables(s.tarifs.tables);
   }
-  if(s.galerie){sv('gal-h2a',s.galerie.h2a);sv('gal-h2b',s.galerie.h2b);sv('gal-sub',s.galerie.sub);}
+  if(s.galerie){
+    sv('gal-h2a',s.galerie.h2a);sv('gal-h2b',s.galerie.h2b);sv('gal-sub',s.galerie.sub);
+    [1,2,3,4,5,6].forEach(function(n){
+      var p=s.galerie['p'+n];
+      if(p){sv('gal'+n+'-url',p.url);sv('gal'+n+'-legend',p.legend);}
+    });
+  }
   if(s.avis){
-    sv('avis-h2a',s.avis.h2a);sv('avis-h2b',s.avis.h2b);sv('avis-note',s.avis.note);
-    if(s.avis.avis1){sv('avis1-text',s.avis.avis1.text);sv('avis1-name',s.avis.avis1.name);sv('avis1-presta',s.avis.avis1.presta);}
-    if(s.avis.avis2){sv('avis2-text',s.avis.avis2.text);sv('avis2-name',s.avis.avis2.name);sv('avis2-presta',s.avis.avis2.presta);}
-    if(s.avis.avis3){sv('avis3-text',s.avis.avis3.text);sv('avis3-name',s.avis.avis3.name);sv('avis3-presta',s.avis.avis3.presta);}
+    sv('avis-h2a',s.avis.h2a); sv('avis-h2b',s.avis.h2b); sv('avis-note',s.avis.note);
+    // Nouveau système multi-avis
+    if(Array.isArray(s.avis.reviews) && s.avis.reviews.length > 0){
+      s.avis.reviews.forEach(function(r,i){ addAvisCard(r, i+1); });
+    } else {
+      // Compatibilité ancien format
+      const legacy = [
+        {text:s.avis.avis1&&s.avis.avis1.text||'', name:s.avis.avis1&&s.avis.avis1.name||'', presta:s.avis.avis1&&s.avis.avis1.presta||''},
+        {text:s.avis.avis2&&s.avis.avis2.text||'', name:s.avis.avis2&&s.avis.avis2.name||'', presta:s.avis.avis2&&s.avis.avis2.presta||''},
+        {text:s.avis.avis3&&s.avis.avis3.text||'', name:s.avis.avis3&&s.avis.avis3.name||'', presta:s.avis.avis3&&s.avis.avis3.presta||''}
+      ];
+      legacy.forEach(function(r,i){ addAvisCard(r, i+1); });
+    }
+  } else {
+    initDefaultAvis();
   }
   if(s.acces){
     sv('acces-rue',s.acces.rue);sv('acces-ville',s.acces.ville);
@@ -1650,6 +1620,79 @@ function checkPassStrength(val){
   if(val.length<8) el.appendChild(document.createTextNode(' — 8 caractères minimum'));
   if(!/[A-Z]/.test(val)) el.appendChild(document.createTextNode(' — ajouter une majuscule'));
   if(!/[0-9]/.test(val)) el.appendChild(document.createTextNode(' — ajouter un chiffre'));
+}
+
+// ── GESTION DES AVIS DYNAMIQUES ──
+const MAX_AVIS = 9;
+
+function updateAvisCount(){
+  const count = document.querySelectorAll('.avis-card').length;
+  const label = document.getElementById('avis-count-label');
+  if(label) label.textContent = count + ' avis saisi' + (count > 1 ? 's' : '') + ' — 3 affichés par semaine en rotation';
+  const addBtn = document.getElementById('add-avis-btn');
+  if(addBtn) addBtn.style.display = count >= MAX_AVIS ? 'none' : 'flex';
+  // Numéroter les cartes
+  document.querySelectorAll('.avis-card-num').forEach(function(el,i){ el.textContent = 'Avis ' + (i+1); });
+}
+
+function addAvisCard(data, num){
+  const list = document.getElementById('avis-list');
+  if(!list) return;
+  const count = document.querySelectorAll('.avis-card').length;
+  if(count >= MAX_AVIS) return;
+  const n = num || count + 1;
+  const d = data || {text:'', name:'', presta:''};
+
+  const card = document.createElement('div');
+  card.className = 'card avis-card';
+  card.style.cssText = 'position:relative;';
+
+  const title = document.createElement('div');
+  title.className = 'card-title';
+  title.style.cssText = 'display:flex;justify-content:space-between;align-items:center';
+  const titleLeft = document.createElement('span');
+  titleLeft.className = 'avis-card-num';
+  titleLeft.textContent = 'Avis ' + n;
+  const delBtn = document.createElement('button');
+  delBtn.textContent = '× Supprimer';
+  delBtn.style.cssText = 'background:none;border:1px solid #ddd;border-radius:2px;padding:4px 12px;font-size:11px;color:#aaa;cursor:pointer;font-family:Jost,sans-serif;letter-spacing:.06em;transition:all .2s';
+  delBtn.onmouseover = function(){ this.style.color='#E74C3C'; this.style.borderColor='#E74C3C'; };
+  delBtn.onmouseout  = function(){ this.style.color='#aaa'; this.style.borderColor='#ddd'; };
+  delBtn.onclick = function(){
+    const total = document.querySelectorAll('.avis-card').length;
+    if(total <= 3){ showToast('❌ Minimum 3 avis requis pour la rotation.','err'); return; }
+    if(confirm('Supprimer cet avis ?')){ card.remove(); updateAvisCount(); markUnsaved(); }
+  };
+  title.appendChild(titleLeft); title.appendChild(delBtn);
+
+  const fText = document.createElement('div'); fText.className='field';
+  const lText = document.createElement('label'); lText.className='field-label'; lText.textContent='Texte du témoignage';
+  const ta = document.createElement('textarea'); ta.className='field-input avis-text'; ta.style.minHeight='90px'; ta.value=String(d.text||'').slice(0,2000);
+  fText.appendChild(lText); fText.appendChild(ta);
+
+  const fRow = document.createElement('div'); fRow.className='field-row';
+  const f1 = document.createElement('div'); f1.className='field';
+  const l1 = document.createElement('label'); l1.className='field-label'; l1.textContent='Prénom & initiale';
+  const i1 = document.createElement('input'); i1.type='text'; i1.className='field-input avis-name'; i1.placeholder='ex: Marie T.'; i1.value=String(d.name||'').slice(0,100);
+  f1.appendChild(l1); f1.appendChild(i1);
+  const f2 = document.createElement('div'); f2.className='field';
+  const l2 = document.createElement('label'); l2.className='field-label'; l2.textContent='Prestation concernée';
+  const i2 = document.createElement('input'); i2.type='text'; i2.className='field-input avis-presta'; i2.placeholder='ex: Extensions Cil à Cil'; i2.value=String(d.presta||'').slice(0,100);
+  f2.appendChild(l2); f2.appendChild(i2);
+  fRow.appendChild(f1); fRow.appendChild(f2);
+
+  card.appendChild(title); card.appendChild(fText); card.appendChild(fRow);
+  list.appendChild(card);
+  updateAvisCount();
+}
+
+function initDefaultAvis(){
+  const defaults = [
+    {text:'« J\'avais peur pour mes extensions — ma précédente expérience était désastreuse. Justine a pris le temps de bien m\'écouter, et le résultat est bluffant. Naturel, léger, exactement ce que je voulais. Je ne vais plus nulle part ailleurs. »', name:'Amélie R.', presta:'Extensions Cil à Cil'},
+    {text:'« Un salon propre, chaleureux, et une praticienne vraiment à l\'écoute. Le browlift que j\'ai fait il y a deux mois tient encore parfaitement. Je gagne 10 minutes chaque matin ! Le cadre terracotta est tellement apaisant, on a envie de rester. »', name:'Marie-Christine L.', presta:'Browlift'},
+    {text:'« Justine est une professionnelle hors pair. Mon épilation jambes + maillot s\'est passée dans la douceur totale — j\'avais très peur avec ma peau sensible. Propre, rapide, efficace. Et la peau reste douce bien plus longtemps qu\'ailleurs. »', name:'Sarah M.', presta:'Épilation Corps'}
+  ];
+  defaults.forEach(function(r,i){ addAvisCard(r, i+1); });
 }
 
 // ── TOAST ──
