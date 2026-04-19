@@ -517,7 +517,7 @@ textarea.field-input{resize:vertical;min-height:90px;line-height:1.6}
               </div>
             </label>
             <div style="display:flex;gap:8px;align-items:center">
-              <input type="password" class="field-input" id="gh-token" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" style="font-family:monospace">
+              <input type="password" class="field-input" id="gh-token" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" style="font-family:monospace" oninput="autoSaveGhConfig()">
               <button onclick="testGithubConnection()" style="background:var(--terra);color:#fff;border:none;padding:10px 18px;border-radius:4px;font-size:12px;cursor:pointer;white-space:nowrap;font-family:'Jost',sans-serif">Tester la connexion</button>
             </div>
           </div>
@@ -1262,6 +1262,12 @@ async function initCredentials(){
 }
 initCredentials();
 
+// Restaure les données dès le chargement (admin toujours visible)
+document.addEventListener('DOMContentLoaded', function() {
+  restoreAllFields();
+  restorePhotoPreviews();
+});
+
 // ── LOGIN ──
 async function doLogin(){
   const d = load();
@@ -1851,21 +1857,27 @@ function showToast(msg, type){
 // ══════════════════════════════════════════════════════════
 
 function getGhConfig() {
-  // Priorité : champs du formulaire (si remplis), sinon localStorage
+  // Priorité : champs du formulaire, sinon localStorage
   const domOwner = (document.getElementById('gh-owner') || {}).value || '';
   const domRepo  = (document.getElementById('gh-repo')  || {}).value || '';
   const domToken = (document.getElementById('gh-token') || {}).value || '';
-  if (domOwner && domRepo && domToken) {
-    return { owner: domOwner.trim(), repo: domRepo.trim(), token: domToken.trim() };
+  let stored = {};
+  try { stored = JSON.parse(localStorage.getItem('jib_gh_config') || '{}'); } catch(e) {}
+  return {
+    owner: domOwner.trim() || stored.owner || 'justinbeauty34',
+    repo:  domRepo.trim()  || stored.repo  || 'justinbeauty',
+    token: domToken.trim() || stored.token || ''
+  };
+}
+
+function autoSaveGhConfig() {
+  // Sauvegarde automatiquement dès que le token est saisi
+  const owner = (document.getElementById('gh-owner') || {}).value || 'justinbeauty34';
+  const repo  = (document.getElementById('gh-repo')  || {}).value || 'justinbeauty';
+  const token = (document.getElementById('gh-token') || {}).value || '';
+  if (token.length > 10) {
+    localStorage.setItem('jib_gh_config', JSON.stringify({owner: owner.trim(), repo: repo.trim(), token: token.trim()}));
   }
-  try {
-    const c = JSON.parse(localStorage.getItem('jib_gh_config') || '{}');
-    return {
-      owner: domOwner.trim() || c.owner || '',
-      repo:  domRepo.trim()  || c.repo  || '',
-      token: domToken.trim() || c.token || ''
-    };
-  } catch(e) { return {owner:'',repo:'',token:''}; }
 }
 
 function saveGithubConfig() {
