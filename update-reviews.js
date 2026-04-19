@@ -168,11 +168,15 @@ async function main() {
 
   html = html.slice(0, startIdx) + newBlock + html.slice(endIdx);
 
-  // ── Met à jour la note dans le badge ──
+  // ── Met à jour la note et le nombre total d'avis ──
   const ratingStr = rating.toFixed(1).replace('.', ',');
   html = html.replace(
     /(<span class="google-score-num"[^>]*>)[^<]*/,
     `$1${ratingStr}`
+  );
+  html = html.replace(
+    /(<div class="google-score-label" id="badge-count"[^>]*>)[^<]*/,
+    `$1${totalRatings} avis v\u00e9rifi\u00e9s`
   );
 
   // ── Sauvegarde ──
