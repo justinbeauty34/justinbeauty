@@ -245,7 +245,26 @@ textarea.field-input{resize:vertical;min-height:90px;line-height:1.6}
 }
 @keyframes slideIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
 
-/* ── CREDENTIALS ── */
+/* ── MODAL DÉCONNEXION ── */
+.logout-modal-overlay{position:fixed;inset:0;z-index:2000;background:rgba(30,21,16,0.7);display:flex;align-items:center;justify-content:center;animation:fadeIn .2s ease}
+.logout-modal{background:var(--white);border-radius:8px;padding:36px 40px;max-width:420px;width:90%;box-shadow:0 24px 64px rgba(0,0,0,0.3);animation:slideUp .25s ease}
+.logout-modal-icon{font-size:36px;text-align:center;margin-bottom:16px}
+.logout-modal-title{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:400;color:var(--dark);text-align:center;margin-bottom:8px}
+.logout-modal-desc{font-size:13px;font-weight:300;color:var(--muted);text-align:center;line-height:1.6;margin-bottom:24px}
+.logout-modal-unsaved{background:var(--warn-bg);border:1px solid #F0D88A;border-radius:4px;padding:12px 16px;font-size:12px;color:var(--warn);margin-bottom:24px;display:none;text-align:center}
+.logout-modal-btns{display:flex;gap:12px;justify-content:center}
+.logout-modal-cancel{padding:11px 24px;border:1px solid var(--border);border-radius:2px;background:none;font-family:'Jost',sans-serif;font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);cursor:pointer;transition:all .2s}
+.logout-modal-cancel:hover{border-color:var(--terra);color:var(--terra)}
+.logout-modal-save-quit{padding:11px 24px;border:none;border-radius:2px;background:var(--terra);font-family:'Jost',sans-serif;font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:#fff;cursor:pointer;transition:background .2s}
+.logout-modal-save-quit:hover{background:var(--terra-light)}
+.logout-modal-quit{padding:11px 24px;border:1px solid #ddd;border-radius:2px;background:none;font-family:'Jost',sans-serif;font-size:12px;font-weight:400;letter-spacing:.08em;text-transform:uppercase;color:#aaa;cursor:pointer;transition:all .2s}
+.logout-modal-quit:hover{color:#E74C3C;border-color:#E74C3C}
+/* ── AUTOSAVE INDICATOR ── */
+.autosave-bar{position:fixed;top:0;left:0;right:0;z-index:500;height:3px;background:transparent;pointer-events:none}
+.autosave-bar.saving{background:linear-gradient(90deg,var(--terra),var(--terra-light),var(--terra));background-size:200% 100%;animation:autosavePulse 1s ease}
+@keyframes autosavePulse{0%{background-position:100% 0}100%{background-position:0% 0}}
+.autosave-status{position:fixed;bottom:80px;right:32px;background:var(--dark);color:#fff;font-size:11px;font-weight:400;letter-spacing:.08em;text-transform:uppercase;padding:8px 14px;border-radius:20px;opacity:0;transition:opacity .3s;pointer-events:none;z-index:500}
+.autosave-status.visible{opacity:1}
 .cred-section{background:var(--warn-bg);border:1px solid #F0D88A;border-radius:4px;padding:20px 24px;margin-bottom:20px}
 .cred-section-title{font-size:12px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--warn);margin-bottom:14px;display:flex;align-items:center;gap:6px}
 
@@ -289,11 +308,14 @@ textarea.field-input{resize:vertical;min-height:90px;line-height:1.6}
   <div class="login-box">
     <div class="login-logo">Just'In <em>Beauty</em></div>
     <div class="login-sub">Espace administration</div>
-    <label for="l-user">Identifiant</label>
-    <input type="text" id="l-user" placeholder="admin" autocomplete="username">
-    <label for="l-pass">Mot de passe</label>
-    <input type="password" id="l-pass" placeholder="••••••••" autocomplete="current-password">
-    <button class="login-btn" onclick="doLogin()">Accéder à mon espace →</button>
+    <!-- Le form permet au navigateur de proposer l'enregistrement du mot de passe -->
+    <form id="login-form" onsubmit="event.preventDefault();doLogin();" method="post" action="">
+      <label for="l-user">Identifiant</label>
+      <input type="text" id="l-user" name="username" placeholder="Votre identifiant" autocomplete="username">
+      <label for="l-pass">Mot de passe</label>
+      <input type="password" id="l-pass" name="password" placeholder="••••••••" autocomplete="current-password">
+      <button type="submit" class="login-btn">Accéder à mon espace →</button>
+    </form>
     <div class="login-error" id="login-error">Identifiant ou mot de passe incorrect.</div>
   </div>
 </div>
@@ -1113,6 +1135,27 @@ Protocoles peaux sensibles disponibles</textarea>
 <!-- TOAST -->
 <div class="toast" id="toast">✅ Modifications enregistrées avec succès !</div>
 
+<!-- AUTOSAVE INDICATOR -->
+<div class="autosave-bar" id="autosave-bar"></div>
+<div class="autosave-status" id="autosave-status">💾 Sauvegarde auto...</div>
+
+<!-- MODAL DÉCONNEXION -->
+<div class="logout-modal-overlay" id="logout-overlay" style="display:none">
+  <div class="logout-modal">
+    <div class="logout-modal-icon">👋</div>
+    <div class="logout-modal-title">Se déconnecter ?</div>
+    <div class="logout-modal-desc">Vous allez quitter l'espace d'administration de Just'In Beauty.</div>
+    <div class="logout-modal-unsaved" id="logout-unsaved">
+      ⚠️ Vous avez des modifications non sauvegardées.<br>Voulez-vous les enregistrer avant de partir ?
+    </div>
+    <div class="logout-modal-btns">
+      <button class="logout-modal-cancel" onclick="closeLogoutModal()">Annuler</button>
+      <button class="logout-modal-save-quit" id="logout-save-btn" onclick="saveAllAndLogout()" style="display:none">💾 Sauvegarder et quitter</button>
+      <button class="logout-modal-quit" onclick="confirmLogout()">Quitter sans sauvegarder</button>
+    </div>
+  </div>
+</div>
+
 <!-- ════════════════════════════════════════
      JAVASCRIPT
 ════════════════════════════════════════ -->
@@ -1210,17 +1253,79 @@ async function doLogin(){
 document.getElementById('l-pass').addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();doLogin();}});
 document.getElementById('l-user').addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();doLogin();}});
 
-// ── LOGOUT ──
+// ── SUIVI DES MODIFICATIONS NON SAUVEGARDÉES ──
+let hasUnsavedChanges = false;
+function markUnsaved(){ hasUnsavedChanges = true; }
+// Écoute tous les inputs/textarea de l'admin
+document.addEventListener('input', function(e){
+  if(e.target.closest('#admin-app')) markUnsaved();
+});
+
+// ── LOGOUT avec modal ──
 function doLogout(){
-  if(confirm('Se déconnecter de l\'administration ?')){
-    document.getElementById('login-screen').style.display='flex';
-    document.getElementById('admin-app').style.display='none';
-    document.getElementById('l-user').value='';
-    document.getElementById('l-pass').value='';
-    document.getElementById('login-error').style.display='none';
-    document.getElementById('login-error').textContent='';
+  const overlay = document.getElementById('logout-overlay');
+  const unsavedMsg = document.getElementById('logout-unsaved');
+  const saveBtn = document.getElementById('logout-save-btn');
+  if(hasUnsavedChanges){
+    unsavedMsg.style.display='block';
+    saveBtn.style.display='inline-block';
+  } else {
+    unsavedMsg.style.display='none';
+    saveBtn.style.display='none';
   }
+  overlay.style.display='flex';
 }
+function closeLogoutModal(){
+  document.getElementById('logout-overlay').style.display='none';
+}
+function confirmLogout(){
+  document.getElementById('logout-overlay').style.display='none';
+  _performLogout();
+}
+function saveAllAndLogout(){
+  // Sauvegarde toutes les sections
+  const sections = ['identite','hero','univers','expertise','tarifs','galerie','avis','acces'];
+  sections.forEach(s => { try{ saveSection(s); }catch(e){} });
+  document.getElementById('logout-overlay').style.display='none';
+  showToast('💾 Tout sauvegardé ! Déconnexion...');
+  setTimeout(_performLogout, 1200);
+}
+function _performLogout(){
+  document.getElementById('login-screen').style.display='flex';
+  document.getElementById('admin-app').style.display='none';
+  document.getElementById('l-user').value='';
+  document.getElementById('l-pass').value='';
+  document.getElementById('login-error').style.display='none';
+  document.getElementById('login-error').textContent='';
+  hasUnsavedChanges = false;
+}
+
+// ── AUTOSAUVEGARDE toutes les 2 minutes ──
+function autoSave(){
+  if(!hasUnsavedChanges) return;
+  // Affiche l'indicateur
+  const bar = document.getElementById('autosave-bar');
+  const status = document.getElementById('autosave-status');
+  bar.classList.add('saving');
+  status.textContent = '💾 Sauvegarde automatique...';
+  status.classList.add('visible');
+  // Sauvegarde toutes les sections
+  const sections = ['identite','hero','univers','expertise','tarifs','galerie','avis','acces'];
+  sections.forEach(s => { try{ saveSection(s); }catch(e){} });
+  hasUnsavedChanges = false;
+  setTimeout(()=>{
+    bar.classList.remove('saving');
+    status.textContent = '✅ Sauvegardé automatiquement';
+    setTimeout(()=>{ status.classList.remove('visible'); }, 2000);
+  }, 1000);
+}
+// Lance l'autosave toutes les 2 minutes
+setInterval(autoSave, 2 * 60 * 1000);
+
+// Ferme le modal si on clique en dehors
+document.getElementById('logout-overlay').addEventListener('click', function(e){
+  if(e.target === this) closeLogoutModal();
+});
 
 // ── PANEL NAVIGATION ──
 const ALLOWED_PANELS = ['dashboard','identite','hero','univers','expertise','tarifs','galerie','avis','acces','compte'];
@@ -1393,6 +1498,7 @@ function saveSection(section){
 
   save(d);
   showToast('✅ Section "'+section+'" enregistrée avec succès !');
+  hasUnsavedChanges = false;
 }
 
 function v(id){
