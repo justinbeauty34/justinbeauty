@@ -248,8 +248,8 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--terra);outline-offs
       <a href="#univers" class="btn-outline" id="site-hero-btn2">D&#233;couvrir l&#39;univers</a>
     </div>
   </div>
-  <div class="hero-right" role="img" aria-label="Ambiance du salon Just'In Beauty">
-    <div class="hero-img-placeholder">
+  <div class="hero-right" role="img" aria-label="Ambiance du salon Just'In Beauty" id="site-hero-photo">
+    <div class="hero-img-placeholder" id="site-hero-placeholder">
       <svg width="72" height="72" viewBox="0 0 64 64" fill="none" aria-hidden="true">
         <circle cx="32" cy="22" r="10" stroke="currentColor" stroke-width="1.5"/>
         <path d="M20 46c0-6.627 5.373-12 12-12s12 5.373 12 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
@@ -268,7 +268,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--terra);outline-offs
 </section>
 
 <section class="univers" id="univers" aria-labelledby="univers-title">
-  <div class="univers-img">
+  <div class="univers-img" id="site-univ-photo">
     <div class="univers-img-inner" aria-hidden="true">
       <svg width="56" height="56" viewBox="0 0 48 48" fill="none"><rect x="8" y="8" width="32" height="32" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M16 24 Q24 16 32 24 Q24 32 16 24Z" fill="currentColor" opacity="0.5"/></svg>
       <span>&#8594; Photo int&#233;rieur salon</span>
@@ -291,7 +291,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--terra);outline-offs
 <section class="expertise" id="expertise" aria-labelledby="expertise-title">
   <div class="expertise-header">
     <p class="section-tag">Mes expertises</p>
-    <h2 class="section-title" id="expertise-title">L&#39;art du <em id="site-exp-h2b">regard</em><br>et de la pr&#233;cision.</h2>
+    <h2 class="section-title" id="expertise-title">L&#39;art du <em id="site-exp-h2a">regard</em><br>et de la pr&#233;cision.</h2>
     <p class="section-lead" id="site-exp-sub" style="margin:0 auto">Des prestations millimet&#233;es, des r&#233;sultats qui durent.</p>
   </div>
   <div class="expertise-grid" role="list">
@@ -319,7 +319,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--terra);outline-offs
 <section class="tarifs" id="tarifs" aria-labelledby="tarifs-title">
   <div class="tarifs-header">
     <p class="section-tag">Tarifs</p>
-    <h2 class="section-title" id="tarifs-title">Des soins d&#39;exception<br>&#224; des <em>prix transparents.</em></h2>
+    <h2 class="section-title" id="tarifs-title"><span id="site-tarif-h2a">Des soins d&#39;exception</span><br>&#224; des <em id="site-tarif-h2b">prix transparents.</em></h2>
   </div>
   <div class="tarifs-tabs" role="tablist" aria-label="Cat&#233;gories de prestations">
     <button class="tab active" role="tab" aria-selected="true" aria-controls="tab-regard" id="btn-regard">L&#39;Art du Regard</button>
@@ -426,12 +426,12 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--terra);outline-offs
     <p class="section-lead" id="site-gal-sub" style="margin:0 auto">Chaque r&#233;sultat est unique, fa&#231;onn&#233; selon vos traits et vos envies.</p>
   </div>
   <div class="gallery-grid" role="list">
-    <figure class="gallery-item" role="listitem"><div class="gallery-item-inner" aria-hidden="true"><svg width="40" height="40" viewBox="0 0 40 40" fill="none" color="#C1593A"><ellipse cx="20" cy="20" rx="14" ry="8" fill="none" stroke="currentColor" stroke-width="1.2"/><circle cx="20" cy="20" r="3" fill="currentColor"/></svg><span>Photo rehaussement de cils<br>600&#215;900 px</span></div><figcaption class="gallery-caption">Rehaussement K&#233;ratine &#8212; &#171;&nbsp;Des cils naturels, sublim&#233;s&nbsp;&#187;</figcaption></figure>
-    <figure class="gallery-item" role="listitem"><div class="gallery-item-inner" aria-hidden="true"><svg width="32" height="32" viewBox="0 0 32 32" fill="none" color="#C1593A"><path d="M4 20 Q16 8 28 20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg><span>Browlift avant / apr&#232;s<br>600&#215;600 px</span></div><figcaption class="gallery-caption">Browlift &#8212; &#171;&nbsp;Sourcils pos&#233;s, regard ouvert&nbsp;&#187;</figcaption></figure>
-    <figure class="gallery-item" role="listitem"><div class="gallery-item-inner" aria-hidden="true"><svg width="32" height="32" viewBox="0 0 32 32" fill="none" color="#C1593A"><circle cx="16" cy="16" r="6" stroke="currentColor" stroke-width="1.2"/><path d="M16 4v4M16 24v4M4 16h4M24 16h4" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg><span>Extensions cil &#224; cil<br>600&#215;600 px</span></div><figcaption class="gallery-caption">Volume Mixte &#8212; &#171;&nbsp;L&#39;intensit&#233; &#224; l&#39;&#233;tat pur&nbsp;&#187;</figcaption></figure>
-    <figure class="gallery-item" role="listitem"><div class="gallery-item-inner" aria-hidden="true"><svg width="32" height="32" viewBox="0 0 32 32" fill="none" color="#C1593A"><rect x="6" y="6" width="20" height="20" rx="10" stroke="currentColor" stroke-width="1.2"/></svg><span>Soin visage &#233;clat<br>600&#215;600 px</span></div><figcaption class="gallery-caption">Soin &#201;clat &#8212; &#171;&nbsp;Peau lumineuse, regard frais&nbsp;&#187;</figcaption></figure>
-    <figure class="gallery-item" role="listitem"><div class="gallery-item-inner" aria-hidden="true"><svg width="32" height="32" viewBox="0 0 32 32" fill="none" color="#C1593A"><path d="M8 24 Q16 12 24 24" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="16" cy="10" r="3" stroke="currentColor" stroke-width="1.2"/></svg><span>Pose Volume Russe<br>600&#215;600 px</span></div><figcaption class="gallery-caption">Volume Russe &#8212; &#171;&nbsp;Dramatique. Parfait.&nbsp;&#187;</figcaption></figure>
-    <figure class="gallery-item" role="listitem"><div class="gallery-item-inner" aria-hidden="true"><svg width="32" height="32" viewBox="0 0 32 32" fill="none" color="#C1593A"><path d="M6 16 Q10 8 16 8 Q22 8 26 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg><span>Sourcils teinture &amp; forme<br>600&#215;600 px</span></div><figcaption class="gallery-caption">Teinture &amp; Mise en Forme &#8212; &#171;&nbsp;La base de tout&nbsp;&#187;</figcaption></figure>
+    <figure class="gallery-item" id="site-gal1" role="listitem"><div class="gallery-item-inner" aria-hidden="true"><svg width="40" height="40" viewBox="0 0 40 40" fill="none" color="#C1593A"><ellipse cx="20" cy="20" rx="14" ry="8" fill="none" stroke="currentColor" stroke-width="1.2"/><circle cx="20" cy="20" r="3" fill="currentColor"/></svg><span>Photo rehaussement de cils<br>600&#215;900 px</span></div><figcaption class="gallery-caption">Rehaussement K&#233;ratine &#8212; &#171;&nbsp;Des cils naturels, sublim&#233;s&nbsp;&#187;</figcaption></figure>
+    <figure class="gallery-item" id="site-gal2" role="listitem"><div class="gallery-item-inner" aria-hidden="true"><svg width="32" height="32" viewBox="0 0 32 32" fill="none" color="#C1593A"><path d="M4 20 Q16 8 28 20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg><span>Browlift avant / apr&#232;s<br>600&#215;600 px</span></div><figcaption class="gallery-caption">Browlift &#8212; &#171;&nbsp;Sourcils pos&#233;s, regard ouvert&nbsp;&#187;</figcaption></figure>
+    <figure class="gallery-item" id="site-gal3" role="listitem"><div class="gallery-item-inner" aria-hidden="true"><svg width="32" height="32" viewBox="0 0 32 32" fill="none" color="#C1593A"><circle cx="16" cy="16" r="6" stroke="currentColor" stroke-width="1.2"/><path d="M16 4v4M16 24v4M4 16h4M24 16h4" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg><span>Extensions cil &#224; cil<br>600&#215;600 px</span></div><figcaption class="gallery-caption">Volume Mixte &#8212; &#171;&nbsp;L&#39;intensit&#233; &#224; l&#39;&#233;tat pur&nbsp;&#187;</figcaption></figure>
+    <figure class="gallery-item" id="site-gal4" role="listitem"><div class="gallery-item-inner" aria-hidden="true"><svg width="32" height="32" viewBox="0 0 32 32" fill="none" color="#C1593A"><rect x="6" y="6" width="20" height="20" rx="10" stroke="currentColor" stroke-width="1.2"/></svg><span>Soin visage &#233;clat<br>600&#215;600 px</span></div><figcaption class="gallery-caption">Soin &#201;clat &#8212; &#171;&nbsp;Peau lumineuse, regard frais&nbsp;&#187;</figcaption></figure>
+    <figure class="gallery-item" id="site-gal5" role="listitem"><div class="gallery-item-inner" aria-hidden="true"><svg width="32" height="32" viewBox="0 0 32 32" fill="none" color="#C1593A"><path d="M8 24 Q16 12 24 24" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="16" cy="10" r="3" stroke="currentColor" stroke-width="1.2"/></svg><span>Pose Volume Russe<br>600&#215;600 px</span></div><figcaption class="gallery-caption">Volume Russe &#8212; &#171;&nbsp;Dramatique. Parfait.&nbsp;&#187;</figcaption></figure>
+    <figure class="gallery-item" id="site-gal6" role="listitem"><div class="gallery-item-inner" aria-hidden="true"><svg width="32" height="32" viewBox="0 0 32 32" fill="none" color="#C1593A"><path d="M6 16 Q10 8 16 8 Q22 8 26 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg><span>Sourcils teinture &amp; forme<br>600&#215;600 px</span></div><figcaption class="gallery-caption">Teinture &amp; Mise en Forme &#8212; &#171;&nbsp;La base de tout&nbsp;&#187;</figcaption></figure>
   </div>
 </section>
 
@@ -494,8 +494,8 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--terra);outline-offs
       <a href="https://www.planity.com/justin-beauty-34290-bassan" class="btn-primary" target="_blank" rel="noopener noreferrer">Prendre rendez-vous</a>
     </div>
   </div>
-  <div class="access-map" aria-label="Carte Google Maps">
-    <iframe src="https://maps.google.com/maps?q=6+rue+des+Gen%C3%AAts+Bassan&output=embed" title="Localisation Just'In Beauty" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+  <div class="access-map" aria-label="Carte Google Maps" id="site-acces-map">
+    <iframe id="site-acces-iframe" src="https://maps.google.com/maps?q=6+rue+des+Gen%C3%AAts+Bassan&output=embed" title="Localisation Just'In Beauty" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
   </div>
 </section>
 
@@ -675,15 +675,11 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--terra);outline-offs
 
     // ── Identité ──
     if (s.identite) {
-      // Couleur principale
       if (s.identite.colorTerra && /^#[0-9a-fA-F]{6}$/.test(s.identite.colorTerra)) {
         document.documentElement.style.setProperty('--terra', s.identite.colorTerra);
       }
-      // Lien Planity sur tous les boutons
       if (s.identite.planity) {
-        document.querySelectorAll('a[href*="planity"]').forEach(function(a) {
-          a.href = s.identite.planity;
-        });
+        document.querySelectorAll('a[href*="planity"]').forEach(function(a) { a.href = s.identite.planity; });
       }
     }
 
@@ -691,7 +687,6 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--terra);outline-offs
     if (s.hero) {
       set('site-hero-eyebrow', s.hero.eyebrow);
       set('site-hero-h1a', s.hero.h1a);
-      // h1b contient le texte avant <em> — on garde l'em intact
       if (s.hero.h1b) {
         var h1b = document.getElementById('site-hero-h1b');
         if (h1b) h1b.innerHTML = s.hero.h1b;
@@ -700,17 +695,51 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--terra);outline-offs
       set('site-hero-sub', s.hero.sub);
       set('site-hero-btn1', s.hero.btn1);
       set('site-hero-btn2', s.hero.btn2);
+    // ── Photos (stockées dans d.photos, pas d.sections) ──
+    var photos = d.photos || {};
+
+    // Photo bannière hero
+    if (photos['hero-preview']) {
+      var heroPhoto = document.getElementById('site-hero-photo');
+      var heroPlaceholder = document.getElementById('site-hero-placeholder');
+      if (heroPhoto) {
+        var existImg = heroPhoto.querySelector('img.hero-real-img');
+        if (!existImg) { existImg = document.createElement('img'); existImg.className = 'hero-real-img'; existImg.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;'; heroPhoto.appendChild(existImg); }
+        existImg.src = photos['hero-preview'];
+        existImg.alt = 'Ambiance Just\'In Beauty';
+        if (heroPlaceholder) heroPlaceholder.style.display = 'none';
+      }
     }
 
-    // ── Univers ──
-    if (s.univers) {
-      set('site-univ-h2a', s.univers.h2a);
-      set('site-univ-h2b', s.univers.h2b);
-      set('site-univ-desc', s.univers.desc);
+    // Photo intérieur salon (section univers)
+    if (photos['univ-preview']) {
+      var univPhoto = document.getElementById('site-univ-photo');
+      if (univPhoto) {
+        var existUnivImg = univPhoto.querySelector('img.univ-real-img');
+        if (!existUnivImg) { existUnivImg = document.createElement('img'); existUnivImg.className = 'univ-real-img'; existUnivImg.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:2px;'; univPhoto.appendChild(existUnivImg); }
+        existUnivImg.src = photos['univ-preview'];
+        existUnivImg.alt = 'Intérieur salon Just\'In Beauty';
+        var univPlaceholder = univPhoto.querySelector('.univers-img-inner');
+        if (univPlaceholder) univPlaceholder.style.display = 'none';
+      }
     }
+
+    // Photos galerie 1 à 6
+    var galKeys = ['gal1-prev','gal2-prev','gal3-prev','gal4-prev','gal5-prev','gal6-prev'];
+    galKeys.forEach(function(key, i) {
+      if (!photos[key]) return;
+      var fig = document.getElementById('site-gal' + (i+1));
+      if (!fig) return;
+      var existImg = fig.querySelector('img.gal-real-img');
+      if (!existImg) { existImg = document.createElement('img'); existImg.className = 'gal-real-img'; existImg.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;'; fig.appendChild(existImg); }
+      existImg.src = photos[key];
+      var placeholder = fig.querySelector('.gallery-item-inner');
+      if (placeholder) placeholder.style.display = 'none';
+    });
 
     // ── Expertise ──
     if (s.expertise) {
+      set('site-exp-h2a', s.expertise.h2a);
       set('site-exp-h2b', s.expertise.h2b);
       set('site-exp-sub',  s.expertise.sub);
       if (s.expertise.exp1) {
@@ -718,13 +747,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--terra);outline-offs
         set('site-exp1-desc',  s.expertise.exp1.desc);
         if (s.expertise.exp1.benefits) {
           var ul1 = document.getElementById('site-exp1-benefits');
-          if (ul1) {
-            ul1.innerHTML = '';
-            s.expertise.exp1.benefits.split('\n').forEach(function(b) {
-              b = b.trim(); if (!b) return;
-              var li = document.createElement('li'); li.textContent = b; ul1.appendChild(li);
-            });
-          }
+          if (ul1) { ul1.innerHTML = ''; s.expertise.exp1.benefits.split('\n').forEach(function(b){ b=b.trim(); if(!b) return; var li=document.createElement('li'); li.textContent=b; ul1.appendChild(li); }); }
         }
       }
       if (s.expertise.exp2) {
@@ -732,13 +755,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--terra);outline-offs
         set('site-exp2-desc',  s.expertise.exp2.desc);
         if (s.expertise.exp2.benefits) {
           var ul2 = document.getElementById('site-exp2-benefits');
-          if (ul2) {
-            ul2.innerHTML = '';
-            s.expertise.exp2.benefits.split('\n').forEach(function(b) {
-              b = b.trim(); if (!b) return;
-              var li = document.createElement('li'); li.textContent = b; ul2.appendChild(li);
-            });
-          }
+          if (ul2) { ul2.innerHTML = ''; s.expertise.exp2.benefits.split('\n').forEach(function(b){ b=b.trim(); if(!b) return; var li=document.createElement('li'); li.textContent=b; ul2.appendChild(li); }); }
         }
       }
       if (s.expertise.exp3) {
@@ -746,15 +763,15 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--terra);outline-offs
         set('site-exp3-desc',  s.expertise.exp3.desc);
         if (s.expertise.exp3.benefits) {
           var ul3 = document.getElementById('site-exp3-benefits');
-          if (ul3) {
-            ul3.innerHTML = '';
-            s.expertise.exp3.benefits.split('\n').forEach(function(b) {
-              b = b.trim(); if (!b) return;
-              var li = document.createElement('li'); li.textContent = b; ul3.appendChild(li);
-            });
-          }
+          if (ul3) { ul3.innerHTML = ''; s.expertise.exp3.benefits.split('\n').forEach(function(b){ b=b.trim(); if(!b) return; var li=document.createElement('li'); li.textContent=b; ul3.appendChild(li); }); }
         }
       }
+    }
+
+    // ── Tarifs ──
+    if (s.tarifs) {
+      set('site-tarif-h2a', s.tarifs.h2a);
+      set('site-tarif-h2b', s.tarifs.h2b);
     }
 
     // ── Galerie ──
@@ -764,7 +781,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--terra);outline-offs
       set('site-gal-sub', s.galerie.sub);
     }
 
-    // ── Avis (titres) ──
+    // ── Avis ──
     if (s.avis) {
       set('site-avis-h2a', s.avis.h2a);
       set('site-avis-h2b', s.avis.h2b);
@@ -776,12 +793,10 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--terra);outline-offs
       set('site-acces-ville',   s.acces.ville);
       set('site-acces-rdv',     s.acces.rdv);
       set('site-acces-parking', s.acces.parking);
-      // Iframe Google Maps
       if (s.acces.maps) {
-        var iframe = document.querySelector('.access-map iframe');
+        var iframe = document.getElementById('site-acces-iframe');
         if (iframe) iframe.src = s.acces.maps;
       }
-      // Liens réseaux sociaux
       if (s.acces.insta) {
         document.querySelectorAll('a[href*="instagram"]').forEach(function(a) { a.href = s.acces.insta; });
       }
