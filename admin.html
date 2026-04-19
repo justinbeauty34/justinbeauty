@@ -1851,9 +1851,20 @@ function showToast(msg, type){
 // ══════════════════════════════════════════════════════════
 
 function getGhConfig() {
+  // Priorité : champs du formulaire (si remplis), sinon localStorage
+  const domOwner = (document.getElementById('gh-owner') || {}).value || '';
+  const domRepo  = (document.getElementById('gh-repo')  || {}).value || '';
+  const domToken = (document.getElementById('gh-token') || {}).value || '';
+  if (domOwner && domRepo && domToken) {
+    return { owner: domOwner.trim(), repo: domRepo.trim(), token: domToken.trim() };
+  }
   try {
     const c = JSON.parse(localStorage.getItem('jib_gh_config') || '{}');
-    return { owner: c.owner || '', repo: c.repo || '', token: c.token || '' };
+    return {
+      owner: domOwner.trim() || c.owner || '',
+      repo:  domRepo.trim()  || c.repo  || '',
+      token: domToken.trim() || c.token || ''
+    };
   } catch(e) { return {owner:'',repo:'',token:''}; }
 }
 
