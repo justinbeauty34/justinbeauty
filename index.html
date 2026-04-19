@@ -577,22 +577,17 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--terra);outline-offs
   </div>
 
   <div class="access-map" aria-label="Carte Google Maps — 6 rue des Genêts, Bassan">
-    <!--
-      REMPLACER PAR L'IFRAME GOOGLE MAPS :
-      Allez sur maps.google.fr → cherchez "6 rue des Genêts 34290 Bassan"
-      → Partager → Intégrer une carte → copiez l'URL src ci-dessous
-
-      <iframe
-        src="https://www.google.com/maps/embed?pb=VOTRE_CLE_ICI"
-        title="Localisation Just'In Beauty — 6 rue des Genêts, Bassan"
-        loading="lazy"
-        referrerpolicy="no-referrer-when-downgrade"
-        allowfullscreen>
-      </iframe>
-    -->
-    <svg width="48" height="48" viewBox="0 0 48 48" fill="none" aria-hidden="true"><rect x="8" y="8" width="32" height="32" rx="4" stroke="currentColor" stroke-width="1" opacity="0.3"/><path d="M24 14C20.134 14 17 17.134 17 21c0 7 7 13 7 13s7-6 7-13c0-3.866-3.134-7-7-7z" stroke="currentColor" stroke-width="1.5" fill="none" opacity="0.5"/><circle cx="24" cy="21" r="2.5" fill="currentColor" opacity="0.4"/></svg>
-    <span>&#8594; Int&#233;grer iframe Google Maps ici</span>
-  </div>
+  <iframe
+    src="https://maps.google.com/maps?q=6+rue+des+Gen%C3%AAts+Bassan&output=embed"
+    title="Localisation Just'In Beauty — 6 rue des Genêts, Bassan"
+    width="100%"
+    height="100%"
+    style="position:absolute;inset:0;border:0;width:100%;height:100%"
+    loading="lazy"
+    referrerpolicy="no-referrer-when-downgrade"
+    allowfullscreen>
+  </iframe>
+</div>
 </section>
 
 <!-- ══════════════════════════════════
