@@ -10,9 +10,9 @@
   script-src 'self' 'unsafe-inline';
   style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
   font-src https://fonts.gstatic.com;
-  img-src 'self' data: blob:;
+  img-src 'self' data: blob: https://raw.githubusercontent.com https://avatars.githubusercontent.com;
   frame-src 'none';
-  connect-src 'none';
+  connect-src 'none' https://api.github.com https://raw.githubusercontent.com;
   object-src 'none';
   base-uri 'self';
   form-action 'none';
@@ -289,6 +289,21 @@ textarea.field-input{resize:vertical;min-height:90px;line-height:1.6}
 .color-swatch{width:40px;height:40px;border-radius:2px;border:1px solid var(--border);cursor:pointer;padding:0;flex-shrink:0}
 .color-hex{font-family:'Jost',sans-serif;font-size:13px}
 
+/* ── GITHUB UPLOAD ZONES ── */
+.github-upload-zone{border:2px dashed var(--beige-dark);border-radius:8px;overflow:hidden;background:var(--beige);transition:border-color 0.2s}
+.github-upload-zone:hover{border-color:var(--terra)}
+.upload-placeholder{padding:32px 20px;text-align:center;cursor:pointer;transition:background 0.2s}
+.upload-placeholder:hover{background:var(--terra-pale)}
+.upload-placeholder.mini{padding:20px 12px}
+.mini-change-btn,.mini-remove-btn{position:absolute;top:6px;border:none;padding:4px 8px;border-radius:3px;font-size:11px;cursor:pointer}
+.mini-change-btn{right:40px;background:rgba(0,0,0,0.55);color:#fff}
+.mini-remove-btn{right:6px;background:rgba(193,89,58,0.85);color:#fff}
+/* Galerie grid 3 colonnes */
+.galerie-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:4px}
+.galerie-item{display:flex;flex-direction:column}
+.galerie-item-num{font-size:11px;font-weight:500;color:var(--terra);letter-spacing:0.1em;margin-bottom:6px}
+@media(max-width:768px){.galerie-grid{grid-template-columns:1fr 1fr}}
+
 /* ── RESPONSIVE ── */
 @media(max-width:768px){
   .sidebar{width:0;overflow:hidden}
@@ -472,13 +487,50 @@ textarea.field-input{resize:vertical;min-height:90px;line-height:1.6}
             <div class="field-hint">Copiez-collez l'URL depuis votre espace Planity → Profil → Lien public</div>
           </div>
         </div>
+        <div class="card" id="github-config-card">
+          <div class="card-title"><span>🔑</span> Connexion GitHub (pour les photos)
+            <div class="tooltip-wrap" style="margin-left:4px">
+              <div class="tooltip-icon">ℹ</div>
+              <div class="tooltip-box">
+                Permet d'uploader vos photos directement depuis l'admin vers GitHub.<br><br>
+                <strong>Créer un token :</strong><br>
+                GitHub → Settings → Developer settings → Personal access tokens → Tokens (classic) → Generate new token → cochez "repo" → Generate
+              </div>
+            </div>
+          </div>
+          <div id="github-config-status" style="display:none;padding:10px 14px;border-radius:6px;font-size:12px;margin-bottom:14px"></div>
+          <div class="field-row">
+            <div class="field">
+              <label class="field-label">Nom d'utilisateur GitHub</label>
+              <input type="text" class="field-input" id="gh-owner" placeholder="justinbeauty34" value="justinbeauty34">
+            </div>
+            <div class="field">
+              <label class="field-label">Nom du dépôt</label>
+              <input type="text" class="field-input" id="gh-repo" placeholder="justinbeauty" value="justinbeauty">
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-label">Token GitHub
+              <div class="tooltip-wrap" style="margin-left:4px">
+                <div class="tooltip-icon">ℹ</div>
+                <div class="tooltip-box">Votre token personnel GitHub. Il est stocké uniquement dans votre navigateur, jamais envoyé ailleurs que vers GitHub.</div>
+              </div>
+            </label>
+            <div style="display:flex;gap:8px;align-items:center">
+              <input type="password" class="field-input" id="gh-token" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" style="font-family:monospace">
+              <button onclick="testGithubConnection()" style="background:var(--terra);color:#fff;border:none;padding:10px 18px;border-radius:4px;font-size:12px;cursor:pointer;white-space:nowrap;font-family:'Jost',sans-serif">Tester la connexion</button>
+            </div>
+          </div>
+          <div class="save-bar" style="margin-top:0">
+            <button class="save-btn" onclick="saveGithubConfig()">💾 Enregistrer la config GitHub</button>
+            <span class="save-note">Stocké uniquement dans votre navigateur</span>
+          </div>
+        </div>
         <div class="save-bar">
           <button class="save-btn" onclick="saveSection('identite')">💾 Enregistrer les modifications</button>
           <span class="save-note">Les changements seront appliqués au site</span>
         </div>
       </div>
-
-      <!-- ── HERO / BANNIÈRE ── -->
       <div class="panel" id="panel-hero">
         <div class="page-header">
           <h1 class="page-title">Bannière <em>principale</em></h1>
@@ -524,26 +576,38 @@ textarea.field-input{resize:vertical;min-height:90px;line-height:1.6}
             <div class="tooltip-wrap" style="margin-left:4px">
               <div class="tooltip-icon">ℹ</div>
               <div class="tooltip-box">
-                Photo principale du site. Uploadez votre photo sur GitHub puis collez son URL ici.
+                Photo principale du site.
                 <div class="tooltip-format">
-                  📐 Format idéal : Vertical (portrait)<br>
+                  📐 Format : Vertical (portrait)<br>
                   📏 Dimensions : 800 × 1100 px minimum<br>
                   ⚖️ Poids : Moins de 500 Ko<br>
-                  🎨 Ambiance : Lumière naturelle, tons chauds<br>
-                  💡 Comment uploader : GitHub → dépôt → Add file → Upload → copiez l'URL
+                  🎨 Format WebP recommandé (plus léger)<br>
+                  💡 Photo de vous au travail ou du salon
                 </div>
               </div>
             </div>
           </div>
-          <div class="field">
-            <label class="field-label">URL de la photo (depuis GitHub ou autre hébergeur)</label>
-            <input type="url" class="field-input" id="hero-photo-url" placeholder="https://raw.githubusercontent.com/justinbeauty34/justinbeauty/main/images/hero.jpg">
-            <div style="font-size:11px;color:var(--muted);margin-top:6px;line-height:1.5">
-              💡 Sur GitHub : cliquez sur votre image → clic droit → "Copier l'adresse de l'image" → collez ici
+          <div class="github-upload-zone" id="hero-upload-zone">
+            <input type="file" id="hero-file-input" accept="image/webp,image/jpeg,image/png" style="display:none" onchange="handlePhotoUpload(this,'hero','images/hero.webp')">
+            <div id="hero-upload-placeholder" class="upload-placeholder" onclick="document.getElementById('hero-file-input').click()">
+              <span style="font-size:32px">📷</span>
+              <div style="font-size:14px;font-weight:500;margin-top:8px">Cliquez pour choisir une photo</div>
+              <div style="font-size:12px;color:var(--muted);margin-top:4px">WebP, JPG ou PNG · max 2 Mo</div>
+              <div style="font-size:11px;color:var(--muted);margin-top:2px">800 × 1100 px recommandé</div>
             </div>
-          </div>
-          <div id="hero-photo-preview-wrap" style="margin-top:12px;display:none">
-            <img id="hero-photo-preview-img" src="" alt="Prévisualisation" style="max-width:100%;max-height:200px;border-radius:4px;object-fit:cover;">
+            <div id="hero-upload-preview" style="display:none;position:relative">
+              <img id="hero-preview-img" src="" alt="" style="width:100%;max-height:280px;object-fit:cover;border-radius:6px;display:block">
+              <div style="position:absolute;top:8px;right:8px;display:flex;gap:6px">
+                <button onclick="document.getElementById('hero-file-input').click()" style="background:rgba(0,0,0,0.6);color:#fff;border:none;padding:6px 12px;border-radius:4px;font-size:11px;cursor:pointer">🔄 Changer</button>
+                <button onclick="removePhoto('hero','images/hero.webp')" style="background:rgba(193,89,58,0.85);color:#fff;border:none;padding:6px 12px;border-radius:4px;font-size:11px;cursor:pointer">🗑 Supprimer</button>
+              </div>
+            </div>
+            <div id="hero-upload-progress" style="display:none;padding:16px;text-align:center">
+              <div style="font-size:13px;color:var(--terra)" id="hero-upload-status">⏳ Upload en cours...</div>
+              <div style="height:4px;background:var(--beige-dark);border-radius:2px;margin-top:10px;overflow:hidden">
+                <div id="hero-progress-bar" style="height:100%;background:var(--terra);width:0%;transition:width 0.3s;border-radius:2px"></div>
+              </div>
+            </div>
           </div>
         </div>
         <div class="save-bar">
@@ -601,26 +665,37 @@ textarea.field-input{resize:vertical;min-height:90px;line-height:1.6}
             <div class="tooltip-wrap" style="margin-left:4px">
               <div class="tooltip-icon">ℹ</div>
               <div class="tooltip-box">
-                Photo de l'intérieur de votre salon. Uploadez sur GitHub puis collez l'URL ici.
+                Photo de l'intérieur de votre salon.
                 <div class="tooltip-format">
-                  📐 Format idéal : Vertical ou carré<br>
+                  📐 Format : Vertical ou carré<br>
                   📏 Dimensions : 700 × 900 px minimum<br>
                   ⚖️ Poids : Moins de 400 Ko<br>
-                  🎨 Ambiance : Terracotta, lumière douce, chaleureuse<br>
-                  💡 Comment uploader : GitHub → dépôt → Add file → Upload → copiez l'URL
+                  🎨 Format WebP recommandé
                 </div>
               </div>
             </div>
           </div>
-          <div class="field">
-            <label class="field-label">URL de la photo intérieur salon</label>
-            <input type="url" class="field-input" id="univ-photo-url" placeholder="https://raw.githubusercontent.com/justinbeauty34/justinbeauty/main/images/salon.jpg">
-            <div style="font-size:11px;color:var(--muted);margin-top:6px;line-height:1.5">
-              💡 Sur GitHub : cliquez sur votre image → clic droit → "Copier l'adresse de l'image" → collez ici
+          <div class="github-upload-zone" id="univ-upload-zone">
+            <input type="file" id="univ-file-input" accept="image/webp,image/jpeg,image/png" style="display:none" onchange="handlePhotoUpload(this,'univ','images/univers.webp')">
+            <div id="univ-upload-placeholder" class="upload-placeholder" onclick="document.getElementById('univ-file-input').click()">
+              <span style="font-size:32px">🏡</span>
+              <div style="font-size:14px;font-weight:500;margin-top:8px">Photo intérieur du salon</div>
+              <div style="font-size:12px;color:var(--muted);margin-top:4px">WebP, JPG ou PNG · max 2 Mo</div>
+              <div style="font-size:11px;color:var(--muted);margin-top:2px">700 × 900 px recommandé</div>
             </div>
-          </div>
-          <div id="univ-photo-preview-wrap" style="margin-top:12px;display:none">
-            <img id="univ-photo-preview-img" src="" alt="Prévisualisation" style="max-width:100%;max-height:200px;border-radius:4px;object-fit:cover;">
+            <div id="univ-upload-preview" style="display:none;position:relative">
+              <img id="univ-preview-img" src="" alt="" style="width:100%;max-height:280px;object-fit:cover;border-radius:6px;display:block">
+              <div style="position:absolute;top:8px;right:8px;display:flex;gap:6px">
+                <button onclick="document.getElementById('univ-file-input').click()" style="background:rgba(0,0,0,0.6);color:#fff;border:none;padding:6px 12px;border-radius:4px;font-size:11px;cursor:pointer">🔄 Changer</button>
+                <button onclick="removePhoto('univ','images/univers.webp')" style="background:rgba(193,89,58,0.85);color:#fff;border:none;padding:6px 12px;border-radius:4px;font-size:11px;cursor:pointer">🗑 Supprimer</button>
+              </div>
+            </div>
+            <div id="univ-upload-progress" style="display:none;padding:16px;text-align:center">
+              <div style="font-size:13px;color:var(--terra)" id="univ-upload-status">⏳ Upload en cours...</div>
+              <div style="height:4px;background:var(--beige-dark);border-radius:2px;margin-top:10px;overflow:hidden">
+                <div id="univ-progress-bar" style="height:100%;background:var(--terra);width:0%;transition:width 0.3s;border-radius:2px"></div>
+              </div>
+            </div>
           </div>
         </div>
         <div class="save-bar">
@@ -834,58 +909,125 @@ Protocoles peaux sensibles disponibles</textarea>
             <div class="tooltip-wrap" style="margin-left:4px">
               <div class="tooltip-icon">ℹ</div>
               <div class="tooltip-box">
-                Uploadez vos photos sur GitHub puis collez les URLs ici.
+                Uploadez vos photos directement depuis l'admin.
                 <div class="tooltip-format">
                   📐 Photo 1 (grande) : Vertical 600×900 px<br>
                   📐 Photos 2 à 6 : Carré 600×600 px<br>
                   ⚖️ Poids : Moins de 300 Ko par photo<br>
-                  💡 GitHub → Add file → Upload files → copiez l'URL raw
+                  🎨 Format WebP recommandé
                 </div>
               </div>
             </div>
           </div>
-          <div style="background:var(--beige);border-radius:6px;padding:14px 16px;margin-bottom:20px;font-size:12px;color:var(--muted);line-height:1.6">
-            📋 <strong>Comment obtenir l'URL d'une photo GitHub :</strong><br>
-            1. Sur GitHub, cliquez sur votre image uploadée<br>
-            2. Clic droit sur l'image → <em>"Copier l'adresse de l'image"</em><br>
-            3. Collez l'URL dans le champ correspondant ci-dessous
-          </div>
-
-          <!-- Photo 1 -->
-          <div style="margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid var(--beige-dark)">
-            <div style="font-size:12px;font-weight:500;color:var(--dark);margin-bottom:8px">📷 Photo 01 — Grande (gauche) <span style="font-weight:300;color:var(--muted)">600×900 px</span></div>
-            <input type="url" class="field-input" id="gal1-url" placeholder="https://raw.githubusercontent.com/justinbeauty34/justinbeauty/main/images/real1.jpg">
-            <div class="field" style="margin-top:10px"><label class="field-label">Légende au survol</label><input type="text" class="field-input" id="gal1-legend" value="Rehaussement Kératine — « Des cils naturels, sublimés »" style="font-size:12px"></div>
-          </div>
-          <!-- Photo 2 -->
-          <div style="margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid var(--beige-dark)">
-            <div style="font-size:12px;font-weight:500;color:var(--dark);margin-bottom:8px">📷 Photo 02 <span style="font-weight:300;color:var(--muted)">600×600 px</span></div>
-            <input type="url" class="field-input" id="gal2-url" placeholder="https://raw.githubusercontent.com/...">
-            <div class="field" style="margin-top:10px"><label class="field-label">Légende</label><input type="text" class="field-input" id="gal2-legend" value="Browlift — « Sourcils posés, regard ouvert »" style="font-size:12px"></div>
-          </div>
-          <!-- Photo 3 -->
-          <div style="margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid var(--beige-dark)">
-            <div style="font-size:12px;font-weight:500;color:var(--dark);margin-bottom:8px">📷 Photo 03 <span style="font-weight:300;color:var(--muted)">600×600 px</span></div>
-            <input type="url" class="field-input" id="gal3-url" placeholder="https://raw.githubusercontent.com/...">
-            <div class="field" style="margin-top:10px"><label class="field-label">Légende</label><input type="text" class="field-input" id="gal3-legend" value="Volume Mixte — « L'intensité à l'état pur »" style="font-size:12px"></div>
-          </div>
-          <!-- Photo 4 -->
-          <div style="margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid var(--beige-dark)">
-            <div style="font-size:12px;font-weight:500;color:var(--dark);margin-bottom:8px">📷 Photo 04 <span style="font-weight:300;color:var(--muted)">600×600 px</span></div>
-            <input type="url" class="field-input" id="gal4-url" placeholder="https://raw.githubusercontent.com/...">
-            <div class="field" style="margin-top:10px"><label class="field-label">Légende</label><input type="text" class="field-input" id="gal4-legend" value="Soin Éclat — « Peau lumineuse, regard frais »" style="font-size:12px"></div>
-          </div>
-          <!-- Photo 5 -->
-          <div style="margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid var(--beige-dark)">
-            <div style="font-size:12px;font-weight:500;color:var(--dark);margin-bottom:8px">📷 Photo 05 <span style="font-weight:300;color:var(--muted)">600×600 px</span></div>
-            <input type="url" class="field-input" id="gal5-url" placeholder="https://raw.githubusercontent.com/...">
-            <div class="field" style="margin-top:10px"><label class="field-label">Légende</label><input type="text" class="field-input" id="gal5-legend" value="Volume Russe — « Dramatique. Parfait. »" style="font-size:12px"></div>
-          </div>
-          <!-- Photo 6 -->
-          <div>
-            <div style="font-size:12px;font-weight:500;color:var(--dark);margin-bottom:8px">📷 Photo 06 <span style="font-weight:300;color:var(--muted)">600×600 px</span></div>
-            <input type="url" class="field-input" id="gal6-url" placeholder="https://raw.githubusercontent.com/...">
-            <div class="field" style="margin-top:10px"><label class="field-label">Légende</label><input type="text" class="field-input" id="gal6-legend" value="Teinture & Mise en Forme — « La base de tout »" style="font-size:12px"></div>
+          <div class="galerie-grid">
+            <!-- Photo 1 -->
+            <div class="galerie-item">
+              <div class="galerie-item-num">01 <span style="font-size:10px;color:var(--muted)">(grande)</span></div>
+              <div class="github-upload-zone mini" id="gal1-zone">
+                <input type="file" id="gal1-file" accept="image/webp,image/jpeg,image/png" style="display:none" onchange="handlePhotoUpload(this,'gal1','images/real1.webp')">
+                <div id="gal1-placeholder" class="upload-placeholder mini" onclick="document.getElementById('gal1-file').click()">
+                  <span style="font-size:24px">📷</span>
+                  <div style="font-size:11px;color:var(--muted);margin-top:4px">600×900 px</div>
+                </div>
+                <div id="gal1-preview" style="display:none;position:relative">
+                  <img id="gal1-preview-img" src="" alt="" style="width:100%;height:140px;object-fit:cover;border-radius:4px;display:block">
+                  <button onclick="document.getElementById('gal1-file').click()" class="mini-change-btn">🔄</button>
+                  <button onclick="removePhoto('gal1','images/real1.webp')" class="mini-remove-btn">🗑</button>
+                </div>
+                <div id="gal1-progress" style="display:none;text-align:center;padding:8px;font-size:11px;color:var(--terra)">⏳ Upload...</div>
+              </div>
+              <div class="field" style="margin-top:8px"><input type="text" class="field-input" id="gal1-legend" value="Rehaussement Kératine" style="font-size:11px" placeholder="Légende"></div>
+            </div>
+            <!-- Photo 2 -->
+            <div class="galerie-item">
+              <div class="galerie-item-num">02</div>
+              <div class="github-upload-zone mini" id="gal2-zone">
+                <input type="file" id="gal2-file" accept="image/webp,image/jpeg,image/png" style="display:none" onchange="handlePhotoUpload(this,'gal2','images/real2.webp')">
+                <div id="gal2-placeholder" class="upload-placeholder mini" onclick="document.getElementById('gal2-file').click()">
+                  <span style="font-size:24px">📷</span>
+                  <div style="font-size:11px;color:var(--muted);margin-top:4px">600×600 px</div>
+                </div>
+                <div id="gal2-preview" style="display:none;position:relative">
+                  <img id="gal2-preview-img" src="" alt="" style="width:100%;height:140px;object-fit:cover;border-radius:4px;display:block">
+                  <button onclick="document.getElementById('gal2-file').click()" class="mini-change-btn">🔄</button>
+                  <button onclick="removePhoto('gal2','images/real2.webp')" class="mini-remove-btn">🗑</button>
+                </div>
+                <div id="gal2-progress" style="display:none;text-align:center;padding:8px;font-size:11px;color:var(--terra)">⏳ Upload...</div>
+              </div>
+              <div class="field" style="margin-top:8px"><input type="text" class="field-input" id="gal2-legend" value="Browlift" style="font-size:11px" placeholder="Légende"></div>
+            </div>
+            <!-- Photo 3 -->
+            <div class="galerie-item">
+              <div class="galerie-item-num">03</div>
+              <div class="github-upload-zone mini" id="gal3-zone">
+                <input type="file" id="gal3-file" accept="image/webp,image/jpeg,image/png" style="display:none" onchange="handlePhotoUpload(this,'gal3','images/real3.webp')">
+                <div id="gal3-placeholder" class="upload-placeholder mini" onclick="document.getElementById('gal3-file').click()">
+                  <span style="font-size:24px">📷</span>
+                  <div style="font-size:11px;color:var(--muted);margin-top:4px">600×600 px</div>
+                </div>
+                <div id="gal3-preview" style="display:none;position:relative">
+                  <img id="gal3-preview-img" src="" alt="" style="width:100%;height:140px;object-fit:cover;border-radius:4px;display:block">
+                  <button onclick="document.getElementById('gal3-file').click()" class="mini-change-btn">🔄</button>
+                  <button onclick="removePhoto('gal3','images/real3.webp')" class="mini-remove-btn">🗑</button>
+                </div>
+                <div id="gal3-progress" style="display:none;text-align:center;padding:8px;font-size:11px;color:var(--terra)">⏳ Upload...</div>
+              </div>
+              <div class="field" style="margin-top:8px"><input type="text" class="field-input" id="gal3-legend" value="Volume Mixte" style="font-size:11px" placeholder="Légende"></div>
+            </div>
+            <!-- Photo 4 -->
+            <div class="galerie-item">
+              <div class="galerie-item-num">04</div>
+              <div class="github-upload-zone mini" id="gal4-zone">
+                <input type="file" id="gal4-file" accept="image/webp,image/jpeg,image/png" style="display:none" onchange="handlePhotoUpload(this,'gal4','images/real4.webp')">
+                <div id="gal4-placeholder" class="upload-placeholder mini" onclick="document.getElementById('gal4-file').click()">
+                  <span style="font-size:24px">📷</span>
+                  <div style="font-size:11px;color:var(--muted);margin-top:4px">600×600 px</div>
+                </div>
+                <div id="gal4-preview" style="display:none;position:relative">
+                  <img id="gal4-preview-img" src="" alt="" style="width:100%;height:140px;object-fit:cover;border-radius:4px;display:block">
+                  <button onclick="document.getElementById('gal4-file').click()" class="mini-change-btn">🔄</button>
+                  <button onclick="removePhoto('gal4','images/real4.webp')" class="mini-remove-btn">🗑</button>
+                </div>
+                <div id="gal4-progress" style="display:none;text-align:center;padding:8px;font-size:11px;color:var(--terra)">⏳ Upload...</div>
+              </div>
+              <div class="field" style="margin-top:8px"><input type="text" class="field-input" id="gal4-legend" value="Soin Éclat" style="font-size:11px" placeholder="Légende"></div>
+            </div>
+            <!-- Photo 5 -->
+            <div class="galerie-item">
+              <div class="galerie-item-num">05</div>
+              <div class="github-upload-zone mini" id="gal5-zone">
+                <input type="file" id="gal5-file" accept="image/webp,image/jpeg,image/png" style="display:none" onchange="handlePhotoUpload(this,'gal5','images/real5.webp')">
+                <div id="gal5-placeholder" class="upload-placeholder mini" onclick="document.getElementById('gal5-file').click()">
+                  <span style="font-size:24px">📷</span>
+                  <div style="font-size:11px;color:var(--muted);margin-top:4px">600×600 px</div>
+                </div>
+                <div id="gal5-preview" style="display:none;position:relative">
+                  <img id="gal5-preview-img" src="" alt="" style="width:100%;height:140px;object-fit:cover;border-radius:4px;display:block">
+                  <button onclick="document.getElementById('gal5-file').click()" class="mini-change-btn">🔄</button>
+                  <button onclick="removePhoto('gal5','images/real5.webp')" class="mini-remove-btn">🗑</button>
+                </div>
+                <div id="gal5-progress" style="display:none;text-align:center;padding:8px;font-size:11px;color:var(--terra)">⏳ Upload...</div>
+              </div>
+              <div class="field" style="margin-top:8px"><input type="text" class="field-input" id="gal5-legend" value="Volume Russe" style="font-size:11px" placeholder="Légende"></div>
+            </div>
+            <!-- Photo 6 -->
+            <div class="galerie-item">
+              <div class="galerie-item-num">06</div>
+              <div class="github-upload-zone mini" id="gal6-zone">
+                <input type="file" id="gal6-file" accept="image/webp,image/jpeg,image/png" style="display:none" onchange="handlePhotoUpload(this,'gal6','images/real6.webp')">
+                <div id="gal6-placeholder" class="upload-placeholder mini" onclick="document.getElementById('gal6-file').click()">
+                  <span style="font-size:24px">📷</span>
+                  <div style="font-size:11px;color:var(--muted);margin-top:4px">600×600 px</div>
+                </div>
+                <div id="gal6-preview" style="display:none;position:relative">
+                  <img id="gal6-preview-img" src="" alt="" style="width:100%;height:140px;object-fit:cover;border-radius:4px;display:block">
+                  <button onclick="document.getElementById('gal6-file').click()" class="mini-change-btn">🔄</button>
+                  <button onclick="removePhoto('gal6','images/real6.webp')" class="mini-remove-btn">🗑</button>
+                </div>
+                <div id="gal6-progress" style="display:none;text-align:center;padding:8px;font-size:11px;color:var(--terra)">⏳ Upload...</div>
+              </div>
+              <div class="field" style="margin-top:8px"><input type="text" class="field-input" id="gal6-legend" value="Teinture Sourcils" style="font-size:11px" placeholder="Légende"></div>
+            </div>
           </div>
         </div>
         <div class="save-bar">
@@ -1159,6 +1301,7 @@ async function doLogin(){
     document.getElementById('admin-app').style.display='flex';
     document.getElementById('l-pass').value=''; // effacer le mdp du DOM
     restoreAllFields();
+    restorePhotoPreviews();
   } else {
     d.loginAttempts = (d.loginAttempts || 0) + 1;
     if(d.loginAttempts >= MAX_ATTEMPTS){
@@ -1387,15 +1530,17 @@ function saveSection(section){
       colorTerra: /^#[0-9a-fA-F]{6}$/.test(v('color-terra-hex')) ? v('color-terra-hex') : '#C1593A'
     };
   } else if(section==='hero'){
+    const existingHero = (d.sections && d.sections.hero) || {};
     d.sections.hero={
       eyebrow:v('hero-eyebrow'), h1a:v('hero-h1a'), h1b:v('hero-h1b'),
       h1c:v('hero-h1c'), sub:v('hero-sub'), btn1:v('hero-btn1'), btn2:v('hero-btn2'),
-      photoUrl: sanitizeUrl(v('hero-photo-url'))
+      photoUrl: existingHero.photoUrl || '' // conservé depuis handlePhotoUpload
     };
   } else if(section==='univers'){
+    const existingUniv = (d.sections && d.sections.univers) || {};
     d.sections.univers={
       h2a:v('univ-h2a'), h2b:v('univ-h2b'), desc:v('univ-desc'),
-      photoUrl: sanitizeUrl(v('univ-photo-url'))
+      photoUrl: existingUniv.photoUrl || '' // conservé depuis handlePhotoUpload
     };
   } else if(section==='expertise'){
     d.sections.expertise={
@@ -1407,14 +1552,16 @@ function saveSection(section){
   } else if(section==='tarifs'){
     d.sections.tarifs={h2a:v('tarif-h2a'),h2b:v('tarif-h2b'),tables:saveTables()};
   } else if(section==='galerie'){
+    // Les URLs sont gérées par handlePhotoUpload — on ne les écrase pas
+    const existing = (d.sections && d.sections.galerie) || {};
     d.sections.galerie={
       h2a:v('gal-h2a'), h2b:v('gal-h2b'), sub:v('gal-sub'),
-      p1:{url:sanitizeUrl(v('gal1-url')), legend:v('gal1-legend')},
-      p2:{url:sanitizeUrl(v('gal2-url')), legend:v('gal2-legend')},
-      p3:{url:sanitizeUrl(v('gal3-url')), legend:v('gal3-legend')},
-      p4:{url:sanitizeUrl(v('gal4-url')), legend:v('gal4-legend')},
-      p5:{url:sanitizeUrl(v('gal5-url')), legend:v('gal5-legend')},
-      p6:{url:sanitizeUrl(v('gal6-url')), legend:v('gal6-legend')}
+      p1:{url:(existing.p1&&existing.p1.url)||'', legend:v('gal1-legend')},
+      p2:{url:(existing.p2&&existing.p2.url)||'', legend:v('gal2-legend')},
+      p3:{url:(existing.p3&&existing.p3.url)||'', legend:v('gal3-legend')},
+      p4:{url:(existing.p4&&existing.p4.url)||'', legend:v('gal4-legend')},
+      p5:{url:(existing.p5&&existing.p5.url)||'', legend:v('gal5-legend')},
+      p6:{url:(existing.p6&&existing.p6.url)||'', legend:v('gal6-legend')}
     };
   } else if(section==='avis'){
     const reviews = [];
@@ -1483,13 +1630,11 @@ function restoreAllFields(){
     sv('hero-eyebrow',s.hero.eyebrow);sv('hero-h1a',s.hero.h1a);
     sv('hero-h1b',s.hero.h1b);sv('hero-h1c',s.hero.h1c);
     sv('hero-sub',s.hero.sub);sv('hero-btn1',s.hero.btn1);sv('hero-btn2',s.hero.btn2);
-    sv('hero-photo-url',s.hero.photoUrl);
-    if(s.hero.photoUrl){const w=document.getElementById('hero-photo-preview-wrap');const i=document.getElementById('hero-photo-preview-img');if(w&&i){i.src=s.hero.photoUrl;w.style.display='block';}}
+    sv('hero-photo-url',''); // géré par restorePhotoPreviews
   }
   if(s.univers){
     sv('univ-h2a',s.univers.h2a);sv('univ-h2b',s.univers.h2b);sv('univ-desc',s.univers.desc);
-    sv('univ-photo-url',s.univers.photoUrl);
-    if(s.univers.photoUrl){const w=document.getElementById('univ-photo-preview-wrap');const i=document.getElementById('univ-photo-preview-img');if(w&&i){i.src=s.univers.photoUrl;w.style.display='block';}}
+    sv('univ-photo-url',''); // géré par restorePhotoPreviews
   }
   if(s.expertise){
     sv('exp-h2a',s.expertise.h2a);sv('exp-h2b',s.expertise.h2b);sv('exp-sub',s.expertise.sub);
@@ -1698,10 +1843,274 @@ function initDefaultAvis(){
 // ── TOAST ──
 function showToast(msg, type){
   const t = document.getElementById('toast');
-  t.textContent = String(msg).slice(0,200); // textContent = jamais de XSS
+  t.textContent = String(msg).slice(0,200);
   t.style.borderLeftColor = type==='err' ? '#E74C3C' : 'var(--terra)';
   t.style.display='block';
   setTimeout(()=>t.style.display='none', 3500);
+}
+// ══════════════════════════════════════════════════════════
+
+function getGhConfig() {
+  try {
+    const c = JSON.parse(localStorage.getItem('jib_gh_config') || '{}');
+    return { owner: c.owner || '', repo: c.repo || '', token: c.token || '' };
+  } catch(e) { return {owner:'',repo:'',token:''}; }
+}
+
+function saveGithubConfig() {
+  const owner = document.getElementById('gh-owner').value.trim();
+  const repo  = document.getElementById('gh-repo').value.trim();
+  const token = document.getElementById('gh-token').value.trim();
+  if (!owner || !repo || !token) { showToast('❌ Remplissez tous les champs GitHub', 'err'); return; }
+  localStorage.setItem('jib_gh_config', JSON.stringify({owner, repo, token}));
+  showToast('✅ Config GitHub sauvegardée !');
+}
+
+async function testGithubConnection() {
+  const cfg = getGhConfig();
+  const owner = document.getElementById('gh-owner').value.trim() || cfg.owner;
+  const repo  = document.getElementById('gh-repo').value.trim()  || cfg.repo;
+  const token = document.getElementById('gh-token').value.trim() || cfg.token;
+  const statusEl = document.getElementById('github-config-status');
+  if (!owner || !repo || !token) { showToast('❌ Remplissez tous les champs', 'err'); return; }
+  statusEl.style.display = 'block';
+  statusEl.style.background = '#FFF9E6';
+  statusEl.style.color = '#7A6558';
+  statusEl.textContent = '⏳ Test de connexion...';
+  try {
+    const r = await fetch(`https://api.github.com/repos/${owner}/${repo}`, {
+      headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3+json' }
+    });
+    if (r.ok) {
+      statusEl.style.background = '#D8F3DC';
+      statusEl.style.color = '#2D6A4F';
+      statusEl.textContent = '✅ Connexion réussie ! Vous pouvez uploader des photos.';
+      localStorage.setItem('jib_gh_config', JSON.stringify({owner, repo, token}));
+    } else {
+      statusEl.style.background = '#FFE5E5';
+      statusEl.style.color = '#C0392B';
+      statusEl.textContent = `❌ Erreur ${r.status} — Vérifiez votre token et le nom du dépôt.`;
+    }
+  } catch(e) {
+    statusEl.style.background = '#FFE5E5';
+    statusEl.style.color = '#C0392B';
+    statusEl.textContent = '❌ Impossible de joindre GitHub. Vérifiez votre connexion internet.';
+  }
+}
+
+// Convertit un fichier en base64 pur (sans le préfixe data:...)
+function fileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      const b64 = e.target.result.split(',')[1];
+      resolve(b64);
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+// Récupère le SHA d'un fichier existant sur GitHub (nécessaire pour le remplacer)
+async function getFileSha(owner, repo, token, path) {
+  try {
+    const r = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`, {
+      headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3+json' }
+    });
+    if (r.ok) {
+      const data = await r.json();
+      return data.sha || null;
+    }
+  } catch(e) {}
+  return null;
+}
+
+// Upload une photo vers GitHub et met à jour le site
+async function handlePhotoUpload(input, slotId, githubPath) {
+  const file = input.files[0];
+  if (!file) return;
+
+  // Vérifie taille
+  if (file.size > 2 * 1024 * 1024) {
+    showToast('❌ Photo trop lourde (max 2 Mo). Compressez-la d\'abord.', 'err');
+    return;
+  }
+
+  const cfg = getGhConfig();
+  if (!cfg.token) {
+    showToast('❌ Configurez d\'abord la connexion GitHub (section Identité)', 'err');
+    return;
+  }
+
+  // Affiche la progression
+  const placeholder = document.getElementById(slotId + '-placeholder') || document.getElementById(slotId + '-upload-placeholder');
+  const preview     = document.getElementById(slotId + '-preview')     || document.getElementById(slotId + '-upload-preview');
+  const progress    = document.getElementById(slotId + '-progress')    || document.getElementById(slotId + '-upload-progress');
+  const statusEl    = document.getElementById(slotId + '-upload-status');
+  const barEl       = document.getElementById(slotId + '-progress-bar');
+
+  if (placeholder) placeholder.style.display = 'none';
+  if (preview)     preview.style.display     = 'none';
+  if (progress)    progress.style.display    = 'block';
+  if (statusEl)    statusEl.textContent      = '⏳ Conversion en base64...';
+  if (barEl)       barEl.style.width         = '20%';
+
+  try {
+    // Convertit en base64
+    const b64 = await fileToBase64(file);
+    if (statusEl) statusEl.textContent = '⏳ Récupération du fichier existant...';
+    if (barEl)    barEl.style.width    = '40%';
+
+    // Récupère le SHA de l'ancien fichier s'il existe (pour le remplacer)
+    const sha = await getFileSha(cfg.owner, cfg.repo, cfg.token, githubPath);
+
+    if (statusEl) statusEl.textContent = '⏳ Upload vers GitHub...';
+    if (barEl)    barEl.style.width    = '60%';
+
+    // Upload via GitHub API
+    const body = {
+      message: `Photo mise a jour : ${githubPath}`,
+      content: b64,
+      branch: 'main'
+    };
+    if (sha) body.sha = sha; // Remplace l'ancien fichier si SHA présent
+
+    const r = await fetch(`https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/${githubPath}`, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `token ${cfg.token}`,
+        'Accept': 'application/vnd.github.v3+json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
+    });
+
+    if (!r.ok) {
+      const err = await r.json();
+      throw new Error(err.message || `Erreur ${r.status}`);
+    }
+
+    if (barEl) barEl.style.width = '90%';
+
+    // URL raw de la photo sur GitHub
+    const rawUrl = `https://raw.githubusercontent.com/${cfg.owner}/${cfg.repo}/main/${githubPath}?t=${Date.now()}`;
+
+    // Sauvegarde l'URL dans le localStorage
+    const d = load();
+    if (!d.sections) d.sections = {};
+
+    if (slotId === 'hero') {
+      if (!d.sections.hero) d.sections.hero = {};
+      d.sections.hero.photoUrl = rawUrl;
+    } else if (slotId === 'univ') {
+      if (!d.sections.univers) d.sections.univers = {};
+      d.sections.univers.photoUrl = rawUrl;
+    } else if (slotId.startsWith('gal')) {
+      const n = slotId.replace('gal','');
+      if (!d.sections.galerie) d.sections.galerie = {};
+      if (!d.sections.galerie['p'+n]) d.sections.galerie['p'+n] = {};
+      d.sections.galerie['p'+n].url = rawUrl;
+    }
+    save(d);
+
+    // Affiche la prévisualisation
+    if (barEl) barEl.style.width = '100%';
+    setTimeout(() => {
+      if (progress) progress.style.display = 'none';
+      if (preview)  preview.style.display  = 'block';
+      const imgEl = document.getElementById(slotId + '-preview-img');
+      if (imgEl) { imgEl.src = rawUrl; }
+      showToast(`✅ Photo uploadée avec succès sur GitHub !`);
+    }, 400);
+
+  } catch(e) {
+    if (progress) progress.style.display = 'none';
+    if (placeholder) placeholder.style.display = 'block';
+    showToast(`❌ Erreur upload : ${e.message}`, 'err');
+  }
+
+  // Réinitialise l'input file pour permettre de re-sélectionner le même fichier
+  input.value = '';
+}
+
+// Supprime une photo de GitHub
+async function removePhoto(slotId, githubPath) {
+  if (!confirm('Supprimer cette photo de GitHub ?')) return;
+
+  const cfg = getGhConfig();
+  if (!cfg.token) { showToast('❌ Configurez d\'abord la connexion GitHub', 'err'); return; }
+
+  try {
+    const sha = await getFileSha(cfg.owner, cfg.repo, cfg.token, githubPath);
+    if (sha) {
+      const r = await fetch(`https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/${githubPath}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `token ${cfg.token}`,
+          'Accept': 'application/vnd.github.v3+json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ message: `Suppression photo : ${githubPath}`, sha, branch: 'main' })
+      });
+      if (!r.ok) { const e = await r.json(); throw new Error(e.message); }
+    }
+
+    // Supprime de localStorage
+    const d = load();
+    if (d.sections) {
+      if (slotId === 'hero' && d.sections.hero) delete d.sections.hero.photoUrl;
+      else if (slotId === 'univ' && d.sections.univers) delete d.sections.univers.photoUrl;
+      else if (slotId.startsWith('gal') && d.sections.galerie) {
+        const n = slotId.replace('gal','');
+        if (d.sections.galerie['p'+n]) delete d.sections.galerie['p'+n].url;
+      }
+    }
+    save(d);
+
+    // Masque la preview
+    const preview     = document.getElementById(slotId + '-preview')     || document.getElementById(slotId + '-upload-preview');
+    const placeholder = document.getElementById(slotId + '-placeholder') || document.getElementById(slotId + '-upload-placeholder');
+    if (preview)     preview.style.display     = 'none';
+    if (placeholder) placeholder.style.display = 'block';
+    showToast('🗑 Photo supprimée de GitHub.');
+
+  } catch(e) {
+    showToast(`❌ Erreur suppression : ${e.message}`, 'err');
+  }
+}
+
+// Restaure les prévisualisations photos au chargement
+function restorePhotoPreviews() {
+  const d = load();
+  const s = (d && d.sections) || {};
+
+  const slots = [
+    { id:'hero', urlFn: () => s.hero && s.hero.photoUrl },
+    { id:'univ', urlFn: () => s.univers && s.univers.photoUrl },
+    { id:'gal1', urlFn: () => s.galerie && s.galerie.p1 && s.galerie.p1.url },
+    { id:'gal2', urlFn: () => s.galerie && s.galerie.p2 && s.galerie.p2.url },
+    { id:'gal3', urlFn: () => s.galerie && s.galerie.p3 && s.galerie.p3.url },
+    { id:'gal4', urlFn: () => s.galerie && s.galerie.p4 && s.galerie.p4.url },
+    { id:'gal5', urlFn: () => s.galerie && s.galerie.p5 && s.galerie.p5.url },
+    { id:'gal6', urlFn: () => s.galerie && s.galerie.p6 && s.galerie.p6.url },
+  ];
+
+  slots.forEach(({ id, urlFn }) => {
+    const url = urlFn();
+    if (!url) return;
+    const preview     = document.getElementById(id + '-preview')     || document.getElementById(id + '-upload-preview');
+    const placeholder = document.getElementById(id + '-placeholder') || document.getElementById(id + '-upload-placeholder');
+    const imgEl       = document.getElementById(id + '-preview-img');
+    if (imgEl)      imgEl.src              = url;
+    if (preview)    preview.style.display  = 'block';
+    if (placeholder) placeholder.style.display = 'none';
+  });
+
+  // Restaure aussi la config GitHub dans les champs
+  const cfg = getGhConfig();
+  if (cfg.owner) { const el = document.getElementById('gh-owner'); if(el) el.value = cfg.owner; }
+  if (cfg.repo)  { const el = document.getElementById('gh-repo');  if(el) el.value = cfg.repo; }
+  if (cfg.token) { const el = document.getElementById('gh-token'); if(el) el.value = cfg.token; }
 }
 </script>
 
