@@ -113,6 +113,8 @@ section{padding:96px 80px}
 .tarif-price{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;color:var(--terra)}
 .tarifs-cta{text-align:center;margin-top:48px;padding-top:48px;border-top:1px solid var(--beige-dark)}
 .tarifs-cta p{font-size:14px;font-weight:300;color:var(--muted);margin-bottom:20px}
+.tarif-subtitle{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:500;color:var(--terra);letter-spacing:0.06em;padding:24px 0 10px;border-bottom:2px solid var(--terra-pale);margin-bottom:4px;margin-top:8px}
+.tarif-subtitle:first-child{margin-top:0;padding-top:4px}
 .gallery{background:var(--beige)}
 .gallery-header{text-align:center;margin-bottom:48px}
 .gallery-header .section-tag{justify-content:center}
@@ -320,44 +322,100 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--terra);outline-offs
     <h2 class="section-title" id="tarifs-title">Des soins d&#39;exception<br>&#224; des <em>prix transparents.</em></h2>
   </div>
   <div class="tarifs-tabs" role="tablist" aria-label="Cat&#233;gories de prestations">
-    <button class="tab active" role="tab" aria-selected="true" aria-controls="tab-regard" id="btn-regard">Regard &amp; Sourcils</button>
-    <button class="tab" role="tab" aria-selected="false" aria-controls="tab-soins" id="btn-soins">Soins Visage</button>
-    <button class="tab" role="tab" aria-selected="false" aria-controls="tab-epilation" id="btn-epilation">&#201;pilation</button>
-    <button class="tab" role="tab" aria-selected="false" aria-controls="tab-mains" id="btn-mains">Mains &amp; Pieds</button>
+    <button class="tab active" role="tab" aria-selected="true" aria-controls="tab-regard" id="btn-regard">L&#39;Art du Regard</button>
+    <button class="tab" role="tab" aria-selected="false" aria-controls="tab-bienetre" id="btn-bienetre">Parent&#232;se Bien-&#202;tre</button>
+    <button class="tab" role="tab" aria-selected="false" aria-controls="tab-epilation" id="btn-epilation">Rituels Peau Douce</button>
+    <button class="tab" role="tab" aria-selected="false" aria-controls="tab-ongles" id="btn-ongles">Jusqu&#39;au bout des ongles</button>
   </div>
+
+  <!-- TAB 1 — L'ART DU REGARD -->
   <div class="tarifs-content active" id="tab-regard" role="tabpanel" aria-labelledby="btn-regard">
-    <div class="tarif-item"><div><div class="tarif-name">Pose Extensions Cil &#224; Cil</div><div class="tarif-detail">Pose compl&#232;te &#183; 1h30&#8211;2h</div></div><div><div class="tarif-price">95 &#8364;</div></div></div>
-    <div class="tarif-item"><div><div class="tarif-name">Retouche Extensions</div><div class="tarif-detail">Infill 2&#8211;3 semaines</div></div><div><div class="tarif-price">50 &#8364;</div></div></div>
-    <div class="tarif-item"><div><div class="tarif-name">Volume Mixte / Russe</div><div class="tarif-detail">Pose compl&#232;te &#183; 2h&#8211;2h30</div></div><div><div class="tarif-price">110 &#8364;</div></div></div>
-    <div class="tarif-item"><div><div class="tarif-name">Rehaussement de Cils</div><div class="tarif-detail">K&#233;ratine incluse &#183; 1h</div></div><div><div class="tarif-price">55 &#8364;</div></div></div>
-    <div class="tarif-item"><div><div class="tarif-name">Browlift</div><div class="tarif-detail">Lamination + mise en forme &#183; 45 min</div></div><div><div class="tarif-price">45 &#8364;</div></div></div>
-    <div class="tarif-item"><div><div class="tarif-name">Browlift + Rehaussement</div><div class="tarif-detail">Duo yeux &#183; 1h30</div></div><div><div class="tarif-price">90 &#8364;</div></div></div>
-    <div class="tarif-item"><div><div class="tarif-name">Teinture Sourcils / Cils</div><div class="tarif-detail">Teinte v&#233;g&#233;tale &#183; 20 min</div></div><div><div class="tarif-price">12 &#8364;</div></div></div>
+
+    <div class="tarif-subtitle">Maquillage</div>
+    <div class="tarif-item"><div><div class="tarif-name">Maquillage jour</div></div><div><div class="tarif-price">25 &#8364;</div></div></div>
+    <div class="tarif-item"><div><div class="tarif-name">Maquillage soir ou cocktail</div></div><div><div class="tarif-price">30 &#8364;</div></div></div>
+    <div class="tarif-item"><div><div class="tarif-name">Maquillage mari&#233;e</div><div class="tarif-detail">Essai compris + 1 essai offert</div></div><div><div class="tarif-price">75 &#8364;</div></div></div>
+
+    <div class="tarif-subtitle">Teinture cils &amp; sourcils</div>
+    <div class="tarif-item"><div><div class="tarif-name">Teinture cils</div></div><div><div class="tarif-price">20 &#8364;</div></div></div>
+    <div class="tarif-item"><div><div class="tarif-name">Teinture sourcils</div></div><div><div class="tarif-price">25 &#8364;</div></div></div>
+
+    <div class="tarif-subtitle">Extensions de cils</div>
+    <div class="tarif-item"><div><div class="tarif-name">Cil &#224; cil</div></div><div><div class="tarif-price">50 &#8364;</div></div></div>
+    <div class="tarif-item"><div><div class="tarif-name">Volume mixte</div></div><div><div class="tarif-price">65 &#8364;</div></div></div>
+    <div class="tarif-item"><div><div class="tarif-name">Volume russe</div></div><div><div class="tarif-price">85 &#8364;</div></div></div>
+    <div class="tarif-item"><div><div class="tarif-name">Remplissage 2 semaines</div></div><div><div class="tarif-price">25 &#8364;</div></div></div>
+    <div class="tarif-item"><div><div class="tarif-name">Remplissage 3 semaines</div></div><div><div class="tarif-price">35 &#8364;</div></div></div>
+    <div class="tarif-item"><div><div class="tarif-name">D&#233;pose des extensions</div></div><div><div class="tarif-price">15 &#8364;</div></div></div>
   </div>
-  <div class="tarifs-content" id="tab-soins" role="tabpanel" aria-labelledby="btn-soins">
-    <div class="tarif-item"><div><div class="tarif-name">Soin Visage Hydratation Intense</div><div class="tarif-detail">Peau s&#232;che / d&#233;shydrat&#233;e &#183; 50 min</div></div><div><div class="tarif-price">55 &#8364;</div></div></div>
-    <div class="tarif-item"><div><div class="tarif-name">Soin Visage &#201;clat &amp; Unification</div><div class="tarif-detail">Teint terne / irr&#233;gulier &#183; 50 min</div></div><div><div class="tarif-price">55 &#8364;</div></div></div>
-    <div class="tarif-item"><div><div class="tarif-name">Soin Anti-&#194;ge Liftant</div><div class="tarif-detail">Fermet&#233; &amp; &#233;clat &#183; 60 min</div></div><div><div class="tarif-price">65 &#8364;</div></div></div>
-    <div class="tarif-item"><div><div class="tarif-name">&#201;pilation Sourcils</div><div class="tarif-detail">Mise en forme &#224; la cire &#183; 15 min</div></div><div><div class="tarif-price">10 &#8364;</div></div></div>
-    <div class="tarif-item"><div><div class="tarif-name">&#201;pilation L&#232;vre Sup&#233;rieure</div><div class="tarif-detail">Cire douce &#183; 10 min</div></div><div><div class="tarif-price">8 &#8364;</div></div></div>
+
+  <!-- TAB 2 — BIEN-ÊTRE -->
+  <div class="tarifs-content" id="tab-bienetre" role="tabpanel" aria-labelledby="btn-bienetre">
+
+    <div class="tarif-subtitle">Soins visage</div>
+    <div class="tarif-item"><div><div class="tarif-name">Nettoyage de peau</div><div class="tarif-detail">45 min</div></div><div><div class="tarif-price">40 &#8364;</div></div></div>
+    <div class="tarif-item"><div><div class="tarif-name">Coup d&#39;&#233;clat</div><div class="tarif-detail">50 min</div></div><div><div class="tarif-price">50 &#8364;</div></div></div>
+    <div class="tarif-item"><div><div class="tarif-name">Repulpant</div><div class="tarif-detail">50 min</div></div><div><div class="tarif-price">50 &#8364;</div></div></div>
+    <div class="tarif-item"><div><div class="tarif-name">D&#233;tente et hydratation</div><div class="tarif-detail">1h</div></div><div><div class="tarif-price">60 &#8364;</div></div></div>
+    <div class="tarif-item"><div><div class="tarif-name">Anti-&#226;ge global</div><div class="tarif-detail">50 min</div></div><div><div class="tarif-price">55 &#8364;</div></div></div>
+
+    <div class="tarif-subtitle">Soins corps</div>
+    <div class="tarif-item"><div><div class="tarif-name">Soin du dos</div><div class="tarif-detail">Gommage + masque</div></div><div><div class="tarif-price">38 &#8364;</div></div></div>
+    <div class="tarif-item"><div><div class="tarif-name">Soin du dos</div><div class="tarif-detail">Gommage + modelage</div></div><div><div class="tarif-price">38 &#8364;</div></div></div>
+    <div class="tarif-item"><div><div class="tarif-name">Gommage corps</div></div><div><div class="tarif-price">40 &#8364;</div></div></div>
+    <div class="tarif-item"><div><div class="tarif-name">Modelage dos relaxant</div><div class="tarif-detail">30 min</div></div><div><div class="tarif-price">35 &#8364;</div></div></div>
+    <div class="tarif-item"><div><div class="tarif-name">Modelage corps relaxant</div><div class="tarif-detail">30 min</div></div><div><div class="tarif-price">35 &#8364;</div></div></div>
+    <div class="tarif-item"><div><div class="tarif-name">Modelage corps relaxant</div><div class="tarif-detail">45 min</div></div><div><div class="tarif-price">45 &#8364;</div></div></div>
+    <div class="tarif-item"><div><div class="tarif-name">Modelage corps relaxant</div><div class="tarif-detail">1h</div></div><div><div class="tarif-price">55 &#8364;</div></div></div>
   </div>
+
+  <!-- TAB 3 — ÉPILATION -->
   <div class="tarifs-content" id="tab-epilation" role="tabpanel" aria-labelledby="btn-epilation">
-    <div class="tarif-item"><div><div class="tarif-name">Demi-jambes</div><div class="tarif-detail">Chevilles &#8594; genoux</div></div><div><div class="tarif-price">22 &#8364;</div></div></div>
-    <div class="tarif-item"><div><div class="tarif-name">Jambes compl&#232;tes</div><div class="tarif-detail">+ maillot simple offert</div></div><div><div class="tarif-price">38 &#8364;</div></div></div>
-    <div class="tarif-item"><div><div class="tarif-name">Maillot simple / br&#233;silien / int&#233;gral</div><div class="tarif-detail">Selon formule choisie</div></div><div><div class="tarif-price">14 / 22 / 30 &#8364;</div></div></div>
-    <div class="tarif-item"><div><div class="tarif-name">Aisselles</div><div class="tarif-detail">Cire chaude</div></div><div><div class="tarif-price">12 &#8364;</div></div></div>
-    <div class="tarif-item"><div><div class="tarif-name">Bras complets</div><div class="tarif-detail">&#201;paules incluses sur demande</div></div><div><div class="tarif-price">20 &#8364;</div></div></div>
-    <div class="tarif-item"><div><div class="tarif-name">Dos / Torse</div><div class="tarif-detail">Sur devis selon densit&#233;</div></div><div><div class="tarif-price">d&#232;s 20 &#8364;</div></div></div>
+
+    <div class="tarif-subtitle">Épilation</div>
+    <div class="tarif-item"><div><div class="tarif-name">L&#232;vres</div></div><div><div class="tarif-price">8 &#8364;</div></div></div>
+    <div class="tarif-item"><div><div class="tarif-name">Sourcils</div></div><div><div class="tarif-price">8 &#8364;</div></div></div>
+    <div class="tarif-item"><div><div class="tarif-name">Menton</div></div><div><div class="tarif-price">8 &#8364;</div></div></div>
+    <div class="tarif-item"><div><div class="tarif-name">Aisselles</div></div><div><div class="tarif-price">12 &#8364;</div></div></div>
+    <div class="tarif-item"><div><div class="tarif-name">Dos ou Torse</div></div><div><div class="tarif-price">25 &#8364;</div></div></div>
+    <div class="tarif-item"><div><div class="tarif-name">Bras</div></div><div><div class="tarif-price">15 &#8364;</div></div></div>
+    <div class="tarif-item"><div><div class="tarif-name">&#189; Jambes</div></div><div><div class="tarif-price">15 &#8364;</div></div></div>
+    <div class="tarif-item"><div><div class="tarif-name">Cuisses</div></div><div><div class="tarif-price">15 &#8364;</div></div></div>
+    <div class="tarif-item"><div><div class="tarif-name">Jambes enti&#232;res</div></div><div><div class="tarif-price">25 &#8364;</div></div></div>
+    <div class="tarif-item"><div><div class="tarif-name">Maillot classique</div></div><div><div class="tarif-price">12 &#8364;</div></div></div>
+    <div class="tarif-item"><div><div class="tarif-name">Maillot &#233;chanc&#233;r</div></div><div><div class="tarif-price">16 &#8364;</div></div></div>
+    <div class="tarif-item"><div><div class="tarif-name">Maillot int&#233;gral</div></div><div><div class="tarif-price">22 &#8364;</div></div></div>
+
+    <div class="tarif-subtitle">Forfaits épilation</div>
+    <div class="tarif-item"><div><div class="tarif-name">Forfait Visage</div><div class="tarif-detail">Sourcils + L&#232;vres + Menton</div></div><div><div class="tarif-price">22 &#8364;</div></div></div>
+    <div class="tarif-item"><div><div class="tarif-name">Forfait Corps</div><div class="tarif-detail">&#189; Jambes + Maillot + Aisselles</div></div><div><div class="tarif-price">35 &#8364;</div></div></div>
+    <div class="tarif-item"><div><div class="tarif-name">Forfait Corps Complet</div><div class="tarif-detail">Jambes enti&#232;res + Maillot + Aisselles</div></div><div><div class="tarif-price">45 &#8364;</div></div></div>
   </div>
-  <div class="tarifs-content" id="tab-mains" role="tabpanel" aria-labelledby="btn-mains">
-    <div class="tarif-item"><div><div class="tarif-name">Pose Vernis Semi-Permanent Mains</div><div class="tarif-detail">Pr&#233;paration + pose + top coat</div></div><div><div class="tarif-price">30 &#8364;</div></div></div>
-    <div class="tarif-item"><div><div class="tarif-name">D&#233;pose Vernis Semi-Permanent</div><div class="tarif-detail">Sans pose incluse</div></div><div><div class="tarif-price">10 &#8364;</div></div></div>
-    <div class="tarif-item"><div><div class="tarif-name">Pose Semi-Permanent Pieds</div><div class="tarif-detail">Soin des ongles inclus</div></div><div><div class="tarif-price">28 &#8364;</div></div></div>
-    <div class="tarif-item"><div><div class="tarif-name">P&#233;dicure compl&#232;te</div><div class="tarif-detail">Soin + vernis classique</div></div><div><div class="tarif-price">35 &#8364;</div></div></div>
+
+  <!-- TAB 4 — ONGLES -->
+  <div class="tarifs-content" id="tab-ongles" role="tabpanel" aria-labelledby="btn-ongles">
+
+    <div class="tarif-subtitle">Beaut&#233; des mains</div>
+    <div class="tarif-item"><div><div class="tarif-name">Soin des mains</div></div><div><div class="tarif-price">38 &#8364;</div></div></div>
+    <div class="tarif-item"><div><div class="tarif-name">Manucure + vernis simple</div></div><div><div class="tarif-price">32 &#8364;</div></div></div>
+    <div class="tarif-item"><div><div class="tarif-name">Pose de vernis classique</div></div><div><div class="tarif-price">14 &#8364;</div></div></div>
+    <div class="tarif-item"><div><div class="tarif-name">Manucure + vernis semi-permanent</div></div><div><div class="tarif-price">42 &#8364;</div></div></div>
+    <div class="tarif-item"><div><div class="tarif-name">Pose de vernis semi-permanent</div></div><div><div class="tarif-price">25 &#8364;</div></div></div>
+    <div class="tarif-item"><div><div class="tarif-name">D&#233;pose + Pose vernis semi-permanent</div></div><div><div class="tarif-price">35 &#8364;</div></div></div>
+    <div class="tarif-item"><div><div class="tarif-name">Capsules am&#233;ricaines + vernis semi-permanent</div></div><div><div class="tarif-price">55 &#8364;</div></div></div>
+
+    <div class="tarif-subtitle">Beaut&#233; des pieds</div>
+    <div class="tarif-item"><div><div class="tarif-name">Soin des pieds</div></div><div><div class="tarif-price">38 &#8364;</div></div></div>
+    <div class="tarif-item"><div><div class="tarif-name">P&#233;dicure + vernis simple</div></div><div><div class="tarif-price">32 &#8364;</div></div></div>
+    <div class="tarif-item"><div><div class="tarif-name">P&#233;dicure + vernis semi-permanent</div></div><div><div class="tarif-price">42 &#8364;</div></div></div>
+    <div class="tarif-item"><div><div class="tarif-name">Pose de vernis classique</div></div><div><div class="tarif-price">14 &#8364;</div></div></div>
+    <div class="tarif-item"><div><div class="tarif-name">Pose de vernis semi-permanent</div></div><div><div class="tarif-price">25 &#8364;</div></div></div>
+    <div class="tarif-item"><div><div class="tarif-name">D&#233;pose + Pose vernis semi-permanent</div></div><div><div class="tarif-price">35 &#8364;</div></div></div>
   </div>
+
   <div class="tarifs-cta">
     <p>Toutes les prestations comprennent la consultation personnalis&#233;e et les produits professionnels.</p>
-    <a href="https://www.planity.com/justin-beauty-34290-bassan" class="btn-primary" target="_blank" rel="noopener noreferrer">Consulter le menu complet &amp; r&#233;server</a>
+    <a href="https://www.planity.com/justin-beauty-34290-bassan" class="btn-primary" target="_blank" rel="noopener noreferrer">Consulter les tarifs complets &amp; r&#233;server sur Planity</a>
   </div>
 </section>
 
@@ -467,38 +525,61 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--terra);outline-offs
   var isPaused    = false;
 
   // Vrais avis Google Just'In Beauty — mis a jour automatiquement par GitHub Actions
-    // ── Vrais avis Google — mis à jour automatiquement le 19/04/2026 ──
-  // Note globale : 4.9/5 · 50 avis vérifiés
+  // Note globale : 4.9/5 · 50 avis verifies
   var DEFAULT_REVIEWS = [
     {
-      text: 'J\'ai récemment visité le salon de Justine et je suis absolument ravie de mon expérience ! L\'ambiance est chaleureuse et accueillante, ce qui m\'a immédiatement mise à l\'aise. Justine est extrêmement professionnel et attentive, prenant le temps de comprendre exactement ce que je souhaitais.  Ma manucure est magnifique, avec une finition parfaite et des détails.  Je recommande vivement Justine à toutes celles et ceux qui cherchent à se faire chouchouter les mains. Je reviendrai sans hésiter ! C\'est un réel coup de cœur pour Just\'In Beauty. Laura.',
+      text: 'J\'ai r\u00e9cemment visit\u00e9 le salon de Justine et je suis absolument ravie de mon exp\u00e9rience ! L\'ambiance est chaleureuse et accueillante. Justine est extr\u00eamement professionnelle et attentive, prenant le temps de comprendre exactement ce que je souhaitais. Ma manucure est magnifique, avec une finition parfaite. Je recommande vivement ! C\'est un r\u00e9el coup de c\u0153ur.',
       name: 'Lothy F',
       presta: 'Ongles',
       date: 'Il y a 6 mois'
     },
     {
-      text: 'Si vous recherchez quelqu’un de confiance, gentil, et douce Et souriante, et qui aime son métier et qui s’adapte selon votre besoin. Franchement foncé je vous recommande vraiment, J’avais un peu peur de retourner me faire épiler après quelques petits soucis de santé et au final je pense avoir trouver mon endroit parfait 🥰😊',
-      name: 'oceane carpentier',
-      presta: 'Épilation',
+      text: 'Si vous recherchez quelqu\'un de confiance, gentille, douce et souriante, qui aime son m\u00e9tier et s\'adapte selon votre besoin — foncez ! J\'avais un peu peur de retourner me faire \u00e9piler apr\u00e8s quelques soucis de sant\u00e9 et au final je pense avoir trouv\u00e9 mon endroit parfait \uD83E\uDD70',
+      name: 'Oceane Carpentier',
+      presta: '\u00c9pilation',
       date: 'Il y a 4 mois'
     },
     {
-      text: 'Un moment super ! C’était une première fois avec Justine mais elle m’a mise à l’aise de suite et a été très douce ! La cabine est très chaleureuse et très propre. Je reviendrai vite',
-      name: 'Adeline Rousseau (A2line)',
-      presta: 'Prestation',
+      text: 'Un moment super ! C\'\u00e9tait une premi\u00e8re fois avec Justine mais elle m\'a mise \u00e0 l\'aise de suite et a \u00e9t\u00e9 tr\u00e8s douce ! La cabine est tr\u00e8s chaleureuse et tr\u00e8s propre. Je reviendrai vite.',
+      name: 'Adeline Rousseau',
+      presta: 'Soin corps',
       date: 'Il y a 4 mois'
     },
     {
-      text: 'C’était la première épilation de sourcils de ma fille et Justine a su la mettre parfaitement à l’aise. Très douce, agréable et extrêmement professionnelle, elle a pris le temps de tout expliquer et de rassurer. Le résultat est impeccable, ma fille est ravie. Je recommande à 100% !',
-      name: 'Adeline BATALLER-GARCIA',
-      presta: 'Extensions Cils',
+      text: 'C\'\u00e9tait la premi\u00e8re \u00e9pilation de sourcils de ma fille et Justine a su la mettre parfaitement \u00e0 l\'aise. Tr\u00e8s douce, agr\u00e9able et extr\u00eamement professionnelle, elle a pris le temps de tout expliquer. Le r\u00e9sultat est impeccable, ma fille est ravie. Je recommande \u00e0 100% !',
+      name: 'Adeline B.',
+      presta: 'Sourcils',
       date: 'Il y a 6 mois'
     },
     {
-      text: 'J’ai été très très bien reçu, et elle est très agréable, et souriante. J’ai fait mes cils en volume mixte, elle vous montre et vous explique tout les produits qu’elle vas utilisé, ce qui met en confiance, elle travail plutôt rapidement. Elle nous donne à la fin un petit sachet complet pour prendre soin de nos cils chez nous ! Je recommande fortement !!',
+      text: 'J\'ai \u00e9t\u00e9 tr\u00e8s tr\u00e8s bien re\u00e7ue, elle est tr\u00e8s agr\u00e9able et souriante. J\'ai fait mes cils en volume mixte, elle montre et explique tous les produits qu\'elle va utiliser, ce qui met en confiance. Elle nous donne \u00e0 la fin un petit sachet pour prendre soin de nos cils ! Je recommande fortement !!',
       name: 'Candice Marques',
       presta: 'Extensions Cils',
       date: 'Il y a 6 mois'
+    },
+    {
+      text: 'Un vrai moment de bien-\u00eatre chez Justine \u00e0 Bassan ! Accueil chaleureux, une prestation de grande qualit\u00e9 \u00e0 petit prix. Justine est \u00e0 l\'\u00e9coute, professionnelle et tr\u00e8s minutieuse. Ma p\u00e9dicure est impeccable.',
+      name: 'Gwenaelle',
+      presta: 'P\u00e9dicure',
+      date: 'Il y a 9 mois'
+    },
+    {
+      text: 'Premi\u00e8re exp\u00e9rience absolument parfaite ! J\'ai \u00e9t\u00e9 accueillie avec beaucoup de gentillesse et de professionnalisme. Justine est \u00e0 l\'\u00e9coute, douce et tr\u00e8s attentionn\u00e9e, ce qui met tout de suite en confiance. Je recommande vivement !',
+      name: 'Cliente Google',
+      presta: 'Premi\u00e8re visite',
+      date: 'Il y a 2 semaines'
+    },
+    {
+      text: 'Un vrai moment de bonheur \u00e0 chaque rendez-vous ! Justine est une vraie professionnelle, douce et attentionn\u00e9e. Les soins sont r\u00e9alis\u00e9s avec beaucoup de pr\u00e9cision, l\'ambiance est apaisante et on ressort vraiment ressourc\u00e9e.',
+      name: 'Cliente Google',
+      presta: 'Soin visage',
+      date: 'Il y a 3 semaines'
+    },
+    {
+      text: 'Je suis vraiment tr\u00e8s contente de la prestation de Justine pour du volume russe ! Mes cils \u00e9taient magnifiques. C\'\u00e9tait naturel comme je le souhaitais et elle a \u00e9t\u00e9 \u00e0 mon \u00e9coute. Une adresse que je recommande sans h\u00e9siter.',
+      name: 'Cliente Google',
+      presta: 'Volume Russe',
+      date: 'Il y a un an'
     }
   ];
 
