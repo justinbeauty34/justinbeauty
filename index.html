@@ -629,24 +629,29 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--terra);outline-offs
       if(ns&&stored.sections&&stored.sections.avis&&stored.sections.avis.note)ns.textContent=stored.sections.avis.note;
     }catch(e){allReviews=DEFAULT_REVIEWS;}
 
-    buildTrack();
+    // Attend le premier paint pour que offsetWidth soit correct
+    requestAnimationFrame(function(){
+      requestAnimationFrame(function(){
+        buildTrack();
 
-    var prev=document.getElementById('carousel-prev');
-    var next=document.getElementById('carousel-next');
-    if(prev)prev.addEventListener('click',function(){advance(-1);restartTimer();});
-    if(next)next.addEventListener('click',function(){advance(1);restartTimer();});
+        var prev=document.getElementById('carousel-prev');
+        var next=document.getElementById('carousel-next');
+        if(prev)prev.addEventListener('click',function(){advance(-1);restartTimer();});
+        if(next)next.addEventListener('click',function(){advance(1);restartTimer();});
 
-    var outer=document.getElementById('carousel-outer');
-    if(outer){
-      outer.addEventListener('mouseenter',function(){isPaused=true;});
-      outer.addEventListener('mouseleave',function(){isPaused=false;});
-      var sx=0;
-      outer.addEventListener('touchstart',function(e){sx=e.touches[0].clientX;isPaused=true;},{passive:true});
-      outer.addEventListener('touchend',function(e){var d=sx-e.changedTouches[0].clientX;if(Math.abs(d)>40){advance(d>0?1:-1);restartTimer();}isPaused=false;},{passive:true});
-    }
+        var outer=document.getElementById('carousel-outer');
+        if(outer){
+          outer.addEventListener('mouseenter',function(){isPaused=true;});
+          outer.addEventListener('mouseleave',function(){isPaused=false;});
+          var sx=0;
+          outer.addEventListener('touchstart',function(e){sx=e.touches[0].clientX;isPaused=true;},{passive:true});
+          outer.addEventListener('touchend',function(e){var d=sx-e.changedTouches[0].clientX;if(Math.abs(d)>40){advance(d>0?1:-1);restartTimer();}isPaused=false;},{passive:true});
+        }
 
-    startTimer();
-    var rt;window.addEventListener('resize',function(){clearTimeout(rt);rt=setTimeout(function(){currentIdx=0;buildTrack();startTimer();},200);});
+        startTimer();
+        var rt;window.addEventListener('resize',function(){clearTimeout(rt);rt=setTimeout(function(){currentIdx=0;buildTrack();startTimer();},200);});
+      });
+    });
   }
 
   // ══════════════════════════════════════════════════════════
@@ -810,31 +815,43 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--terra);outline-offs
       if (s.acces.fb) {
         document.querySelectorAll('a[href*="facebook"]').forEach(function(a) { a.href = s.acces.fb; });
       }
-    }
   }
 
   // Lance le carousel ET le moteur admin au chargement
-  if(document.readyState==='loading'){
-    document.addEventListener('DOMContentLoaded', function(){ init(); applyAdminData(); });
-  } else {
+  function startAll() {
     init();
     applyAdminData();
+
+    // Onglets tarifs — initialisés après que le DOM est prêt
+    var tabs = document.querySelectorAll('.tab');
+    var panes = document.querySelectorAll('.tarifs-content');
+    tabs.forEach(function(tab) {
+      tab.addEventListener('click', function() {
+        var target = tab.getAttribute('aria-controls');
+        tabs.forEach(function(t) { t.classList.remove('active'); t.setAttribute('aria-selected','false'); });
+        panes.forEach(function(p) { p.classList.remove('active'); });
+        tab.classList.add('active');
+        tab.setAttribute('aria-selected','true');
+        var pane = document.getElementById(target);
+        if (pane) pane.classList.add('active');
+      });
+    });
+    var tablist = document.querySelector('[role="tablist"]');
+    if (tablist) {
+      tablist.addEventListener('keydown', function(e) {
+        var at = Array.from(tabs);
+        var idx = at.indexOf(document.activeElement);
+        if (e.key === 'ArrowRight') { var n = at[(idx+1)%at.length]; n.focus(); n.click(); }
+        else if (e.key === 'ArrowLeft') { var p = at[(idx-1+at.length)%at.length]; p.focus(); p.click(); }
+      });
+    }
   }
 
-  // Onglets tarifs
-  var tabs=document.querySelectorAll('.tab');
-  var panes=document.querySelectorAll('.tarifs-content');
-  tabs.forEach(function(tab){
-    tab.addEventListener('click',function(){
-      var target=tab.getAttribute('aria-controls');
-      tabs.forEach(function(t){t.classList.remove('active');t.setAttribute('aria-selected','false');});
-      panes.forEach(function(p){p.classList.remove('active');});
-      tab.classList.add('active');tab.setAttribute('aria-selected','true');
-      var pane=document.getElementById(target);if(pane)pane.classList.add('active');
-    });
-  });
-  var tablist=document.querySelector('[role="tablist"]');
-  if(tablist){tablist.addEventListener('keydown',function(e){var at=Array.from(tabs);var idx=at.indexOf(document.activeElement);if(e.key==='ArrowRight'){var n=at[(idx+1)%at.length];n.focus();n.click();}else if(e.key==='ArrowLeft'){var p=at[(idx-1+at.length)%at.length];p.focus();p.click();}});}
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', startAll);
+  } else {
+    startAll();
+  }
 
 })();
 </script>
