@@ -695,29 +695,30 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--terra);outline-offs
       set('site-hero-sub', s.hero.sub);
       set('site-hero-btn1', s.hero.btn1);
       set('site-hero-btn2', s.hero.btn2);
-    // ── Photos (stockées dans d.photos, pas d.sections) ──
-    var photos = d.photos || {};
+    // ── Photos (URLs depuis les sections) ──
 
     // Photo bannière hero
-    if (photos['hero-preview']) {
+    var heroUrl = s.hero && s.hero.photoUrl;
+    if (heroUrl) {
       var heroPhoto = document.getElementById('site-hero-photo');
       var heroPlaceholder = document.getElementById('site-hero-placeholder');
       if (heroPhoto) {
         var existImg = heroPhoto.querySelector('img.hero-real-img');
         if (!existImg) { existImg = document.createElement('img'); existImg.className = 'hero-real-img'; existImg.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;'; heroPhoto.appendChild(existImg); }
-        existImg.src = photos['hero-preview'];
+        existImg.src = heroUrl;
         existImg.alt = 'Ambiance Just\'In Beauty';
         if (heroPlaceholder) heroPlaceholder.style.display = 'none';
       }
     }
 
     // Photo intérieur salon (section univers)
-    if (photos['univ-preview']) {
+    var univUrl = s.univers && s.univers.photoUrl;
+    if (univUrl) {
       var univPhoto = document.getElementById('site-univ-photo');
       if (univPhoto) {
         var existUnivImg = univPhoto.querySelector('img.univ-real-img');
         if (!existUnivImg) { existUnivImg = document.createElement('img'); existUnivImg.className = 'univ-real-img'; existUnivImg.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:2px;'; univPhoto.appendChild(existUnivImg); }
-        existUnivImg.src = photos['univ-preview'];
+        existUnivImg.src = univUrl;
         existUnivImg.alt = 'Intérieur salon Just\'In Beauty';
         var univPlaceholder = univPhoto.querySelector('.univers-img-inner');
         if (univPlaceholder) univPlaceholder.style.display = 'none';
@@ -725,17 +726,23 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--terra);outline-offs
     }
 
     // Photos galerie 1 à 6
-    var galKeys = ['gal1-prev','gal2-prev','gal3-prev','gal4-prev','gal5-prev','gal6-prev'];
-    galKeys.forEach(function(key, i) {
-      if (!photos[key]) return;
-      var fig = document.getElementById('site-gal' + (i+1));
-      if (!fig) return;
-      var existImg = fig.querySelector('img.gal-real-img');
-      if (!existImg) { existImg = document.createElement('img'); existImg.className = 'gal-real-img'; existImg.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;'; fig.appendChild(existImg); }
-      existImg.src = photos[key];
-      var placeholder = fig.querySelector('.gallery-item-inner');
-      if (placeholder) placeholder.style.display = 'none';
-    });
+    if (s.galerie) {
+      [1,2,3,4,5,6].forEach(function(n) {
+        var p = s.galerie['p' + n];
+        if (!p || !p.url) return;
+        var fig = document.getElementById('site-gal' + n);
+        if (!fig) return;
+        var existImg = fig.querySelector('img.gal-real-img');
+        if (!existImg) { existImg = document.createElement('img'); existImg.className = 'gal-real-img'; existImg.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;'; fig.appendChild(existImg); }
+        existImg.src = p.url;
+        if (p.legend) {
+          var cap = fig.querySelector('.gallery-caption');
+          if (cap) cap.textContent = p.legend;
+        }
+        var placeholder = fig.querySelector('.gallery-item-inner');
+        if (placeholder) placeholder.style.display = 'none';
+      });
+    }
 
     // ── Expertise ──
     if (s.expertise) {
