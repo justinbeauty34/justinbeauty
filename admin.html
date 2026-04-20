@@ -591,13 +591,16 @@ textarea.field-input{resize:vertical;min-height:90px;line-height:1.6}
             <input type="file" id="hero-file-input" accept="image/webp,image/jpeg,image/png" style="display:none" onchange="handlePhotoUpload(this,'hero','images/hero.webp')">
             <div id="hero-upload-placeholder" class="upload-placeholder" onclick="document.getElementById('hero-file-input').click()">
               <span style="font-size:32px">📷</span>
-              <div style="font-size:14px;font-weight:500;margin-top:8px">Cliquez pour choisir une photo</div>
-              <div style="font-size:12px;color:var(--muted);margin-top:4px">WebP, JPG ou PNG · max 2 Mo</div>
+              <div style="font-size:13px;font-weight:500;color:var(--terra);margin-top:8px">GRANDE PHOTO BANNIÈRE</div>
+              <div style="font-size:12px;color:var(--muted);margin-top:4px">Côté droit de la page d'accueil</div>
+              <div style="font-size:11px;color:var(--muted);margin-top:4px">Format portrait · 800×1100 px · WebP/JPG/PNG · max 2 Mo</div>
+              <div style="font-size:11px;color:var(--terra);margin-top:8px;opacity:0.7">Cliquez pour uploader</div>
               <div style="font-size:11px;color:var(--muted);margin-top:2px">800 × 1100 px recommandé</div>
             </div>
             <div id="hero-upload-preview" style="display:none;position:relative">
-              <img id="hero-preview-img" src="" alt="" style="width:100%;max-height:280px;object-fit:cover;border-radius:6px;display:block">
-              <div style="position:absolute;top:8px;right:8px;display:flex;gap:6px">
+              <div style="font-size:10px;color:var(--terra);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:6px;font-weight:500">Photo bannière — côté droit accueil</div>
+              <img id="hero-preview-img" src="" alt="Bannière principale" style="width:100%;max-height:280px;object-fit:cover;border-radius:6px;display:block">
+              <div style="position:absolute;top:28px;right:8px;display:flex;gap:6px">
                 <button onclick="document.getElementById('hero-file-input').click()" style="background:rgba(0,0,0,0.6);color:#fff;border:none;padding:6px 12px;border-radius:4px;font-size:11px;cursor:pointer">🔄 Changer</button>
                 <button onclick="removePhoto('hero','images/hero.webp')" style="background:rgba(193,89,58,0.85);color:#fff;border:none;padding:6px 12px;border-radius:4px;font-size:11px;cursor:pointer">🗑 Supprimer</button>
               </div>
@@ -679,13 +682,16 @@ textarea.field-input{resize:vertical;min-height:90px;line-height:1.6}
             <input type="file" id="univ-file-input" accept="image/webp,image/jpeg,image/png" style="display:none" onchange="handlePhotoUpload(this,'univ','images/univers.webp')">
             <div id="univ-upload-placeholder" class="upload-placeholder" onclick="document.getElementById('univ-file-input').click()">
               <span style="font-size:32px">🏡</span>
-              <div style="font-size:14px;font-weight:500;margin-top:8px">Photo intérieur du salon</div>
-              <div style="font-size:12px;color:var(--muted);margin-top:4px">WebP, JPG ou PNG · max 2 Mo</div>
+              <div style="font-size:13px;font-weight:500;color:var(--terra);margin-top:8px">PHOTO INTÉRIEUR SALON</div>
+              <div style="font-size:12px;color:var(--muted);margin-top:4px">Rectangle gauche — section "L'univers du salon"</div>
+              <div style="font-size:11px;color:var(--muted);margin-top:4px">Format portrait · 700×900 px · WebP/JPG/PNG · max 2 Mo</div>
+              <div style="font-size:11px;color:var(--terra);margin-top:8px;opacity:0.7">Cliquez pour uploader</div>
               <div style="font-size:11px;color:var(--muted);margin-top:2px">700 × 900 px recommandé</div>
             </div>
             <div id="univ-upload-preview" style="display:none;position:relative">
-              <img id="univ-preview-img" src="" alt="" style="width:100%;max-height:280px;object-fit:cover;border-radius:6px;display:block">
-              <div style="position:absolute;top:8px;right:8px;display:flex;gap:6px">
+              <div style="font-size:10px;color:var(--terra);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:6px;font-weight:500">Photo intérieur — section L'univers du salon</div>
+              <img id="univ-preview-img" src="" alt="Intérieur salon" style="width:100%;max-height:280px;object-fit:cover;border-radius:6px;display:block">
+              <div style="position:absolute;top:28px;right:8px;display:flex;gap:6px">
                 <button onclick="document.getElementById('univ-file-input').click()" style="background:rgba(0,0,0,0.6);color:#fff;border:none;padding:6px 12px;border-radius:4px;font-size:11px;cursor:pointer">🔄 Changer</button>
                 <button onclick="removePhoto('univ','images/univers.webp')" style="background:rgba(193,89,58,0.85);color:#fff;border:none;padding:6px 12px;border-radius:4px;font-size:11px;cursor:pointer">🗑 Supprimer</button>
               </div>
@@ -790,94 +796,173 @@ Protocoles peaux sensibles disponibles</textarea>
       <div class="panel" id="panel-tarifs">
         <div class="page-header">
           <h1 class="page-title">Gestion des <em>tarifs</em></h1>
-          <p class="page-desc">Modifiez les prix et prestations directement dans les tableaux. Cliquez sur un texte ou prix pour l'éditer.</p>
+          <p class="page-desc">Modifiez les prix et prestations directement dans les tableaux. Cliquez sur un texte ou prix pour l'éditer. Utilisez + pour ajouter une ligne, × pour en supprimer une.</p>
         </div>
         <div class="card">
-          <div class="card-title"><span>💶</span> Titre de la section</div>
+          <div class="card-title"><span>✏️</span> Titre de la section</div>
           <div class="field-row">
             <div class="field">
-              <label class="field-label">Titre (partie normale)</label>
-              <input type="text" class="field-input" id="tarif-h2a" value="Des soins d'exception à des">
+              <label class="field-label">Titre (partie normale) — affiché avant l'italique</label>
+              <input type="text" class="field-input" id="tarif-h2a" value="Des soins d'exception">
             </div>
             <div class="field">
-              <label class="field-label">Titre (en italique)</label>
+              <label class="field-label">Titre (en italique terracotta)</label>
               <input type="text" class="field-input" id="tarif-h2b" value="prix transparents.">
             </div>
           </div>
         </div>
+
         <div class="card">
+          <div class="card-title"><span>💶</span> Prestations par catégorie</div>
+          <div style="background:var(--beige);border-radius:6px;padding:12px 16px;margin-bottom:20px;font-size:12px;color:var(--muted);line-height:1.6">
+            Les 4 catégories correspondent exactement aux 4 onglets visibles sur le site public.<br>
+            Chaque ligne = une prestation avec son nom, un détail optionnel (durée, précision) et son prix.
+          </div>
           <div class="tarif-tabs">
-            <button class="tarif-tab active" onclick="showTarifTab(event,'t-regard')">Regard &amp; Sourcils</button>
-            <button class="tarif-tab" onclick="showTarifTab(event,'t-soins')">Soins Visage</button>
-            <button class="tarif-tab" onclick="showTarifTab(event,'t-epil')">Épilation</button>
-            <button class="tarif-tab" onclick="showTarifTab(event,'t-mains')">Mains &amp; Pieds</button>
+            <button class="tarif-tab active" onclick="showTarifTab(event,'t-regard')">L'Art du Regard</button>
+            <button class="tarif-tab" onclick="showTarifTab(event,'t-bienetre')">Parentèse Bien-Être</button>
+            <button class="tarif-tab" onclick="showTarifTab(event,'t-epil')">Rituels Peau Douce</button>
+            <button class="tarif-tab" onclick="showTarifTab(event,'t-ongles')">Jusqu'au bout des ongles</button>
           </div>
 
-          <!-- REGARD -->
+          <!-- ONGLET 1 — L'ART DU REGARD -->
           <div class="tarif-pane active" id="t-regard">
-            <table class="tarif-table" id="tbl-regard">
-              <thead><tr><th style="width:38%">Prestation</th><th style="width:32%">Détail / durée</th><th style="width:15%">Prix</th><th style="width:40px"></th></tr></thead>
+            <div style="font-size:11px;color:var(--terra);letter-spacing:0.08em;text-transform:uppercase;margin:16px 0 8px;font-weight:500">Maquillage</div>
+            <table class="tarif-table" id="tbl-regard-maquillage">
+              <thead><tr><th style="width:40%">Prestation</th><th style="width:32%">Détail / durée</th><th style="width:15%">Prix</th><th style="width:40px"></th></tr></thead>
               <tbody>
-                <tr><td><input value="Pose Extensions Cil à Cil"></td><td><input value="Pose complète · 1h30–2h"></td><td><input class="price-input" value="95 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
-                <tr><td><input value="Retouche Extensions"></td><td><input value="Infill 2–3 semaines"></td><td><input class="price-input" value="50 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
-                <tr><td><input value="Volume Mixte / Russe"></td><td><input value="Pose complète · 2h–2h30"></td><td><input class="price-input" value="110 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
-                <tr><td><input value="Rehaussement de Cils"></td><td><input value="Kératine incluse · 1h"></td><td><input class="price-input" value="55 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
-                <tr><td><input value="Browlift"></td><td><input value="Lamination + mise en forme · 45 min"></td><td><input class="price-input" value="45 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
-                <tr><td><input value="Browlift + Rehaussement"></td><td><input value="Duo yeux · 1h30"></td><td><input class="price-input" value="90 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
-                <tr><td><input value="Teinture Sourcils / Cils"></td><td><input value="Teinte végétale · 20 min"></td><td><input class="price-input" value="12 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
+                <tr><td><input value="Maquillage jour"></td><td><input value=""></td><td><input class="price-input" value="25 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
+                <tr><td><input value="Maquillage soir ou cocktail"></td><td><input value=""></td><td><input class="price-input" value="30 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
+                <tr><td><input value="Maquillage mariée"></td><td><input value="Essai compris + 1 essai offert"></td><td><input class="price-input" value="75 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
               </tbody>
             </table>
-            <button class="add-row-btn" onclick="addRow('tbl-regard')">+ Ajouter une prestation</button>
-          </div>
+            <button class="add-row-btn" onclick="addRow('tbl-regard-maquillage')">+ Ajouter une prestation</button>
 
-          <!-- SOINS -->
-          <div class="tarif-pane" id="t-soins">
-            <table class="tarif-table" id="tbl-soins">
-              <thead><tr><th>Prestation</th><th>Détail / durée</th><th>Prix</th><th></th></tr></thead>
+            <div style="font-size:11px;color:var(--terra);letter-spacing:0.08em;text-transform:uppercase;margin:24px 0 8px;font-weight:500">Teinture cils &amp; sourcils</div>
+            <table class="tarif-table" id="tbl-regard-teinture">
+              <thead><tr><th style="width:40%">Prestation</th><th style="width:32%">Détail / durée</th><th style="width:15%">Prix</th><th style="width:40px"></th></tr></thead>
               <tbody>
-                <tr><td><input value="Soin Visage Hydratation Intense"></td><td><input value="Peau sèche / déshydratée · 50 min"></td><td><input class="price-input" value="55 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
-                <tr><td><input value="Soin Visage Éclat & Unification"></td><td><input value="Teint terne / irrégulier · 50 min"></td><td><input class="price-input" value="55 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
-                <tr><td><input value="Soin Anti-Âge Liftant"></td><td><input value="Fermeté & éclat · 60 min"></td><td><input class="price-input" value="65 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
-                <tr><td><input value="Épilation Sourcils"></td><td><input value="Mise en forme à la cire · 15 min"></td><td><input class="price-input" value="10 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
-                <tr><td><input value="Épilation Lèvre Supérieure"></td><td><input value="Cire douce · 10 min"></td><td><input class="price-input" value="8 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
+                <tr><td><input value="Teinture cils"></td><td><input value=""></td><td><input class="price-input" value="20 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
+                <tr><td><input value="Teinture sourcils"></td><td><input value=""></td><td><input class="price-input" value="25 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
               </tbody>
             </table>
-            <button class="add-row-btn" onclick="addRow('tbl-soins')">+ Ajouter une prestation</button>
+            <button class="add-row-btn" onclick="addRow('tbl-regard-teinture')">+ Ajouter une prestation</button>
+
+            <div style="font-size:11px;color:var(--terra);letter-spacing:0.08em;text-transform:uppercase;margin:24px 0 8px;font-weight:500">Extensions de cils</div>
+            <table class="tarif-table" id="tbl-regard-extensions">
+              <thead><tr><th style="width:40%">Prestation</th><th style="width:32%">Détail / durée</th><th style="width:15%">Prix</th><th style="width:40px"></th></tr></thead>
+              <tbody>
+                <tr><td><input value="Cil à cil"></td><td><input value=""></td><td><input class="price-input" value="50 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
+                <tr><td><input value="Volume mixte"></td><td><input value=""></td><td><input class="price-input" value="65 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
+                <tr><td><input value="Volume russe"></td><td><input value=""></td><td><input class="price-input" value="85 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
+                <tr><td><input value="Remplissage 2 semaines"></td><td><input value=""></td><td><input class="price-input" value="25 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
+                <tr><td><input value="Remplissage 3 semaines"></td><td><input value=""></td><td><input class="price-input" value="35 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
+                <tr><td><input value="Dépose des extensions"></td><td><input value=""></td><td><input class="price-input" value="15 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
+              </tbody>
+            </table>
+            <button class="add-row-btn" onclick="addRow('tbl-regard-extensions')">+ Ajouter une prestation</button>
           </div>
 
-          <!-- EPILATION -->
+          <!-- ONGLET 2 — PARENTÈSE BIEN-ÊTRE -->
+          <div class="tarif-pane" id="t-bienetre">
+            <div style="font-size:11px;color:var(--terra);letter-spacing:0.08em;text-transform:uppercase;margin:16px 0 8px;font-weight:500">Soins visage</div>
+            <table class="tarif-table" id="tbl-bienetre-visage">
+              <thead><tr><th style="width:40%">Prestation</th><th style="width:32%">Détail / durée</th><th style="width:15%">Prix</th><th style="width:40px"></th></tr></thead>
+              <tbody>
+                <tr><td><input value="Nettoyage de peau"></td><td><input value="45 min"></td><td><input class="price-input" value="40 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
+                <tr><td><input value="Coup d'éclat"></td><td><input value="50 min"></td><td><input class="price-input" value="50 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
+                <tr><td><input value="Repulpant"></td><td><input value="50 min"></td><td><input class="price-input" value="50 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
+                <tr><td><input value="Détente et hydratation"></td><td><input value="1h"></td><td><input class="price-input" value="60 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
+                <tr><td><input value="Anti-âge global"></td><td><input value="50 min"></td><td><input class="price-input" value="55 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
+              </tbody>
+            </table>
+            <button class="add-row-btn" onclick="addRow('tbl-bienetre-visage')">+ Ajouter une prestation</button>
+
+            <div style="font-size:11px;color:var(--terra);letter-spacing:0.08em;text-transform:uppercase;margin:24px 0 8px;font-weight:500">Soins corps</div>
+            <table class="tarif-table" id="tbl-bienetre-corps">
+              <thead><tr><th style="width:40%">Prestation</th><th style="width:32%">Détail / durée</th><th style="width:15%">Prix</th><th style="width:40px"></th></tr></thead>
+              <tbody>
+                <tr><td><input value="Soin du dos"></td><td><input value="Gommage + masque"></td><td><input class="price-input" value="38 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
+                <tr><td><input value="Soin du dos"></td><td><input value="Gommage + modelage"></td><td><input class="price-input" value="38 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
+                <tr><td><input value="Gommage corps"></td><td><input value=""></td><td><input class="price-input" value="40 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
+                <tr><td><input value="Modelage dos relaxant"></td><td><input value="30 min"></td><td><input class="price-input" value="35 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
+                <tr><td><input value="Modelage corps relaxant"></td><td><input value="30 min"></td><td><input class="price-input" value="35 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
+                <tr><td><input value="Modelage corps relaxant"></td><td><input value="45 min"></td><td><input class="price-input" value="45 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
+                <tr><td><input value="Modelage corps relaxant"></td><td><input value="1h"></td><td><input class="price-input" value="55 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
+              </tbody>
+            </table>
+            <button class="add-row-btn" onclick="addRow('tbl-bienetre-corps')">+ Ajouter une prestation</button>
+          </div>
+
+          <!-- ONGLET 3 — RITUELS PEAU DOUCE -->
           <div class="tarif-pane" id="t-epil">
+            <div style="font-size:11px;color:var(--terra);letter-spacing:0.08em;text-transform:uppercase;margin:16px 0 8px;font-weight:500">Épilation</div>
             <table class="tarif-table" id="tbl-epil">
-              <thead><tr><th>Prestation</th><th>Détail / durée</th><th>Prix</th><th></th></tr></thead>
+              <thead><tr><th style="width:40%">Prestation</th><th style="width:32%">Détail / durée</th><th style="width:15%">Prix</th><th style="width:40px"></th></tr></thead>
               <tbody>
-                <tr><td><input value="Demi-jambes"></td><td><input value="Chevilles → genoux"></td><td><input class="price-input" value="22 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
-                <tr><td><input value="Jambes complètes"></td><td><input value="+ maillot simple offert"></td><td><input class="price-input" value="38 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
-                <tr><td><input value="Maillot simple / brésilien / intégral"></td><td><input value="Selon formule choisie"></td><td><input class="price-input" value="14 / 22 / 30 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
-                <tr><td><input value="Aisselles"></td><td><input value="Cire chaude"></td><td><input class="price-input" value="12 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
-                <tr><td><input value="Bras complets"></td><td><input value="Épaules incluses sur demande"></td><td><input class="price-input" value="20 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
-                <tr><td><input value="Dos / Torse"></td><td><input value="Sur devis selon densité"></td><td><input class="price-input" value="dès 20 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
+                <tr><td><input value="Lèvres"></td><td><input value=""></td><td><input class="price-input" value="8 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
+                <tr><td><input value="Sourcils"></td><td><input value=""></td><td><input class="price-input" value="8 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
+                <tr><td><input value="Menton"></td><td><input value=""></td><td><input class="price-input" value="8 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
+                <tr><td><input value="Aisselles"></td><td><input value=""></td><td><input class="price-input" value="12 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
+                <tr><td><input value="Dos ou Torse"></td><td><input value=""></td><td><input class="price-input" value="25 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
+                <tr><td><input value="Bras"></td><td><input value=""></td><td><input class="price-input" value="15 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
+                <tr><td><input value="½ Jambes"></td><td><input value=""></td><td><input class="price-input" value="15 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
+                <tr><td><input value="Cuisses"></td><td><input value=""></td><td><input class="price-input" value="15 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
+                <tr><td><input value="Jambes entières"></td><td><input value=""></td><td><input class="price-input" value="25 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
+                <tr><td><input value="Maillot classique"></td><td><input value=""></td><td><input class="price-input" value="12 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
+                <tr><td><input value="Maillot échancré"></td><td><input value=""></td><td><input class="price-input" value="16 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
+                <tr><td><input value="Maillot intégral"></td><td><input value=""></td><td><input class="price-input" value="22 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
               </tbody>
             </table>
             <button class="add-row-btn" onclick="addRow('tbl-epil')">+ Ajouter une prestation</button>
+
+            <div style="font-size:11px;color:var(--terra);letter-spacing:0.08em;text-transform:uppercase;margin:24px 0 8px;font-weight:500">Forfaits épilation</div>
+            <table class="tarif-table" id="tbl-epil-forfaits">
+              <thead><tr><th style="width:40%">Prestation</th><th style="width:32%">Détail / durée</th><th style="width:15%">Prix</th><th style="width:40px"></th></tr></thead>
+              <tbody>
+                <tr><td><input value="Forfait Visage"></td><td><input value="Sourcils + Lèvres + Menton"></td><td><input class="price-input" value="22 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
+                <tr><td><input value="Forfait Corps"></td><td><input value="½ Jambes + Maillot + Aisselles"></td><td><input class="price-input" value="35 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
+                <tr><td><input value="Forfait Corps Complet"></td><td><input value="Jambes entières + Maillot + Aisselles"></td><td><input class="price-input" value="45 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
+              </tbody>
+            </table>
+            <button class="add-row-btn" onclick="addRow('tbl-epil-forfaits')">+ Ajouter une prestation</button>
           </div>
 
-          <!-- MAINS -->
-          <div class="tarif-pane" id="t-mains">
+          <!-- ONGLET 4 — JUSQU'AU BOUT DES ONGLES -->
+          <div class="tarif-pane" id="t-ongles">
+            <div style="font-size:11px;color:var(--terra);letter-spacing:0.08em;text-transform:uppercase;margin:16px 0 8px;font-weight:500">Beauté des mains</div>
             <table class="tarif-table" id="tbl-mains">
-              <thead><tr><th>Prestation</th><th>Détail / durée</th><th>Prix</th><th></th></tr></thead>
+              <thead><tr><th style="width:40%">Prestation</th><th style="width:32%">Détail / durée</th><th style="width:15%">Prix</th><th style="width:40px"></th></tr></thead>
               <tbody>
-                <tr><td><input value="Pose Vernis Semi-Permanent Mains"></td><td><input value="Préparation + pose + top coat"></td><td><input class="price-input" value="30 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
-                <tr><td><input value="Dépose Vernis Semi-Permanent"></td><td><input value="Sans pose incluse"></td><td><input class="price-input" value="10 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
-                <tr><td><input value="Pose Semi-Permanent Pieds"></td><td><input value="Soin des ongles inclus"></td><td><input class="price-input" value="28 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
-                <tr><td><input value="Pédicure complète"></td><td><input value="Soin + vernis classique"></td><td><input class="price-input" value="35 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
+                <tr><td><input value="Soin des mains"></td><td><input value=""></td><td><input class="price-input" value="38 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
+                <tr><td><input value="Manucure + vernis simple"></td><td><input value=""></td><td><input class="price-input" value="32 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
+                <tr><td><input value="Pose de vernis classique"></td><td><input value=""></td><td><input class="price-input" value="14 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
+                <tr><td><input value="Manucure + vernis semi-permanent"></td><td><input value=""></td><td><input class="price-input" value="42 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
+                <tr><td><input value="Pose de vernis semi-permanent"></td><td><input value=""></td><td><input class="price-input" value="25 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
+                <tr><td><input value="Dépose + Pose vernis semi-permanent"></td><td><input value=""></td><td><input class="price-input" value="35 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
+                <tr><td><input value="Capsules américaines + vernis semi-permanent"></td><td><input value=""></td><td><input class="price-input" value="55 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
               </tbody>
             </table>
             <button class="add-row-btn" onclick="addRow('tbl-mains')">+ Ajouter une prestation</button>
+
+            <div style="font-size:11px;color:var(--terra);letter-spacing:0.08em;text-transform:uppercase;margin:24px 0 8px;font-weight:500">Beauté des pieds</div>
+            <table class="tarif-table" id="tbl-pieds">
+              <thead><tr><th style="width:40%">Prestation</th><th style="width:32%">Détail / durée</th><th style="width:15%">Prix</th><th style="width:40px"></th></tr></thead>
+              <tbody>
+                <tr><td><input value="Soin des pieds"></td><td><input value=""></td><td><input class="price-input" value="38 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
+                <tr><td><input value="Pédicure + vernis simple"></td><td><input value=""></td><td><input class="price-input" value="32 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
+                <tr><td><input value="Pédicure + vernis semi-permanent"></td><td><input value=""></td><td><input class="price-input" value="42 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
+                <tr><td><input value="Pose de vernis classique"></td><td><input value=""></td><td><input class="price-input" value="14 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
+                <tr><td><input value="Pose de vernis semi-permanent"></td><td><input value=""></td><td><input class="price-input" value="25 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
+                <tr><td><input value="Dépose + Pose vernis semi-permanent"></td><td><input value=""></td><td><input class="price-input" value="35 €"></td><td><button class="del-row-btn" onclick="delRow(this)">×</button></td></tr>
+              </tbody>
+            </table>
+            <button class="add-row-btn" onclick="addRow('tbl-pieds')">+ Ajouter une prestation</button>
           </div>
         </div>
         <div class="save-bar">
           <button class="save-btn" onclick="saveSection('tarifs')">💾 Enregistrer les modifications</button>
-          <span class="save-note">Cliquez sur un prix pour le modifier · × pour supprimer une ligne</span>
+          <span class="save-note">Les tarifs sont appliqués au site après enregistrement</span>
         </div>
       </div>
 
@@ -926,8 +1011,10 @@ Protocoles peaux sensibles disponibles</textarea>
               <div class="github-upload-zone mini" id="gal1-zone">
                 <input type="file" id="gal1-file" accept="image/webp,image/jpeg,image/png" style="display:none" onchange="handlePhotoUpload(this,'gal1','images/real1.webp')">
                 <div id="gal1-placeholder" class="upload-placeholder mini" onclick="document.getElementById('gal1-file').click()">
-                  <span style="font-size:24px">📷</span>
-                  <div style="font-size:11px;color:var(--muted);margin-top:4px">600×900 px</div>
+                  <span style="font-size:20px">📷</span>
+                  <div style="font-size:10px;font-weight:500;color:var(--terra);margin-top:6px">01 — Grande photo gauche (2 lignes)</div>
+                  <div style="font-size:10px;color:var(--muted);margin-top:2px">600×900 px</div>
+                  <div style="font-size:10px;color:var(--terra);margin-top:4px;opacity:0.7">Cliquer pour uploader</div>
                 </div>
                 <div id="gal1-preview" style="display:none;position:relative">
                   <img id="gal1-preview-img" src="" alt="" style="width:100%;height:140px;object-fit:cover;border-radius:4px;display:block">
@@ -944,8 +1031,10 @@ Protocoles peaux sensibles disponibles</textarea>
               <div class="github-upload-zone mini" id="gal2-zone">
                 <input type="file" id="gal2-file" accept="image/webp,image/jpeg,image/png" style="display:none" onchange="handlePhotoUpload(this,'gal2','images/real2.webp')">
                 <div id="gal2-placeholder" class="upload-placeholder mini" onclick="document.getElementById('gal2-file').click()">
-                  <span style="font-size:24px">📷</span>
-                  <div style="font-size:11px;color:var(--muted);margin-top:4px">600×600 px</div>
+                  <span style="font-size:20px">📷</span>
+                  <div style="font-size:10px;font-weight:500;color:var(--terra);margin-top:6px">02 — Photo droite ligne 1</div>
+                  <div style="font-size:10px;color:var(--muted);margin-top:2px">600×600 px</div>
+                  <div style="font-size:10px;color:var(--terra);margin-top:4px;opacity:0.7">Cliquer pour uploader</div>
                 </div>
                 <div id="gal2-preview" style="display:none;position:relative">
                   <img id="gal2-preview-img" src="" alt="" style="width:100%;height:140px;object-fit:cover;border-radius:4px;display:block">
@@ -962,8 +1051,10 @@ Protocoles peaux sensibles disponibles</textarea>
               <div class="github-upload-zone mini" id="gal3-zone">
                 <input type="file" id="gal3-file" accept="image/webp,image/jpeg,image/png" style="display:none" onchange="handlePhotoUpload(this,'gal3','images/real3.webp')">
                 <div id="gal3-placeholder" class="upload-placeholder mini" onclick="document.getElementById('gal3-file').click()">
-                  <span style="font-size:24px">📷</span>
-                  <div style="font-size:11px;color:var(--muted);margin-top:4px">600×600 px</div>
+                  <span style="font-size:20px">📷</span>
+                  <div style="font-size:10px;font-weight:500;color:var(--terra);margin-top:6px">03 — Photo droite ligne 1</div>
+                  <div style="font-size:10px;color:var(--muted);margin-top:2px">600×600 px</div>
+                  <div style="font-size:10px;color:var(--terra);margin-top:4px;opacity:0.7">Cliquer pour uploader</div>
                 </div>
                 <div id="gal3-preview" style="display:none;position:relative">
                   <img id="gal3-preview-img" src="" alt="" style="width:100%;height:140px;object-fit:cover;border-radius:4px;display:block">
@@ -980,8 +1071,10 @@ Protocoles peaux sensibles disponibles</textarea>
               <div class="github-upload-zone mini" id="gal4-zone">
                 <input type="file" id="gal4-file" accept="image/webp,image/jpeg,image/png" style="display:none" onchange="handlePhotoUpload(this,'gal4','images/real4.webp')">
                 <div id="gal4-placeholder" class="upload-placeholder mini" onclick="document.getElementById('gal4-file').click()">
-                  <span style="font-size:24px">📷</span>
-                  <div style="font-size:11px;color:var(--muted);margin-top:4px">600×600 px</div>
+                  <span style="font-size:20px">📷</span>
+                  <div style="font-size:10px;font-weight:500;color:var(--terra);margin-top:6px">04 — Photo droite ligne 2</div>
+                  <div style="font-size:10px;color:var(--muted);margin-top:2px">600×600 px</div>
+                  <div style="font-size:10px;color:var(--terra);margin-top:4px;opacity:0.7">Cliquer pour uploader</div>
                 </div>
                 <div id="gal4-preview" style="display:none;position:relative">
                   <img id="gal4-preview-img" src="" alt="" style="width:100%;height:140px;object-fit:cover;border-radius:4px;display:block">
@@ -998,8 +1091,10 @@ Protocoles peaux sensibles disponibles</textarea>
               <div class="github-upload-zone mini" id="gal5-zone">
                 <input type="file" id="gal5-file" accept="image/webp,image/jpeg,image/png" style="display:none" onchange="handlePhotoUpload(this,'gal5','images/real5.webp')">
                 <div id="gal5-placeholder" class="upload-placeholder mini" onclick="document.getElementById('gal5-file').click()">
-                  <span style="font-size:24px">📷</span>
-                  <div style="font-size:11px;color:var(--muted);margin-top:4px">600×600 px</div>
+                  <span style="font-size:20px">📷</span>
+                  <div style="font-size:10px;font-weight:500;color:var(--terra);margin-top:6px">05 — Photo droite ligne 2</div>
+                  <div style="font-size:10px;color:var(--muted);margin-top:2px">600×600 px</div>
+                  <div style="font-size:10px;color:var(--terra);margin-top:4px;opacity:0.7">Cliquer pour uploader</div>
                 </div>
                 <div id="gal5-preview" style="display:none;position:relative">
                   <img id="gal5-preview-img" src="" alt="" style="width:100%;height:140px;object-fit:cover;border-radius:4px;display:block">
@@ -1016,8 +1111,10 @@ Protocoles peaux sensibles disponibles</textarea>
               <div class="github-upload-zone mini" id="gal6-zone">
                 <input type="file" id="gal6-file" accept="image/webp,image/jpeg,image/png" style="display:none" onchange="handlePhotoUpload(this,'gal6','images/real6.webp')">
                 <div id="gal6-placeholder" class="upload-placeholder mini" onclick="document.getElementById('gal6-file').click()">
-                  <span style="font-size:24px">📷</span>
-                  <div style="font-size:11px;color:var(--muted);margin-top:4px">600×600 px</div>
+                  <span style="font-size:20px">📷</span>
+                  <div style="font-size:10px;font-weight:500;color:var(--terra);margin-top:6px">06 — Photo droite ligne 2</div>
+                  <div style="font-size:10px;color:var(--muted);margin-top:2px">600×600 px</div>
+                  <div style="font-size:10px;color:var(--terra);margin-top:4px;opacity:0.7">Cliquer pour uploader</div>
                 </div>
                 <div id="gal6-preview" style="display:none;position:relative">
                   <img id="gal6-preview-img" src="" alt="" style="width:100%;height:140px;object-fit:cover;border-radius:4px;display:block">
@@ -1483,7 +1580,7 @@ function dropFile(e, previewId, areaId){
 
 // ── ADD / DEL TABLE ROW (DOM safe — pas d'innerHTML avec données utilisateur) ──
 function addRow(tableId){
-  const ALLOWED_TABLES = ['tbl-regard','tbl-soins','tbl-epil','tbl-mains'];
+  const ALLOWED_TABLES = ['tbl-regard-maquillage','tbl-regard-teinture','tbl-regard-extensions','tbl-bienetre-visage','tbl-bienetre-corps','tbl-epil','tbl-epil-forfaits','tbl-mains','tbl-pieds'];
   if(!ALLOWED_TABLES.includes(tableId)) return;
   const tbody = document.querySelector('#'+tableId+' tbody');
   if(!tbody) return;
@@ -1605,7 +1702,7 @@ function v(id){
   return (el.value||'').slice(0,2000).replace(/<[^>]*>/g,'');
 }
 function saveTables(){
-  const ids=['tbl-regard','tbl-soins','tbl-epil','tbl-mains'];
+  const ids=['tbl-regard-maquillage','tbl-regard-teinture','tbl-regard-extensions','tbl-bienetre-visage','tbl-bienetre-corps','tbl-epil','tbl-epil-forfaits','tbl-mains','tbl-pieds'];
   const result={};
   ids.forEach(id=>{
     const rows=[];
@@ -1694,7 +1791,7 @@ function restoreAllFields(){
 function sv(id,val){const el=document.getElementById(id);if(el&&val!==undefined)el.value=val;}
 
 function restoreTables(tables){
-  const ALLOWED_TABLES = ['tbl-regard','tbl-soins','tbl-epil','tbl-mains'];
+  const ALLOWED_TABLES = ['tbl-regard-maquillage','tbl-regard-teinture','tbl-regard-extensions','tbl-bienetre-visage','tbl-bienetre-corps','tbl-epil','tbl-epil-forfaits','tbl-mains','tbl-pieds'];
   Object.entries(tables).forEach(([tblId, rows])=>{
     if(!ALLOWED_TABLES.includes(tblId)) return;
     const tbody=document.querySelector('#'+tblId+' tbody');
