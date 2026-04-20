@@ -633,8 +633,8 @@ textarea.field-input{resize:vertical;min-height:90px;line-height:1.6}
               <input type="text" class="field-input" id="univ-h2a" value="Un salon privé,">
             </div>
             <div class="field">
-              <label class="field-label">Titre ligne 2 (en italique)</label>
-              <input type="text" class="field-input" id="univ-h2b" value="une parenthèse rien que pour vous.">
+              <label class="field-label">Mot en italique terracotta (ex: parenthèse)</label>
+              <input type="text" class="field-input" id="univ-h2b" value="parenthèse">
             </div>
           </div>
           <div class="field">
@@ -1327,13 +1327,38 @@ Protocoles peaux sensibles disponibles</textarea>
 ════════════════════════════════════════ -->
 <script>
 // ══════════════════════════════════════════
-// SÉCURITÉ — Authentification durcie
+/**
+ * just-in-beauty — interface d'administration
+ *
+ * Fonctionnement :
+ *   - Authentification SHA-256 côté client (localStorage)
+ *   - Toutes les données éditables sont sauvegardées dans localStorage['jib_admin_data']
+ *   - Les photos sont uploadées directement sur GitHub via l'API REST (token PAT)
+ *   - La page publique (index.html) lit ce même localStorage pour s'auto-mettre à jour
+ *
+ * Sécurité :
+ *   - CSP stricte : connect-src limité à api.github.com
+ *   - noindex/nofollow : l'admin n'apparaît pas dans Google
+ *   - Toutes les valeurs utilisateur passent par textContent (pas innerHTML)
+ *   - ALLOWED_TABLES : liste blanche stricte pour les tables tarifs
+ *   - Tentatives de connexion limitées à 5, blocage 5 minutes
+ *
+ * Stockage localStorage :
+ *   jib_admin_data   → { credentials, sections, photos }
+ *   jib_gh_config    → { owner, repo, token }
+ */
+
+// ── AUTHENTIFICATION ──
+// Hashage SHA-256 via SubtleCrypto (API native du navigateur)
+// MAX_ATTEMPTS tentatives avant blocage LOCKOUT_MS millisecondes
 // ══════════════════════════════════════════
 const STORE_KEY = 'jib_admin_data';
 const MAX_ATTEMPTS = 5;          // blocage après 5 tentatives
 const LOCKOUT_MS   = 5 * 60 * 1000; // 5 minutes
 
+// Charge les données depuis localStorage — retourne {} si vide ou corrompu
 function load(){try{return JSON.parse(localStorage.getItem(STORE_KEY))||{};}catch{return {};}}
+// Sauvegarde les données dans localStorage
 function save(data){
   // Validation basique : on ne sauvegarde que des chaînes / objets simples
   if(typeof data !== 'object' || data === null) return;
@@ -1367,6 +1392,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // ── LOGIN ──
+// Vérifie le login : hash SHA-256 du mot de passe saisi vs hash stocké
 async function doLogin(){
   const d = load();
   const now = Date.now();
@@ -1502,6 +1528,7 @@ document.getElementById('logout-overlay').addEventListener('click', function(e){
 
 // ── PANEL NAVIGATION ──
 const ALLOWED_PANELS = ['dashboard','identite','hero','univers','expertise','tarifs','galerie','avis','acces','compte'];
+// Affiche un panel de la sidebar et masque les autres
 function showPanel(id, el){
   if(!ALLOWED_PANELS.includes(id)) return;
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
@@ -1524,62 +1551,10 @@ function showTarifTab(e, id){
 const ALLOWED_IMAGE_TYPES = ['image/jpeg','image/png','image/webp','image/gif'];
 const MAX_IMAGE_SIZE = 5 * 1024 * 1024; // 5 Mo max
 
-function previewPhoto(input, previewId){
-  const file = input.files[0];
-  if(!file) return;
-  if(!ALLOWED_IMAGE_TYPES.includes(file.type)){
-    showToast('❌ Format non autorisé. Utilisez JPG, PNG ou WebP.','err'); return;
-  }
-  if(file.size > MAX_IMAGE_SIZE){
-    showToast('❌ Image trop lourde (max 5 Mo). Compressez-la d\'abord.','err'); return;
-  }
-  const reader = new FileReader();
-  reader.onload = e => {
-    const img = document.getElementById(previewId);
-    if(!img) return;
-    img.src = e.target.result;
-    img.classList.add('visible');
-    try{
-      const d = load();
-      if(!d.photos) d.photos={};
-      d.photos[previewId]=e.target.result;
-      save(d);
-    }catch(err){showToast('⚠️ Image trop lourde pour le stockage local. Elle est visible mais ne sera pas sauvegardée.','err');}
-  };
-  reader.readAsDataURL(file);
-}
-
-// ── DRAG & DROP ──
-function dragOver(e, areaId){e.preventDefault();document.getElementById(areaId).classList.add('drag');}
-function dragLeave(areaId){document.getElementById(areaId).classList.remove('drag');}
-function dropFile(e, previewId, areaId){
-  e.preventDefault();
-  dragLeave(areaId);
-  const file = e.dataTransfer.files[0];
-  if(!file) return;
-  if(!ALLOWED_IMAGE_TYPES.includes(file.type)){
-    showToast('❌ Format non autorisé. Utilisez JPG, PNG ou WebP.','err'); return;
-  }
-  if(file.size > MAX_IMAGE_SIZE){
-    showToast('❌ Image trop lourde (max 5 Mo). Compressez-la d\'abord.','err'); return;
-  }
-  const reader = new FileReader();
-  reader.onload = ev => {
-    const img = document.getElementById(previewId);
-    if(!img) return;
-    img.src = ev.target.result;
-    img.classList.add('visible');
-    try{
-      const d = load();
-      if(!d.photos) d.photos={};
-      d.photos[previewId]=ev.target.result;
-      save(d);
-    }catch(err){showToast('⚠️ Image trop lourde pour le stockage local.','err');}
-  };
-  reader.readAsDataURL(file);
-}
-
+// previewPhoto() supprimée — remplacée par handlePhotoUpload() (GitHub API)
+// dragOver / dragLeave / dropFile supprimées — upload via GitHub API uniquement
 // ── ADD / DEL TABLE ROW (DOM safe — pas d'innerHTML avec données utilisateur) ──
+// Ajoute une ligne vide dans un tableau de tarifs (liste blanche stricte)
 function addRow(tableId){
   const ALLOWED_TABLES = ['tbl-regard-maquillage','tbl-regard-teinture','tbl-regard-extensions','tbl-bienetre-visage','tbl-bienetre-corps','tbl-epil','tbl-epil-forfaits','tbl-mains','tbl-pieds'];
   if(!ALLOWED_TABLES.includes(tableId)) return;
@@ -1598,6 +1573,7 @@ function addRow(tableId){
   tr.appendChild(tdName); tr.appendChild(tdDetail); tr.appendChild(tdPrice); tr.appendChild(tdDel);
   tbody.appendChild(tr);
 }
+// Supprime une ligne de tarif — garde au minimum 1 ligne par tableau
 function delRow(btn){
   const tr = btn.closest('tr');
   if(tr.parentElement.children.length > 1){
@@ -1623,6 +1599,11 @@ function sanitizeUrl(url){
   if(s && !/^https?:\/\//i.test(s)) return '';
   return s;
 }
+/**
+ * Sauvegarde une section de l'admin dans localStorage.
+ * Appelée par chaque bouton "Enregistrer" de chaque panel.
+ * Les valeurs passent par v() qui échappe le HTML et limite à 2000 chars.
+ */
 function saveSection(section){
   const d = load();
   if(!d.sections) d.sections={};
@@ -1717,6 +1698,7 @@ function saveTables(){
 }
 
 // ── RESTORE ALL FIELDS FROM STORAGE ──
+// Restaure tous les champs du formulaire depuis localStorage au chargement
 function restoreAllFields(){
   const d = load();
   if(!d.sections){
@@ -1972,6 +1954,12 @@ function showToast(msg, type){
 }
 // ══════════════════════════════════════════════════════════
 
+/**
+ * Récupère la config GitHub.
+ * Priorité : champs DOM (si l'utilisateur vient de les remplir),
+ * sinon localStorage (config sauvegardée d'une session précédente).
+ * owner et repo ont des valeurs par défaut (justinbeauty34/justinbeauty).
+ */
 function getGhConfig() {
   // Priorité : champs du formulaire, sinon localStorage
   const domOwner = (document.getElementById('gh-owner') || {}).value || '';
@@ -2065,6 +2053,14 @@ async function getFileSha(owner, repo, token, path) {
 }
 
 // Upload une photo vers GitHub et met à jour le site
+/**
+ * Upload une photo vers GitHub via l'API REST.
+ * Étapes : fichier → base64 → GET SHA si fichier existant → PUT (crée ou remplace)
+ * L'URL raw GitHub est ensuite sauvegardée dans localStorage pour le site public.
+ * @param {HTMLInputElement} input  - l'input file qui a déclenché l'upload
+ * @param {string}           slotId - identifiant du slot ('hero', 'univ', 'gal1'…)
+ * @param {string}           githubPath - chemin du fichier sur GitHub (ex: 'images/hero.webp')
+ */
 async function handlePhotoUpload(input, slotId, githubPath) {
   const file = input.files[0];
   if (!file) return;
@@ -2173,6 +2169,10 @@ async function handlePhotoUpload(input, slotId, githubPath) {
 }
 
 // Supprime une photo de GitHub
+/**
+ * Supprime une photo de GitHub et efface son URL du localStorage.
+ * Récupère d'abord le SHA (obligatoire pour l'API DELETE GitHub).
+ */
 async function removePhoto(slotId, githubPath) {
   if (!confirm('Supprimer cette photo de GitHub ?')) return;
 
