@@ -1,0 +1,9 @@
+# Robots.txt — Just'In Beauty
+# https://justinbeauty-institut.fr
+
+User-agent: *
+Allow: /
+Disallow: /admin.html
+
+# Sitemap (optionnel — à créer si nécessaire)
+# Sitemap: https://justinbeauty-institut.fr/sitemap.xml
