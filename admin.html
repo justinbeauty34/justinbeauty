@@ -338,7 +338,7 @@ textarea.field-input{resize:vertical;min-height:90px;line-height:1.6}
 <!-- ════════════════════════════════════════
      ADMIN APP
 ════════════════════════════════════════ -->
-<div id="admin-app" style="display:flex">
+<div id="admin-app" style="display:none">
   <div class="app-wrap" style="width:100%">
 
     <!-- SIDEBAR -->
@@ -1385,7 +1385,29 @@ async function initCredentials(){
 }
 initCredentials();
 
-// Restaure les données dès le chargement (admin toujours visible)
+// ── MIGRATION localStorage ──
+// Si les anciennes tables de tarifs (v1) sont présentes dans le localStorage,
+// on les supprime pour repartir des valeurs par défaut du HTML (v2).
+// Les nouveaux IDs de tables commencent par tbl-regard-maquillage etc.
+(function migrateStorage() {
+  try {
+    var d = JSON.parse(localStorage.getItem('jib_admin_data') || '{}');
+    if (d.sections && d.sections.tarifs && d.sections.tarifs.tables) {
+      var oldKeys = Object.keys(d.sections.tarifs.tables);
+      var hasOldKeys = oldKeys.some(function(k) {
+        return ['tbl-regard','tbl-soins'].includes(k);
+      });
+      if (hasOldKeys) {
+        // Supprime les anciennes données tarifs — les valeurs HTML par défaut prendront le relais
+        delete d.sections.tarifs.tables;
+        localStorage.setItem('jib_admin_data', JSON.stringify(d));
+        console.info('[JIB] Migration tarifs v1→v2 effectuée');
+      }
+    }
+  } catch(e) {}
+})();
+
+// Restaure les données dès le chargement
 document.addEventListener('DOMContentLoaded', function() {
   restoreAllFields();
   restorePhotoPreviews();
