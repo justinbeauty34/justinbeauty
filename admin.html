@@ -1729,7 +1729,7 @@ function saveTables(){
     const rows=[];
     document.querySelectorAll('#'+id+' tbody tr').forEach(tr=>{
       const inputs=tr.querySelectorAll('input');
-      rows.push({name:inputs[0]?.value||'',detail:inputs[1]?.value||'',price:inputs[2]?.value||''});
+      rows.push({name:(inputs[0]&&inputs[0].value)||'',detail:(inputs[1]&&inputs[1].value)||'',price:(inputs[2]&&inputs[2].value)||''});
     });
     result[id]=rows;
   });
@@ -2155,7 +2155,10 @@ function setBenefitsInHtml(html, listId, benefits) {
 async function publishSection(section) {
   const cfg = getGhConfig();
   if (!cfg.token) {
-    showToast('❌ Token GitHub manquant — configurez la connexion dans Identité', 'err');
+    showToast('❌ Token GitHub manquant — allez dans Identité → Connexion GitHub', 'err');
+    // Redirige automatiquement vers le panel Identité
+    var navIdentite = document.querySelector('[onclick*="showPanel(\'identite\'"]');
+    if (navIdentite) navIdentite.click();
     return false;
   }
 
