@@ -463,7 +463,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--terra);outline-offs
           <span class="google-score-star">&#9733;</span><span class="google-score-star">&#9733;</span><span class="google-score-star">&#9733;</span><span class="google-score-star">&#9733;</span><span class="google-score-star">&#9733;</span>
         </div>
         <div class="google-score-label">sur Google My Business</div>
-        <div class="google-score-label" id="badge-count" style="font-size:13px;color:var(--dark);font-weight:400;margin-top:2px">50 avis v&#233;rifi&#233;s</div>
+        <div class="google-score-label" id="badge-count" style="font-size:13px;color:var(--dark);font-weight:400;margin-top:2px">51 avis vérifiés</div>
       </div>
     </div>
     <a href="https://maps.app.goo.gl/rU1ExkTr3BmRSv9v9" class="btn-google-reviews" target="_blank" rel="noopener noreferrer">
@@ -545,19 +545,39 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--terra);outline-offs
   var autoTimer   = null;
   var isPaused    = false;
 
+    // ── Vrais avis Google — mis à jour automatiquement le 22/04/2026 ──
+  // Note globale : 4.9/5 · 51 avis vérifiés
   var DEFAULT_REVIEWS = [
-    {text:'J\'ai r\u00e9cemment visit\u00e9 le salon de Justine et je suis absolument ravie ! L\'ambiance est chaleureuse. Justine est extr\u00eamement professionnelle et attentive. Ma manucure est magnifique. Je reviendrai sans h\u00e9siter !',name:'Lothy F',presta:'Ongles',date:'Il y a 6 mois'},
-    {text:'Si vous recherchez quelqu\'un de confiance, gentille, douce et souriante — foncez ! J\'avais un peu peur de retourner me faire \u00e9piler apr\u00e8s des soucis de sant\u00e9 et j\'ai trouv\u00e9 mon endroit parfait.',name:'Oceane Carpentier',presta:'\u00c9pilation',date:'Il y a 4 mois'},
-    {text:'Un moment super ! C\'\u00e9tait une premi\u00e8re fois avec Justine mais elle m\'a mise \u00e0 l\'aise de suite et a \u00e9t\u00e9 tr\u00e8s douce ! La cabine est tr\u00e8s chaleureuse et tr\u00e8s propre. Je reviendrai vite.',name:'Adeline Rousseau',presta:'Soin corps',date:'Il y a 4 mois'},
-    {text:'C\'\u00e9tait la premi\u00e8re \u00e9pilation de sourcils de ma fille et Justine a su la mettre parfaitement \u00e0 l\'aise. Tr\u00e8s douce et extr\u00eamement professionnelle. Le r\u00e9sultat est impeccable. Je recommande \u00e0 100% !',name:'Adeline B.',presta:'Sourcils',date:'Il y a 7 mois'},
-    {text:'J\'ai fait mes cils en volume mixte, elle montre et explique tous les produits. Elle travaille rapidement et nous donne un petit sachet pour prendre soin de nos cils ! Je recommande fortement !!',name:'Candice Marques',presta:'Extensions Cils',date:'Il y a 8 mois'},
-    {text:'Un vrai moment de bien-\u00eatre ! Accueil chaleureux, prestation de grande qualit\u00e9 \u00e0 petit prix. Justine est \u00e0 l\'\u00e9coute, professionnelle et tr\u00e8s minutieuse. Ma p\u00e9dicure est impeccable.',name:'Gwenaelle',presta:'P\u00e9dicure',date:'Il y a 9 mois'},
-    {text:'Je recommande les yeux ferm\u00e9s ! Une esth\u00e9ticienne adorable, douce, \u00e0 l\'\u00e9coute et tr\u00e8s professionnelle. Elle met tout de suite \u00e0 l\'aise et travaille avec beaucoup de soin.',name:'Cliente Google',presta:'\u00c9pilation',date:'Il y a 9 mois'},
-    {text:'Premi\u00e8re exp\u00e9rience absolument parfaite ! Accueil avec beaucoup de gentillesse. Justine est \u00e0 l\'\u00e9coute, douce et tr\u00e8s attentionn\u00e9e. Je recommande vivement !',name:'Cliente Google',presta:'Premi\u00e8re visite',date:'Il y a 2 semaines'},
-    {text:'Justine est adorable, d\'une grande douceur. J\'ai b\u00e9n\u00e9fici\u00e9 de semi-permanent avec en prime un petit massage des mains. Je reviendrai avec plaisir !',name:'Cliente Google',presta:'Vernis semi-permanent',date:'Il y a 4 semaines'},
-    {text:'Un vrai moment de bonheur \u00e0 chaque rendez-vous ! Les soins sont r\u00e9alis\u00e9s avec beaucoup de pr\u00e9cision, l\'ambiance est apaisante. Je recommande \u00e0 100%.',name:'Cliente Google',presta:'Soin visage',date:'Il y a 3 semaines'},
-    {text:'Je vais chez Justine pour des extensions de cils et j\'en suis ravie. De plus elle est tr\u00e8s sympathique. Je reviendrai sans h\u00e9siter !',name:'Cliente Google',presta:'Extensions Cils',date:'Il y a 6 mois'},
-    {text:'Je suis vraiment tr\u00e8s contente de la prestation pour du volume russe ! Mes cils \u00e9taient magnifiques, naturels comme je le souhaitais. Une adresse que je recommande sans h\u00e9siter.',name:'Cliente Google',presta:'Volume Russe',date:'Il y a un an'}
+    {
+      text: 'J\'ai récemment visité le salon de Justine et je suis absolument ravie de mon expérience ! L\'ambiance est chaleureuse et accueillante, ce qui m\'a immédiatement mise à l\'aise. Justine est extrêmement professionnel et attentive, prenant le temps de comprendre exactement ce que je souhaitais.  Ma manucure est magnifique, avec une finition parfaite et des détails.  Je recommande vivement Justine à toutes celles et ceux qui cherchent à se faire chouchouter les mains. Je reviendrai sans hésiter ! C\'est un réel coup de cœur pour Just\'In Beauty. Laura.',
+      name: 'Lothy F',
+      presta: 'Ongles',
+      date: 'Il y a 6 mois'
+    },
+    {
+      text: 'Si vous recherchez quelqu’un de confiance, gentil, et douce Et souriante, et qui aime son métier et qui s’adapte selon votre besoin. Franchement foncé je vous recommande vraiment, J’avais un peu peur de retourner me faire épiler après quelques petits soucis de santé et au final je pense avoir trouver mon endroit parfait 🥰😊',
+      name: 'oceane carpentier',
+      presta: 'Épilation',
+      date: 'Il y a 4 mois'
+    },
+    {
+      text: 'Un moment super ! C’était une première fois avec Justine mais elle m’a mise à l’aise de suite et a été très douce ! La cabine est très chaleureuse et très propre. Je reviendrai vite',
+      name: 'Adeline Rousseau (A2line)',
+      presta: 'Prestation',
+      date: 'Il y a 4 mois'
+    },
+    {
+      text: 'C’était la première épilation de sourcils de ma fille et Justine a su la mettre parfaitement à l’aise. Très douce, agréable et extrêmement professionnelle, elle a pris le temps de tout expliquer et de rassurer. Le résultat est impeccable, ma fille est ravie. Je recommande à 100% !',
+      name: 'Adeline BATALLER-GARCIA',
+      presta: 'Extensions Cils',
+      date: 'Il y a 6 mois'
+    },
+    {
+      text: 'J’ai été très très bien reçu, et elle est très agréable, et souriante. J’ai fait mes cils en volume mixte, elle vous montre et vous explique tout les produits qu’elle vas utilisé, ce qui met en confiance, elle travail plutôt rapidement. Elle nous donne à la fin un petit sachet complet pour prendre soin de nos cils chez nous ! Je recommande fortement !!',
+      name: 'Candice Marques',
+      presta: 'Extensions Cils',
+      date: 'Il y a 6 mois'
+    }
   ];
 
   // Échappe le HTML pour éviter le XSS lors de l'injection dans innerHTML
