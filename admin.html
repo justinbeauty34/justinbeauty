@@ -19,6 +19,9 @@
 ">
 <meta http-equiv="X-Frame-Options" content="DENY">
 <meta http-equiv="X-Content-Type-Options" content="nosniff">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <meta http-equiv="Referrer-Policy" content="no-referrer">
 <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(), payment=()">
 <!-- Empêche l'indexation de l'admin par les moteurs de recherche -->
@@ -533,7 +536,7 @@ textarea.field-input{resize:vertical;min-height:90px;line-height:1.6}
           </div>
         </div>
         <div class="save-bar">
-          <button class="save-btn" onclick="saveSection('identite')">💾 Enregistrer les modifications</button>
+          <button class="save-btn" onclick="saveAndPublish('identite')">💾 Enregistrer les modifications</button>
           <span class="save-note">Les changements seront appliqués au site</span>
         </div>
       </div>
@@ -620,7 +623,7 @@ textarea.field-input{resize:vertical;min-height:90px;line-height:1.6}
           </div>
         </div>
         <div class="save-bar">
-          <button class="save-btn" onclick="saveSection('hero')">💾 Enregistrer les modifications</button>
+          <button class="save-btn" onclick="saveAndPublish('hero')">💾 Enregistrer les modifications</button>
           <span class="save-note">Les changements seront appliqués au site</span>
         </div>
       </div>
@@ -711,7 +714,7 @@ textarea.field-input{resize:vertical;min-height:90px;line-height:1.6}
           </div>
         </div>
         <div class="save-bar">
-          <button class="save-btn" onclick="saveSection('univers')">💾 Enregistrer les modifications</button>
+          <button class="save-btn" onclick="saveAndPublish('univers')">💾 Enregistrer les modifications</button>
           <span class="save-note">Les changements seront appliqués au site</span>
         </div>
       </div>
@@ -793,7 +796,7 @@ Douceur et efficacité durables
 Protocoles peaux sensibles disponibles</textarea>
         </div>
         <div class="save-bar">
-          <button class="save-btn" onclick="saveSection('expertise')">💾 Enregistrer les modifications</button>
+          <button class="save-btn" onclick="saveAndPublish('expertise')">💾 Enregistrer les modifications</button>
           <span class="save-note">Les changements seront appliqués au site</span>
         </div>
       </div>
@@ -967,7 +970,7 @@ Protocoles peaux sensibles disponibles</textarea>
           </div>
         </div>
         <div class="save-bar" style="flex-wrap:wrap;gap:10px">
-          <button class="save-btn" onclick="saveSection('tarifs')">💾 Enregistrer les modifications</button>
+          <button class="save-btn" onclick="saveAndPublish('tarifs')">💾 Enregistrer les modifications</button>
           <button onclick="resetTarifs()" style="background:transparent;border:1px solid var(--beige-dark);color:var(--muted);font-family:'Jost',sans-serif;font-size:12px;padding:10px 18px;border-radius:4px;cursor:pointer" title="Recharge les tarifs depuis les valeurs par défaut du fichier admin">↺ Réinitialiser les tarifs</button>
           <span class="save-note">Les tarifs sont appliqués au site après enregistrement</span>
         </div>
@@ -1135,7 +1138,7 @@ Protocoles peaux sensibles disponibles</textarea>
           </div>
         </div>
         <div class="save-bar">
-          <button class="save-btn" onclick="saveSection('galerie')">💾 Enregistrer les modifications</button>
+          <button class="save-btn" onclick="saveAndPublish('galerie')">💾 Enregistrer les modifications</button>
           <span class="save-note">Les changements seront appliqués au site</span>
         </div>
       </div>
@@ -1181,7 +1184,7 @@ Protocoles peaux sensibles disponibles</textarea>
         </button>
 
         <div class="save-bar">
-          <button class="save-btn" onclick="saveSection('avis')">💾 Enregistrer les modifications</button>
+          <button class="save-btn" onclick="saveAndPublish('avis')">💾 Enregistrer les modifications</button>
           <span class="save-note" id="avis-count-label">3 avis saisis</span>
         </div>
       </div>
@@ -1253,7 +1256,7 @@ Protocoles peaux sensibles disponibles</textarea>
           </div>
         </div>
         <div class="save-bar">
-          <button class="save-btn" onclick="saveSection('acces')">💾 Enregistrer les modifications</button>
+          <button class="save-btn" onclick="saveAndPublish('acces')">💾 Enregistrer les modifications</button>
           <span class="save-note">Les changements seront appliqués au site</span>
         </div>
       </div>
@@ -2008,6 +2011,305 @@ function togglePass(inputId, btn) {
     btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
     btn.setAttribute('aria-label', 'Afficher le mot de passe');
   }
+}
+
+
+// ══════════════════════════════════════════════════════════════════
+// PUBLICATION VERS GITHUB — Moteur central
+// Toutes les modifications de l'admin sont poussées directement
+// dans index.html sur GitHub. Le site public se met à jour en ~1 min.
+// ══════════════════════════════════════════════════════════════════
+
+/**
+ * Récupère le contenu actuel de index.html depuis GitHub API.
+ * Retourne { content: string (HTML décodé), sha: string }
+ */
+async function fetchIndexFromGitHub() {
+  const cfg = getGhConfig();
+  if (!cfg.token) throw new Error('Token GitHub non configuré');
+  const url = `https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/index.html`;
+  const r = await fetch(url, {
+    headers: {
+      'Authorization': `token ${cfg.token}`,
+      'Accept': 'application/vnd.github.v3+json'
+    }
+  });
+  if (!r.ok) throw new Error(`GitHub API ${r.status} : impossible de lire index.html`);
+  const data = await r.json();
+  // Le contenu est en base64 — on le décode
+  const html = decodeURIComponent(escape(atob(data.content.replace(/\n/g,''))));
+  return { html, sha: data.sha };
+}
+
+/**
+ * Pousse le HTML modifié vers GitHub.
+ * @param {string} html    - Nouveau contenu HTML complet
+ * @param {string} sha     - SHA actuel du fichier (obligatoire pour l'API)
+ * @param {string} message - Message de commit
+ */
+async function pushIndexToGitHub(html, sha, message) {
+  const cfg = getGhConfig();
+  // Encode en base64 compatible GitHub (UTF-8 → base64)
+  const b64 = btoa(unescape(encodeURIComponent(html)));
+  const url = `https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/index.html`;
+  const r = await fetch(url, {
+    method: 'PUT',
+    headers: {
+      'Authorization': `token ${cfg.token}`,
+      'Accept': 'application/vnd.github.v3+json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ message, content: b64, sha, branch: 'main' })
+  });
+  if (!r.ok) {
+    const err = await r.json();
+    throw new Error(err.message || `GitHub API ${r.status}`);
+  }
+  return await r.json();
+}
+
+/**
+ * Remplace le textContent d'un élément identifié par son id dans le HTML.
+ * Utilisé pour tous les champs texte simples (span, p, div...).
+ */
+function setTextInHtml(html, id, value) {
+  if (!value) return html;
+  // Remplace le contenu entre les balises ouvrante et fermante de l'élément
+  const safe = value
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;');
+  // Regex : id="...", puis balise fermante, puis contenu, puis balise fermante
+  const re = new RegExp(`(id="${id}"[^>]*>)[^<]*(</[^>]+>)`, 'g');
+  const updated = html.replace(re, `$1${safe}$2`);
+  if (updated === html) console.warn(`[JIB] setTextInHtml: id="${id}" non trouvé`);
+  return updated;
+}
+
+/**
+ * Remplace une URL href ou src dans un élément identifié par son id.
+ */
+function setAttrInHtml(html, id, attr, value) {
+  if (!value) return html;
+  const re = new RegExp(`(id="${id}"[^>]*\\s${attr}=")[^"]*(")`,'g');
+  return html.replace(re, `$1${value}$2`);
+}
+
+/**
+ * Reconstruit un panel de tarifs complet dans le HTML.
+ * Remplace tout le contenu entre les balises du panel.
+ */
+function buildTarifPanel(tables, tableIds, subtitles) {
+  let html = '\n';
+  tableIds.forEach(function(tableId) {
+    const rows = tables[tableId];
+    if (!rows || !rows.length) return;
+    const subtitle = subtitles[tableId] || '';
+    html += `    <div class="tarif-subtitle">${subtitle.replace(/&/g,'&amp;')}</div>\n`;
+    rows.forEach(function(row) {
+      if (!row || !row.name) return;
+      const name   = String(row.name  ||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+      const detail = String(row.detail||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+      const price  = String(row.price ||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+      if (detail) {
+        html += `    <div class="tarif-item"><div><div class="tarif-name">${name}</div><div class="tarif-detail">${detail}</div></div><div><div class="tarif-price">${price}</div></div></div>\n`;
+      } else {
+        html += `    <div class="tarif-item"><div><div class="tarif-name">${name}</div></div><div><div class="tarif-price">${price}</div></div></div>\n`;
+      }
+    });
+    html += '\n';
+  });
+  return html;
+}
+
+/**
+ * Remplace le contenu d'un panel de tarifs dans le HTML.
+ */
+function replaceTarifPanel(html, panelId, innerContent) {
+  const re = new RegExp(
+    `(id="${panelId}"[^>]*>)([\\s\\S]*?)(</div>\\s*\\n\\s*(?:<!--.*?-->\\s*\\n\\s*)?<div class="tarifs-content|</div>\\s*\\n\\s*<div class="tarifs-cta)`,
+    'g'
+  );
+  return html.replace(re, `$1${innerContent}  $3`);
+}
+
+/**
+ * Reconstruit les lignes de bénéfices d'une expertise dans le HTML.
+ */
+function setBenefitsInHtml(html, listId, benefits) {
+  if (!benefits) return html;
+  const items = benefits.split('\n').filter(b => b.trim());
+  let liHtml = '';
+  items.forEach(function(b) {
+    const safe = b.trim().replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    liHtml += `<li>${safe}</li>`;
+  });
+  const re = new RegExp(`(id="${listId}">)([\\s\\S]*?)(</ul>)`, 'g');
+  return html.replace(re, `$1${liHtml}$3`);
+}
+
+/**
+ * Fonction principale : publie une section sur GitHub.
+ * Appelée par chaque bouton "Enregistrer" de l'admin.
+ * @param {string} section - Nom de la section ('hero', 'tarifs', etc.)
+ */
+async function publishSection(section) {
+  const cfg = getGhConfig();
+  if (!cfg.token) {
+    showToast('❌ Token GitHub manquant — configurez la connexion dans Identité', 'err');
+    return false;
+  }
+
+  // Indicateur visuel de publication
+  const btns = document.querySelectorAll(`[onclick*="saveSection('${section}')"]`);
+  btns.forEach(b => { b.disabled = true; b.textContent = '⏳ Publication...'; });
+
+  try {
+    // 1. Récupère index.html depuis GitHub
+    const { html: rawHtml, sha } = await fetchIndexFromGitHub();
+    let html = rawHtml;
+
+    // 2. Récupère les données sauvegardées de cette section
+    const d = load();
+    const s = (d.sections && d.sections[section]) || {};
+
+    // 3. Applique les modifications selon la section
+    if (section === 'identite') {
+      // Couleur CSS
+      if (s.colorTerra && /^#[0-9a-fA-F]{6}$/.test(s.colorTerra)) {
+        html = html.replace(/(--terra:)#[0-9a-fA-F]{6}/, `$1${s.colorTerra}`);
+      }
+      // Lien Planity sur tous les boutons
+      if (s.planity) {
+        html = html.replace(/href="https:\/\/www\.planity\.com\/[^"]+"/g, `href="${s.planity}"`);
+      }
+
+    } else if (section === 'hero') {
+      html = setTextInHtml(html, 'site-hero-eyebrow', s.eyebrow);
+      html = setTextInHtml(html, 'site-hero-h1a', s.h1a);
+      html = setTextInHtml(html, 'site-hero-h1c', s.h1c);
+      html = setTextInHtml(html, 'site-hero-sub', s.sub);
+      if (s.h1b) {
+        // h1b peut contenir <em> — on l'injecte tel quel après sanitisation
+        const safeH1b = String(s.h1b).replace(/<(?!\/?em\b)[^>]*>/gi,'');
+        html = html.replace(/(id="site-hero-h1b">)[^<]*(<\/span>)/, `$1${safeH1b}$2`);
+      }
+      // Texte des boutons CTA
+      if (s.btn1) html = html.replace(/(id="site-hero-btn1"[^>]*>)[^<]*(<\/a>)/, `$1${s.btn1}$2`);
+      if (s.btn2) html = html.replace(/(id="site-hero-btn2"[^>]*>)[^<]*(<\/a>)/, `$1${s.btn2}$2`);
+
+    } else if (section === 'univers') {
+      html = setTextInHtml(html, 'site-univ-h2a', s.h2a);
+      html = setTextInHtml(html, 'site-univ-h2b', s.h2b);
+      html = setTextInHtml(html, 'site-univ-desc', s.desc);
+
+    } else if (section === 'expertise') {
+      html = setTextInHtml(html, 'site-exp-h2a', s.h2b); // h2b = le mot italique
+      html = setTextInHtml(html, 'site-exp-sub',  s.sub);
+      ['exp1','exp2','exp3'].forEach(function(key) {
+        const e = s[key];
+        if (!e) return;
+        html = setTextInHtml(html, `site-${key}-title`, e.title);
+        html = setTextInHtml(html, `site-${key}-desc`,  e.desc);
+        if (e.benefits) html = setBenefitsInHtml(html, `site-${key}-benefits`, e.benefits);
+      });
+
+    } else if (section === 'tarifs') {
+      html = setTextInHtml(html, 'site-tarif-h2a', s.h2a);
+      if (s.h2b) html = html.replace(/(id="site-tarif-h2b"[^>]*>)[^<]*(<\/em>)/, `$1${s.h2b}$2`);
+
+      if (s.tables) {
+        const TARIF_MAP = {
+          'tab-regard':    ['tbl-regard-maquillage','tbl-regard-teinture','tbl-regard-extensions'],
+          'tab-bienetre':  ['tbl-bienetre-visage','tbl-bienetre-corps'],
+          'tab-epilation': ['tbl-epil','tbl-epil-forfaits'],
+          'tab-ongles':    ['tbl-mains','tbl-pieds']
+        };
+        const TARIF_SUBTITLES = {
+          'tbl-regard-maquillage': 'Maquillage',
+          'tbl-regard-teinture':   'Teinture cils \u0026 sourcils',
+          'tbl-regard-extensions': 'Extensions de cils',
+          'tbl-bienetre-visage':   'Soins visage',
+          'tbl-bienetre-corps':    'Soins corps',
+          'tbl-epil':              '\u00c9pilation',
+          'tbl-epil-forfaits':     'Forfaits \u00e9pilation',
+          'tbl-mains':             'Beaut\u00e9 des mains',
+          'tbl-pieds':             'Beaut\u00e9 des pieds'
+        };
+        Object.keys(TARIF_MAP).forEach(function(panelId) {
+          const tableIds = TARIF_MAP[panelId];
+          const hasData  = tableIds.some(tid => s.tables[tid] && s.tables[tid].length);
+          if (!hasData) return;
+          const inner = buildTarifPanel(s.tables, tableIds, TARIF_SUBTITLES);
+          html = replaceTarifPanel(html, panelId, inner);
+        });
+      }
+
+    } else if (section === 'galerie') {
+      html = setTextInHtml(html, 'site-gal-h2a', s.h2a);
+      html = setTextInHtml(html, 'site-gal-h2b', s.h2b);
+      html = setTextInHtml(html, 'site-gal-sub',  s.sub);
+      // Légendes galerie
+      [1,2,3,4,5,6].forEach(function(n) {
+        const p = s['p'+n];
+        if (p && p.legend) {
+          html = html.replace(
+            new RegExp(`(id="site-gal${n}"[\\s\\S]*?class="gallery-caption">)[^<]*(</figcaption>)`),
+            `$1${p.legend.replace(/&/g,'&amp;')}$2`
+          );
+        }
+        if (p && p.url) {
+          // Ajoute ou met à jour l'image dans la figure
+          const imgTag = `<img class="gal-real-img" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" src="${p.url}" alt="R\u00e9alisation ${n}">`;
+          // Remplace l'img existante ou insère après l'ouverture de la figure
+          const hasImg = new RegExp(`id="site-gal${n}"[\\s\\S]*?<img class="gal-real-img"`).test(html);
+          if (hasImg) {
+            html = html.replace(
+              new RegExp(`(<img class="gal-real-img"[^>]*src=")[^"]*(")`),
+              `$1${p.url}$2`
+            );
+          }
+        }
+      });
+
+    } else if (section === 'avis') {
+      html = setTextInHtml(html, 'site-avis-h2a', s.h2a);
+      if (s.h2b) html = html.replace(/(id="site-avis-h2b"[^>]*>)[^<]*(<\/em>)/, `$1${s.h2b}$2`);
+      if (s.note) html = html.replace(/(id="badge-score"[^>]*>)[^<]*(<\/span>)/, `$1${s.note}$2`);
+
+    } else if (section === 'acces') {
+      html = setTextInHtml(html, 'site-acces-rue',     s.rue);
+      html = setTextInHtml(html, 'site-acces-ville',   s.ville);
+      html = setTextInHtml(html, 'site-acces-rdv',     s.rdv);
+      html = setTextInHtml(html, 'site-acces-parking', s.parking);
+      if (s.maps)  html = html.replace(/(id="site-acces-iframe"[^>]*src=")[^"]*(")/,  `$1${s.maps}$2`);
+      if (s.insta) html = html.replace(/href="https:\/\/www\.instagram\.com\/[^"]+"/g, `href="${s.insta}"`);
+      if (s.fb)    html = html.replace(/href="https:\/\/www\.facebook\.com\/[^"]+"/g,  `href="${s.fb}"`);
+    }
+
+    // 4. Pousse le HTML modifié vers GitHub
+    const commitMsg = `Admin : mise à jour section ${section} — ${new Date().toLocaleDateString('fr-FR')}`;
+    await pushIndexToGitHub(html, sha, commitMsg);
+
+    // 5. Feedback visuel
+    btns.forEach(b => { b.disabled = false; b.textContent = '✅ Publié sur le site !'; });
+    setTimeout(() => btns.forEach(b => b.textContent = '💾 Enregistrer les modifications'), 2500);
+    showToast(`✅ "${section}" publié — le site se met à jour dans ~1 minute`);
+    return true;
+
+  } catch(err) {
+    btns.forEach(b => { b.disabled = false; b.textContent = '💾 Enregistrer les modifications'; });
+    showToast(`❌ Erreur publication : ${err.message}`, 'err');
+    return false;
+  }
+}
+
+
+// Sauvegarde en localStorage ET publie sur GitHub en une seule action
+async function saveAndPublish(section) {
+  // 1. Sauvegarde locale immédiate (pas d'attente GitHub)
+  saveSection(section);
+  // 2. Publie sur GitHub (async — le toast informe du résultat)
+  await publishSection(section);
 }
 
 // ── TOAST ──
