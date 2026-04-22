@@ -1449,19 +1449,15 @@ async function doLogin(){
     return;
   }
 
-  // Hash les entrées utilisateur
-  const inputUserHash = await hashPassword(u);
+  // Hash uniquement le mot de passe (pas l'identifiant)
   const inputPassHash = await hashPassword(p);
 
-  // Credentials de référence :
-  // 1. Si un mot de passe personnalisé a été défini (section Compte), on l'utilise
-  // 2. Sinon on utilise les hash hardcodés dans le HTML
-  const creds = d.credentials || {};
-  const refUserHash = CRED_USER; // toujours le même identifiant
-  const refPassHash  = creds.passHash || CRED_HASH;
+  // Identifiant : comparaison en texte brut (email)
+  // Mot de passe : comparaison hash SHA-256 vs hash stocké
+  const refPassHash = CRED_HASH;
 
-  const userMatch = inputUserHash === refUserHash;
-  const passMatch  = inputPassHash === refPassHash;
+  const userMatch = (u === CRED_USER);
+  const passMatch  = (inputPassHash === refPassHash);
 
   if(userMatch && passMatch){
     d.loginAttempts = 0;
