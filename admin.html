@@ -312,6 +312,12 @@ textarea.field-input{resize:vertical;min-height:90px;line-height:1.6}
   .field-row,.field-row.three{grid-template-columns:1fr}
   .carousel-grid{grid-template-columns:1fr}
 }
+
+/* ── CHAMPS MOT DE PASSE AVEC ŒIL ── */
+.pass-wrap{position:relative;display:flex;align-items:center}
+.pass-wrap input{padding-right:40px;width:100%}
+.eye-btn{position:absolute;right:10px;background:none;border:none;cursor:pointer;color:var(--muted);padding:4px;display:flex;align-items:center;transition:color 0.2s}
+.eye-btn:hover{color:var(--terra)}
 </style>
 </head>
 <body>
@@ -328,7 +334,7 @@ textarea.field-input{resize:vertical;min-height:90px;line-height:1.6}
       <label for="l-user">Identifiant</label>
       <input type="text" id="l-user" name="username" placeholder="Votre identifiant" autocomplete="username">
       <label for="l-pass">Mot de passe</label>
-      <input type="password" id="l-pass" name="password" placeholder="••••••••" autocomplete="current-password">
+      <div class="pass-wrap"><input type="password" id="l-pass" name="password" placeholder="••••••••" autocomplete="current-password"><button type="button" class="eye-btn" onclick="togglePass('l-pass',this)" aria-label="Afficher le mot de passe"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></div>
       <button type="submit" class="login-btn">Accéder à mon espace →</button>
     </form>
     <div class="login-error" id="login-error">Identifiant ou mot de passe incorrect.</div>
@@ -1266,7 +1272,7 @@ Protocoles peaux sensibles disponibles</textarea>
           <div class="card-title"><span>👤</span> Identifiant de connexion</div>
           <div class="field">
             <label class="field-label">Identifiant actuel</label>
-            <input type="text" class="field-input" id="cred-user" value="admin">
+            <input type="text" class="field-input" id="cred-user" value="">
             <div class="field-hint">Cet identifiant est demandé à chaque connexion</div>
           </div>
         </div>
@@ -1274,16 +1280,16 @@ Protocoles peaux sensibles disponibles</textarea>
           <div class="card-title"><span>🔑</span> Changer le mot de passe</div>
           <div class="field">
             <label class="field-label">Mot de passe actuel</label>
-            <input type="password" class="field-input" id="pass-current" placeholder="••••••••">
+            <div class="pass-wrap"><input type="password" class="field-input" id="pass-current" placeholder="••••••••"><button type="button" class="eye-btn" onclick="togglePass('pass-current',this)" aria-label="Afficher le mot de passe"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></div>
           </div>
           <div class="field-row">
             <div class="field">
               <label class="field-label">Nouveau mot de passe</label>
-              <input type="password" class="field-input" id="pass-new" placeholder="Minimum 6 caractères" oninput="checkPassStrength(this.value)">
+              <div class="pass-wrap"><input type="password" class="field-input" id="pass-new" placeholder="Minimum 6 caractères" oninput="checkPassStrength(this.value)"><button type="button" class="eye-btn" onclick="togglePass('pass-new',this)" aria-label="Afficher le mot de passe"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></div>
             </div>
             <div class="field">
               <label class="field-label">Confirmer le nouveau mot de passe</label>
-              <input type="password" class="field-input" id="pass-confirm" placeholder="Répétez le mot de passe">
+              <div class="pass-wrap"><input type="password" class="field-input" id="pass-confirm" placeholder="Répétez le mot de passe"><button type="button" class="eye-btn" onclick="togglePass('pass-confirm',this)" aria-label="Afficher le mot de passe"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></div>
             </div>
           </div>
           <div id="pass-strength" style="font-size:12px;font-weight:400;margin-top:-8px;margin-bottom:12px;display:none"></div>
@@ -1373,15 +1379,20 @@ async function hashPassword(str){
 }
 
 // Initialisation : si premiers accès, on hache le mot de passe par défaut
-async function initCredentials(){
+// Les credentials sont hardcodés dans le HTML (hash SHA-256).
+// Ils ne dépendent plus du localStorage — tous les PC ont les mêmes.
+// Pour changer le mot de passe : section Compte de l'admin.
+// L'identifiant de référence est toujours celui du HTML (USER_HASH).
+// Identifiant et hash SHA-256 du mot de passe — jamais le mot de passe en clair
+const CRED_USER = 'justinbeauty34@gmail.com';
+const CRED_HASH = '41d373b73c90ae037d1a24152fc2c554d2722da3a66ee2dc458ba2355acece81';
+
+function initCredentials(){
+  // Les credentials sont hardcodés ci-dessus — on initialise juste les compteurs
   const d = load();
-  if(!d.credentials || !d.credentials.passHash){
-    const defaultHash = await hashPassword('admin');
-    d.credentials = {user:'admin', passHash: defaultHash};
-    d.loginAttempts = 0;
-    d.lockoutUntil = 0;
-    save(d);
-  }
+  if(d.loginAttempts === undefined) d.loginAttempts = 0;
+  if(d.lockoutUntil  === undefined) d.lockoutUntil  = 0;
+  save(d);
 }
 initCredentials();
 
@@ -1438,12 +1449,19 @@ async function doLogin(){
     return;
   }
 
-  const creds = d.credentials || {};
-  const inputHash = await hashPassword(p);
+  // Hash les entrées utilisateur
+  const inputUserHash = await hashPassword(u);
+  const inputPassHash = await hashPassword(p);
 
-  // Comparaison sécurisée (timing-safe approximatif côté JS)
-  const userMatch = creds.user === u;
-  const passMatch = creds.passHash === inputHash;
+  // Credentials de référence :
+  // 1. Si un mot de passe personnalisé a été défini (section Compte), on l'utilise
+  // 2. Sinon on utilise les hash hardcodés dans le HTML
+  const creds = d.credentials || {};
+  const refUserHash = CRED_USER; // toujours le même identifiant
+  const refPassHash  = creds.passHash || CRED_HASH;
+
+  const userMatch = inputUserHash === refUserHash;
+  const passMatch  = inputPassHash === refPassHash;
 
   if(userMatch && passMatch){
     d.loginAttempts = 0;
@@ -1821,34 +1839,48 @@ function esc(str){return (str||'').replace(/"/g,'&quot;').replace(/</g,'&lt;');}
 
 // ── SAVE CREDENTIALS ──
 async function saveCredentials(){
-  const curr = document.getElementById('pass-current').value || '';
-  const newP  = document.getElementById('pass-new').value || '';
-  const conf  = document.getElementById('pass-confirm').value || '';
+  const curr    = document.getElementById('pass-current').value || '';
+  const newP    = document.getElementById('pass-new').value || '';
+  const conf    = document.getElementById('pass-confirm').value || '';
   const newUser = (document.getElementById('cred-user').value || '').trim();
-  const d = load();
-  const creds = d.credentials || {};
 
-  // Vérifier l'ancien mot de passe
-  const currHash = await hashPassword(curr);
-  if(currHash !== creds.passHash){ showToast('❌ Mot de passe actuel incorrect','err'); return; }
-  if(!newP){ showToast('❌ Le nouveau mot de passe est vide','err'); return; }
-  if(newP.length < 8){ showToast('❌ Le mot de passe doit faire au moins 8 caractères','err'); return; }
-  if(newP !== conf){ showToast('❌ Les deux mots de passe ne correspondent pas','err'); return; }
-  if(!newUser || newUser.length < 3){ showToast('❌ L\'identifiant doit faire au moins 3 caractères','err'); return; }
-  if(newUser.length > 50){ showToast('❌ Identifiant trop long','err'); return; }
-  // Politique de mot de passe
-  if(!/[A-Z]/.test(newP) || !/[0-9]/.test(newP)){
-    showToast('❌ Le mot de passe doit contenir au moins 1 majuscule et 1 chiffre','err'); return;
-  }
+  // Vérifie l'ancien mot de passe
+  hashPassword(curr).then(function(currHash) {
+    if(currHash !== CRED_HASH) {
+      showToast('❌ Mot de passe actuel incorrect.', 'err');
+      return;
+    }
+    if(!newP || newP.length < 8) {
+      showToast('❌ Le nouveau mot de passe doit faire au moins 8 caractères.', 'err');
+      return;
+    }
+    if(newP !== conf) {
+      showToast('❌ La confirmation ne correspond pas.', 'err');
+      return;
+    }
 
-  const newHash = await hashPassword(newP);
-  d.credentials = { user: newUser, passHash: newHash };
-  save(d);
-  document.getElementById('pass-current').value='';
-  document.getElementById('pass-new').value='';
-  document.getElementById('pass-confirm').value='';
-  document.getElementById('pass-strength').style.display='none';
-  showToast('✅ Identifiants mis à jour ! Reconnectez-vous avec les nouveaux identifiants.');
+    // Génère le hash du nouveau mot de passe
+    hashPassword(newP).then(function(newHash) {
+      // Prépare un email avec les instructions
+      const subject = encodeURIComponent('Just\'In Beauty — Nouveau mot de passe admin');
+      const body = encodeURIComponent(
+        'Bonjour,\n\n' +
+        'Voici le nouveau hash SHA-256 à intégrer dans admin.html\n\n' +
+        'Identifiant : ' + (newUser || CRED_USER) + '\n' +
+        'Nouveau hash : ' + newHash + '\n\n' +
+        'Dans admin.html, remplacez la ligne :\n' +
+        'const CRED_HASH = \'...\'\n' +
+        'par :\n' +
+        'const CRED_HASH = \'' + newHash + '\'\n\n' +
+        'Et si vous changez l\'identifiant, remplacez aussi :\n' +
+        'const CRED_USER = \'' + (newUser || CRED_USER) + '\'\n\n' +
+        'Puis uploadez le fichier admin.html sur GitHub.\n\n' +
+        'NE TRANSMETTEZ PAS CE MAIL — supprimez-le après modification.'
+      );
+      window.location.href = 'mailto:justinbeauty34@gmail.com?subject=' + subject + '&body=' + body;
+      showToast('📧 Email de récupération préparé — vérifiez votre messagerie.');
+    });
+  });
 }
 
 // ── PASSWORD STRENGTH ──
@@ -1964,6 +1996,22 @@ function resetTarifs() {
     });
   });
   showToast('✅ Tarifs réinitialisés avec les valeurs du site public');
+}
+
+
+// ── TOGGLE VISIBILITÉ MOT DE PASSE ──
+function togglePass(inputId, btn) {
+  var inp = document.getElementById(inputId);
+  if (!inp) return;
+  if (inp.type === 'password') {
+    inp.type = 'text';
+    btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>';
+    btn.setAttribute('aria-label', 'Masquer le mot de passe');
+  } else {
+    inp.type = 'password';
+    btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
+    btn.setAttribute('aria-label', 'Afficher le mot de passe');
+  }
 }
 
 // ── TOAST ──
