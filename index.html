@@ -326,10 +326,10 @@ Une teinture et une épilation des sourcils viendra parfaire la prestation, pour
     <h2 class="section-title" id="tarifs-title"><span id="site-tarif-h2a">Des soins d'exception</span><br>&#224; des <em id="site-tarif-h2b">prix transparents.</em></h2>
   </div>
   <div class="tarifs-tabs" role="tablist" aria-label="Cat&#233;gories de prestations">
-    <button class="tab active" role="tab" aria-selected="true" aria-controls="tab-regard" id="btn-regard">L&#39;Art du Regard</button>
-    <button class="tab" role="tab" aria-selected="false" aria-controls="tab-bienetre" id="btn-bienetre">Parent&#232;se Bien-&#202;tre</button>
-    <button class="tab" role="tab" aria-selected="false" aria-controls="tab-epilation" id="btn-epilation">Rituels Peau Douce</button>
-    <button class="tab" role="tab" aria-selected="false" aria-controls="tab-ongles" id="btn-ongles">Jusqu&#39;au bout des ongles</button>
+    <button class="tab active" role="tab" aria-selected="true" aria-controls="tab-regard" id="btn-regard"><span id="site-tab-regard-label">L'Art du Regard</span></button>
+    <button class="tab" role="tab" aria-selected="false" aria-controls="tab-bienetre" id="btn-bienetre"><span id="site-tab-bienetre-label">Parentèse Bien-Être</span></button>
+    <button class="tab" role="tab" aria-selected="false" aria-controls="tab-epilation" id="btn-epilation"><span id="site-tab-epilation-label">Rituels Peau Douce</span></button>
+    <button class="tab" role="tab" aria-selected="false" aria-controls="tab-ongles" id="btn-ongles"><span id="site-tab-ongles-label">Jusqu'au bout des ongles</span></button>
   </div>
 
   <!-- TAB 1 — L'ART DU REGARD -->
@@ -719,53 +719,51 @@ Une teinture et une épilation des sourcils viendra parfaire la prestation, pour
      MOTEUR ADMIN → SITE
   ═══════════════════════════════════════════ */
   /**
-   * Lit les données sauvegardées par l'admin (localStorage['jib_admin_data'])
-   * et met à jour le DOM du site public.
+   * Lit jib_admin_data dans localStorage et met à jour le DOM du site.
+   * Appelée au chargement — permet l'aperçu instantané sur le même PC.
+   * La publication vers tous les appareils passe par publishSection() dans admin.
    *
-   * Règles de sécurité appliquées :
-   *   - set() utilise textContent (pas innerHTML) → XSS impossible
-   *   - setShort() refuse les valeurs > maxLen (protection contre données corrompues)
-   *   - h1b utilise innerHTML mais filtre tout sauf <em>
-   *   - les URLs sont validées (https:// requis via sanitizeUrl côté admin)
+   * Nommage cohérent : champ admin "hero-sub" → id site "site-hero-sub"
+   * Exceptions documentées :
+   *   exp-h2b (admin) → site-exp-h2a (index) : le mot en italique du titre expertise
    */
   function applyAdminData() {
     var d;
-    try { d = JSON.parse(localStorage.getItem('jib_admin_data') || '{}'); } catch(e) { return; }
+    try { d = JSON.parse(localStorage.getItem('jib_admin_data') || '{}'); }
+    catch(e) { return; }
     var s = d.sections || {};
 
+    // Injecte un texte court dans un élément par son id (textContent — XSS safe)
     function set(id, val) {
       if (!val) return;
       var el = document.getElementById(id);
       if (el) el.textContent = val;
     }
-    // Injecte uniquement si valeur courte (pour les mots en italique des titres)
+    // Idem mais refuse les valeurs > maxLen (protection données corrompues)
     function setShort(id, val, maxLen) {
-      if (!val) return;
-      if (maxLen && val.length > maxLen) return; // ignore valeurs corrompues trop longues
+      if (!val || (maxLen && val.length > maxLen)) return;
       var el = document.getElementById(id);
       if (el) el.textContent = val;
     }
 
-    // Identité
+    // ── Identité ──
     if (s.identite) {
       if (s.identite.colorTerra && /^#[0-9a-fA-F]{6}$/.test(s.identite.colorTerra)) {
         document.documentElement.style.setProperty('--terra', s.identite.colorTerra);
       }
       if (s.identite.planity) {
-        document.querySelectorAll('a[href*="planity"]').forEach(function(a){ a.href = s.identite.planity; });
+        document.querySelectorAll('a[href*="planity"]').forEach(function(a) { a.href = s.identite.planity; });
       }
     }
 
-    // Hero textes
+    // ── Bannière hero ──
     if (s.hero) {
       set('site-hero-eyebrow', s.hero.eyebrow);
       set('site-hero-h1a', s.hero.h1a);
-      // h1b peut contenir <em> pour l'italique — on sanitise : seul <em> est autorisé
       if (s.hero.h1b) {
         var h1b = document.getElementById('site-hero-h1b');
         if (h1b) {
-          // Accepte uniquement le texte et les balises <em> (pas de XSS possible)
-          var safeH1b = String(s.hero.h1b).replace(/<(?!\/?em)[^>]*>/gi, '');
+          var safeH1b = String(s.hero.h1b).replace(/<(?!\/?em\b)[^>]*>/gi, '');
           h1b.innerHTML = safeH1b;
         }
       }
@@ -773,47 +771,52 @@ Une teinture et une épilation des sourcils viendra parfaire la prestation, pour
       set('site-hero-sub', s.hero.sub);
       set('site-hero-btn1', s.hero.btn1);
       set('site-hero-btn2', s.hero.btn2);
-    }
-
-    // Hero photo
-    var heroUrl = s.hero && s.hero.photoUrl;
-    if (heroUrl) {
-      var hDiv = document.getElementById('site-hero-photo');
-      var hPh  = document.getElementById('site-hero-placeholder');
-      if (hDiv) {
-        var hImg = hDiv.querySelector('img.hero-real-img');
-        if (!hImg) { hImg = document.createElement('img'); hImg.className='hero-real-img'; hImg.style.cssText='position:absolute;inset:0;width:100%;height:100%;object-fit:cover;'; hDiv.appendChild(hImg); }
-        hImg.src = heroUrl;
-        if (hPh) hPh.style.display = 'none';
+      // Photo bannière
+      if (s.hero.photoUrl) {
+        var hDiv = document.getElementById('site-hero-photo');
+        var hPh  = document.getElementById('site-hero-placeholder');
+        if (hDiv) {
+          var hImg = hDiv.querySelector('img.hero-real-img');
+          if (!hImg) {
+            hImg = document.createElement('img');
+            hImg.className = 'hero-real-img';
+            hImg.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;';
+            hDiv.appendChild(hImg);
+          }
+          hImg.src = s.hero.photoUrl;
+          if (hPh) hPh.style.display = 'none';
+        }
       }
     }
 
-    // Univers textes
+    // ── L'univers du salon ──
     if (s.univers) {
       set('site-univ-h2a', s.univers.h2a);
-      setShort('site-univ-h2b', s.univers.h2b, 30);
+      setShort('site-univ-h2b', s.univers.h2b, 30); // mot italique seulement
       set('site-univ-desc', s.univers.desc);
-    }
-
-    // Univers photo
-    var univUrl = s.univers && s.univers.photoUrl;
-    if (univUrl) {
-      var uDiv = document.getElementById('site-univ-photo');
-      if (uDiv) {
-        var uImg = uDiv.querySelector('img.univ-real-img');
-        if (!uImg) { uImg = document.createElement('img'); uImg.className='univ-real-img'; uImg.style.cssText='position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:2px;'; uDiv.appendChild(uImg); }
-        uImg.src = univUrl;
-        var uPh = uDiv.querySelector('.univers-img-inner');
-        if (uPh) uPh.style.display = 'none';
+      // Photo intérieur salon
+      if (s.univers.photoUrl) {
+        var uDiv = document.getElementById('site-univ-photo');
+        if (uDiv) {
+          var uImg = uDiv.querySelector('img.univ-real-img');
+          if (!uImg) {
+            uImg = document.createElement('img');
+            uImg.className = 'univ-real-img';
+            uImg.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:2px;';
+            uDiv.appendChild(uImg);
+          }
+          uImg.src = s.univers.photoUrl;
+          var uPh = uDiv.querySelector('.univers-img-inner');
+          if (uPh) uPh.style.display = 'none';
+        }
       }
     }
 
-    // Expertise
-    // site-exp-h2a = le mot en italique (stocké dans s.expertise.h2b dans l'admin)
-    // s.expertise.h2a = partie fixe "L'art du" — non injectée (reste dans le HTML)
+    // ── Expertises ──
+    // Note : exp-h2b dans l'admin = le mot en italique → cible site-exp-h2a dans index
     if (s.expertise) {
-      setShort('site-exp-h2a', s.expertise.h2b, 30);
-      set('site-exp-sub',  s.expertise.sub);
+      setShort('site-exp-h2a', s.expertise.h2b, 30); // mot italique (ex: "regard")
+      set('site-exp-sub', s.expertise.sub);
       ['exp1','exp2','exp3'].forEach(function(key) {
         var e = s.expertise[key];
         if (!e) return;
@@ -823,89 +826,89 @@ Une teinture et une épilation des sourcils viendra parfaire la prestation, pour
           var ul = document.getElementById('site-'+key+'-benefits');
           if (ul) {
             ul.innerHTML = '';
-            e.benefits.split('\n').forEach(function(b){ b=b.trim(); if(!b) return; var li=document.createElement('li'); li.textContent=b; ul.appendChild(li); });
+            e.benefits.split('\n').forEach(function(b) {
+              b = b.trim();
+              if (!b) return;
+              var li = document.createElement('li');
+              li.textContent = b;
+              ul.appendChild(li);
+            });
           }
         }
       });
     }
 
-
-    // ── Tarifs — reconstruction dynamique depuis localStorage ──
-    // Chaque onglet du site correspond à N tables dans l'admin.
-    // On reconstruit les lignes entièrement si des données sont présentes.
+    // ── Tarifs ──
     if (s.tarifs) {
       set('site-tarif-h2a', s.tarifs.h2a);
-      set('site-tarif-h2b', s.tarifs.h2b);
-
-      // Correspondance : panel site → tables admin (dans l'ordre d'affichage)
-      var TARIF_MAP = {
-        'tab-regard':    ['tbl-regard-maquillage', 'tbl-regard-teinture', 'tbl-regard-extensions'],
-        'tab-bienetre':  ['tbl-bienetre-visage', 'tbl-bienetre-corps'],
-        'tab-epilation': ['tbl-epil', 'tbl-epil-forfaits'],
-        'tab-ongles':    ['tbl-mains', 'tbl-pieds']
-      };
-      // Sous-titres pour chaque table
-      var TARIF_SUBTITLES = {
-        'tbl-regard-maquillage':  'Maquillage',
-        'tbl-regard-teinture':    'Teinture cils & sourcils',
-        'tbl-regard-extensions':  'Extensions de cils',
-        'tbl-bienetre-visage':    'Soins visage',
-        'tbl-bienetre-corps':     'Soins corps',
-        'tbl-epil':               '\u00c9pilation',
-        'tbl-epil-forfaits':      'Forfaits \u00e9pilation',
-        'tbl-mains':              'Beaut\u00e9 des mains',
-        'tbl-pieds':              'Beaut\u00e9 des pieds'
-      };
-
+      setShort('site-tarif-h2b', s.tarifs.h2b, 40);
+      // Intitulés des onglets
+      if (s.tarifs.tabLabels) {
+        ['regard','bienetre','epilation','ongles'].forEach(function(tab) {
+          if (s.tarifs.tabLabels[tab]) set('site-tab-'+tab+'-label', s.tarifs.tabLabels[tab]);
+        });
+      }
+      // Reconstruction dynamique des lignes de prestations
       if (s.tarifs.tables) {
+        var TARIF_MAP = {
+          'tab-regard':    ['tbl-regard-maquillage','tbl-regard-teinture','tbl-regard-extensions'],
+          'tab-bienetre':  ['tbl-bienetre-visage','tbl-bienetre-corps'],
+          'tab-epilation': ['tbl-epil','tbl-epil-forfaits'],
+          'tab-ongles':    ['tbl-mains','tbl-pieds']
+        };
+        var TARIF_SUBTITLES = {
+          'tbl-regard-maquillage': 'Maquillage',
+          'tbl-regard-teinture':   'Teinture cils & sourcils',
+          'tbl-regard-extensions': 'Extensions de cils',
+          'tbl-bienetre-visage':   'Soins visage',
+          'tbl-bienetre-corps':    'Soins corps',
+          'tbl-epil':              '\u00c9pilation',
+          'tbl-epil-forfaits':     'Forfaits \u00e9pilation',
+          'tbl-mains':             'Beaut\u00e9 des mains',
+          'tbl-pieds':             'Beaut\u00e9 des pieds'
+        };
+        // Le sous-titre peut être personnalisé par l'admin
+        if (s.tarifs.subtitles) {
+          Object.keys(s.tarifs.subtitles).forEach(function(k) {
+            if (s.tarifs.subtitles[k]) TARIF_SUBTITLES[k] = s.tarifs.subtitles[k];
+          });
+        }
         Object.keys(TARIF_MAP).forEach(function(panelId) {
           var panel = document.getElementById(panelId);
           if (!panel) return;
-
           var tableIds = TARIF_MAP[panelId];
-          // Vérifie qu'au moins une table a des données dans localStorage
           var hasData = tableIds.some(function(tid) {
             return s.tarifs.tables[tid] && s.tarifs.tables[tid].length > 0;
           });
-          if (!hasData) return; // garde le HTML statique si pas de données admin
-
-          // Vide le panel et le reconstruit
+          if (!hasData) return;
           panel.innerHTML = '';
-
           tableIds.forEach(function(tableId) {
             var rows = s.tarifs.tables[tableId];
             if (!rows || !rows.length) return;
-
-            // Sous-titre de catégorie
-            var subtitle = document.createElement('div');
-            subtitle.className = 'tarif-subtitle';
-            subtitle.textContent = TARIF_SUBTITLES[tableId] || '';
-            panel.appendChild(subtitle);
-
-            // Lignes de prestations
+            var sub = document.createElement('div');
+            sub.className = 'tarif-subtitle';
+            sub.textContent = TARIF_SUBTITLES[tableId] || '';
+            panel.appendChild(sub);
             rows.forEach(function(row) {
               if (!row || !row.name) return;
               var item = document.createElement('div');
               item.className = 'tarif-item';
-
               var left = document.createElement('div');
               var nameEl = document.createElement('div');
               nameEl.className = 'tarif-name';
               nameEl.textContent = row.name;
               left.appendChild(nameEl);
               if (row.detail) {
-                var detailEl = document.createElement('div');
-                detailEl.className = 'tarif-detail';
-                detailEl.textContent = row.detail;
-                left.appendChild(detailEl);
+                var detEl = document.createElement('div');
+                detEl.className = 'tarif-detail';
+                detEl.textContent = row.detail;
+                left.appendChild(detEl);
               }
-
               var right = document.createElement('div');
               var priceEl = document.createElement('div');
               priceEl.className = 'tarif-price';
-              priceEl.textContent = row.price;
+              priceEl.textContent = row.price || '';
               right.appendChild(priceEl);
-
               item.appendChild(left);
               item.appendChild(right);
               panel.appendChild(item);
@@ -915,34 +918,44 @@ Une teinture et une épilation des sourcils viendra parfaire la prestation, pour
       }
     }
 
-    // Galerie textes + photos
+    // ── Galerie ──
     if (s.galerie) {
       set('site-gal-h2a', s.galerie.h2a);
-      set('site-gal-h2b', s.galerie.h2b);
+      setShort('site-gal-h2b', s.galerie.h2b, 30);
       set('site-gal-sub', s.galerie.sub);
       [1,2,3,4,5,6].forEach(function(n) {
         var p = s.galerie['p'+n];
-        if (!p || !p.url) return;
+        if (!p) return;
         var fig = document.getElementById('site-gal'+n);
         if (!fig) return;
-        var gImg = fig.querySelector('img.gal-real-img');
-        if (!gImg) { gImg = document.createElement('img'); gImg.className='gal-real-img'; gImg.style.cssText='position:absolute;inset:0;width:100%;height:100%;object-fit:cover;'; fig.appendChild(gImg); }
-        gImg.src = p.url;
-        if (p.legend) { var cap = fig.querySelector('.gallery-caption'); if(cap) cap.textContent = p.legend; }
-        var ph = fig.querySelector('.gallery-item-inner');
-        if (ph) ph.style.display = 'none';
+        if (p.url) {
+          var gImg = fig.querySelector('img.gal-real-img');
+          if (!gImg) {
+            gImg = document.createElement('img');
+            gImg.className = 'gal-real-img';
+            gImg.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;';
+            fig.appendChild(gImg);
+          }
+          gImg.src = p.url;
+          var ph = fig.querySelector('.gallery-item-inner');
+          if (ph) ph.style.display = 'none';
+        }
+        if (p.legend) {
+          var cap = fig.querySelector('.gallery-caption');
+          if (cap) cap.textContent = p.legend;
+        }
       });
     }
 
-    // Avis titres + note
+    // ── Avis ──
     if (s.avis) {
       set('site-avis-h2a', s.avis.h2a);
-      set('site-avis-h2b', s.avis.h2b);
+      setShort('site-avis-h2b', s.avis.h2b, 30);
       var ns = document.getElementById('badge-score');
       if (ns && s.avis.note) ns.textContent = s.avis.note;
     }
 
-    // Accès
+    // ── Accès ──
     if (s.acces) {
       set('site-acces-rue',     s.acces.rue);
       set('site-acces-ville',   s.acces.ville);
@@ -952,22 +965,14 @@ Une teinture et une épilation des sourcils viendra parfaire la prestation, pour
         var iframe = document.getElementById('site-acces-iframe');
         if (iframe) iframe.src = s.acces.maps;
       }
-      if (s.acces.insta) { document.querySelectorAll('a[href*="instagram"]').forEach(function(a){ a.href = s.acces.insta; }); }
-      if (s.acces.fb)    { document.querySelectorAll('a[href*="facebook"]').forEach(function(a){ a.href = s.acces.fb; }); }
+      if (s.acces.insta) {
+        document.querySelectorAll('a[href*="instagram"]').forEach(function(a) { a.href = s.acces.insta; });
+      }
+      if (s.acces.fb) {
+        document.querySelectorAll('a[href*="facebook"]').forEach(function(a) { a.href = s.acces.fb; });
+      }
     }
   }
-
-  /* ═══════════════════════════════════════════
-     INITIALISATION
-  ═══════════════════════════════════════════ */
-  /**
-   * Point d'entrée unique — appelé au DOMContentLoaded (ou immédiatement
-   * si la page est déjà chargée). Ordre d'exécution intentionnel :
-   *   1. loadReviews     → remplit allReviews
-   *   2. applyAdminData  → met à jour les textes/photos depuis l'admin
-   *   3. init onglets    → attache les listeners des tabs tarifs
-   *   4. rAF×2 → buildTrack → le carousel a besoin d'offsetWidth réel
-   */
   function startAll() {
     // 1. Charge les avis
     loadReviews();
