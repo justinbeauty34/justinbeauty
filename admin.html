@@ -822,6 +822,21 @@ Protocoles peaux sensibles disponibles</textarea>
         </div>
 
         <div class="card">
+          <div class="card-title"><span>🏷️</span> Intitulés des onglets (catégories)</div>
+          <div style="background:var(--beige);border-radius:6px;padding:12px 16px;margin-bottom:20px;font-size:12px;color:var(--muted);line-height:1.6">
+            Ces 4 intitulés correspondent aux onglets visibles sur le site public.
+          </div>
+          <div class="field-row">
+            <div class="field"><label class="field-label">Onglet 1</label><input type="text" class="field-input" id="tarif-tab-regard" value="L'Art du Regard"></div>
+            <div class="field"><label class="field-label">Onglet 2</label><input type="text" class="field-input" id="tarif-tab-bienetre" value="Parentèse Bien-Être"></div>
+          </div>
+          <div class="field-row">
+            <div class="field"><label class="field-label">Onglet 3</label><input type="text" class="field-input" id="tarif-tab-epilation" value="Rituels Peau Douce"></div>
+            <div class="field"><label class="field-label">Onglet 4</label><input type="text" class="field-input" id="tarif-tab-ongles" value="Jusqu'au bout des ongles"></div>
+          </div>
+        </div>
+
+        <div class="card">
           <div class="card-title"><span>💶</span> Prestations par catégorie</div>
           <div style="background:var(--beige);border-radius:6px;padding:12px 16px;margin-bottom:20px;font-size:12px;color:var(--muted);line-height:1.6">
             Les 4 catégories correspondent exactement aux 4 onglets visibles sur le site public.<br>
@@ -836,7 +851,10 @@ Protocoles peaux sensibles disponibles</textarea>
 
           <!-- ONGLET 1 — L'ART DU REGARD -->
           <div class="tarif-pane active" id="t-regard">
-            <div style="font-size:11px;color:var(--terra);letter-spacing:0.08em;text-transform:uppercase;margin:16px 0 8px;font-weight:500">Maquillage</div>
+            <div style="display:flex;align-items:center;gap:10px;margin:16px 0 6px">
+              <input type="text" class="field-input" id="subtitle-tbl-regard-maquillage" value="Maquillage" style="font-size:11px;font-weight:500;color:var(--terra);letter-spacing:0.08em;text-transform:uppercase;border:1px dashed var(--beige-dark);padding:4px 8px;border-radius:3px;max-width:280px" title="Modifier l'intitulé de cette sous-catégorie">
+              <span style="font-size:10px;color:var(--muted)">← intitulé de sous-catégorie</span>
+            </div>
             <table class="tarif-table" id="tbl-regard-maquillage">
               <thead><tr><th style="width:40%">Prestation</th><th style="width:32%">Détail / durée</th><th style="width:15%">Prix</th><th style="width:40px"></th></tr></thead>
               <tbody>
@@ -847,7 +865,10 @@ Protocoles peaux sensibles disponibles</textarea>
             </table>
             <button class="add-row-btn" onclick="addRow('tbl-regard-maquillage')">+ Ajouter une prestation</button>
 
-            <div style="font-size:11px;color:var(--terra);letter-spacing:0.08em;text-transform:uppercase;margin:24px 0 8px;font-weight:500">Teinture cils &amp; sourcils</div>
+            <div style="display:flex;align-items:center;gap:10px;margin:24px 0 6px">
+              <input type="text" class="field-input" id="subtitle-tbl-regard-teinture" value="Teinture cils &amp; sourcils" style="font-size:11px;font-weight:500;color:var(--terra);letter-spacing:0.08em;text-transform:uppercase;border:1px dashed var(--beige-dark);padding:4px 8px;border-radius:3px;max-width:280px" title="Modifier l'intitulé de cette sous-catégorie">
+              <span style="font-size:10px;color:var(--muted)">← intitulé de sous-catégorie</span>
+            </div>
             <table class="tarif-table" id="tbl-regard-teinture">
               <thead><tr><th style="width:40%">Prestation</th><th style="width:32%">Détail / durée</th><th style="width:15%">Prix</th><th style="width:40px"></th></tr></thead>
               <tbody>
@@ -857,7 +878,10 @@ Protocoles peaux sensibles disponibles</textarea>
             </table>
             <button class="add-row-btn" onclick="addRow('tbl-regard-teinture')">+ Ajouter une prestation</button>
 
-            <div style="font-size:11px;color:var(--terra);letter-spacing:0.08em;text-transform:uppercase;margin:24px 0 8px;font-weight:500">Extensions de cils</div>
+            <div style="display:flex;align-items:center;gap:10px;margin:16px 0 6px">
+              <input type="text" class="field-input" id="subtitle-tbl-regard-extensions" value="Extensions de cils" style="font-size:11px;font-weight:500;color:var(--terra);letter-spacing:0.08em;text-transform:uppercase;border:1px dashed var(--beige-dark);padding:4px 8px;border-radius:3px;max-width:280px" title="Modifier l'intitulé de cette sous-catégorie">
+              <span style="font-size:10px;color:var(--muted)">← intitulé de sous-catégorie</span>
+            </div>
             <table class="tarif-table" id="tbl-regard-extensions">
               <thead><tr><th style="width:40%">Prestation</th><th style="width:32%">Détail / durée</th><th style="width:15%">Prix</th><th style="width:40px"></th></tr></thead>
               <tbody>
@@ -874,7 +898,10 @@ Protocoles peaux sensibles disponibles</textarea>
 
           <!-- ONGLET 2 — PARENTÈSE BIEN-ÊTRE -->
           <div class="tarif-pane" id="t-bienetre">
-            <div style="font-size:11px;color:var(--terra);letter-spacing:0.08em;text-transform:uppercase;margin:16px 0 8px;font-weight:500">Soins visage</div>
+            <div style="display:flex;align-items:center;gap:10px;margin:16px 0 6px">
+              <input type="text" class="field-input" id="subtitle-tbl-bienetre-visage" value="Soins visage" style="font-size:11px;font-weight:500;color:var(--terra);letter-spacing:0.08em;text-transform:uppercase;border:1px dashed var(--beige-dark);padding:4px 8px;border-radius:3px;max-width:280px" title="Modifier l'intitulé de cette sous-catégorie">
+              <span style="font-size:10px;color:var(--muted)">← intitulé de sous-catégorie</span>
+            </div>
             <table class="tarif-table" id="tbl-bienetre-visage">
               <thead><tr><th style="width:40%">Prestation</th><th style="width:32%">Détail / durée</th><th style="width:15%">Prix</th><th style="width:40px"></th></tr></thead>
               <tbody>
@@ -887,7 +914,10 @@ Protocoles peaux sensibles disponibles</textarea>
             </table>
             <button class="add-row-btn" onclick="addRow('tbl-bienetre-visage')">+ Ajouter une prestation</button>
 
-            <div style="font-size:11px;color:var(--terra);letter-spacing:0.08em;text-transform:uppercase;margin:24px 0 8px;font-weight:500">Soins corps</div>
+            <div style="display:flex;align-items:center;gap:10px;margin:16px 0 6px">
+              <input type="text" class="field-input" id="subtitle-tbl-bienetre-corps" value="Soins corps" style="font-size:11px;font-weight:500;color:var(--terra);letter-spacing:0.08em;text-transform:uppercase;border:1px dashed var(--beige-dark);padding:4px 8px;border-radius:3px;max-width:280px" title="Modifier l'intitulé de cette sous-catégorie">
+              <span style="font-size:10px;color:var(--muted)">← intitulé de sous-catégorie</span>
+            </div>
             <table class="tarif-table" id="tbl-bienetre-corps">
               <thead><tr><th style="width:40%">Prestation</th><th style="width:32%">Détail / durée</th><th style="width:15%">Prix</th><th style="width:40px"></th></tr></thead>
               <tbody>
@@ -905,7 +935,10 @@ Protocoles peaux sensibles disponibles</textarea>
 
           <!-- ONGLET 3 — RITUELS PEAU DOUCE -->
           <div class="tarif-pane" id="t-epil">
-            <div style="font-size:11px;color:var(--terra);letter-spacing:0.08em;text-transform:uppercase;margin:16px 0 8px;font-weight:500">Épilation</div>
+            <div style="display:flex;align-items:center;gap:10px;margin:16px 0 6px">
+              <input type="text" class="field-input" id="subtitle-tbl-epil" value="Épilation" style="font-size:11px;font-weight:500;color:var(--terra);letter-spacing:0.08em;text-transform:uppercase;border:1px dashed var(--beige-dark);padding:4px 8px;border-radius:3px;max-width:280px" title="Modifier l'intitulé de cette sous-catégorie">
+              <span style="font-size:10px;color:var(--muted)">← intitulé de sous-catégorie</span>
+            </div>
             <table class="tarif-table" id="tbl-epil">
               <thead><tr><th style="width:40%">Prestation</th><th style="width:32%">Détail / durée</th><th style="width:15%">Prix</th><th style="width:40px"></th></tr></thead>
               <tbody>
@@ -925,7 +958,10 @@ Protocoles peaux sensibles disponibles</textarea>
             </table>
             <button class="add-row-btn" onclick="addRow('tbl-epil')">+ Ajouter une prestation</button>
 
-            <div style="font-size:11px;color:var(--terra);letter-spacing:0.08em;text-transform:uppercase;margin:24px 0 8px;font-weight:500">Forfaits épilation</div>
+            <div style="display:flex;align-items:center;gap:10px;margin:16px 0 6px">
+              <input type="text" class="field-input" id="subtitle-tbl-epil-forfaits" value="Forfaits épilation" style="font-size:11px;font-weight:500;color:var(--terra);letter-spacing:0.08em;text-transform:uppercase;border:1px dashed var(--beige-dark);padding:4px 8px;border-radius:3px;max-width:280px" title="Modifier l'intitulé de cette sous-catégorie">
+              <span style="font-size:10px;color:var(--muted)">← intitulé de sous-catégorie</span>
+            </div>
             <table class="tarif-table" id="tbl-epil-forfaits">
               <thead><tr><th style="width:40%">Prestation</th><th style="width:32%">Détail / durée</th><th style="width:15%">Prix</th><th style="width:40px"></th></tr></thead>
               <tbody>
@@ -939,7 +975,10 @@ Protocoles peaux sensibles disponibles</textarea>
 
           <!-- ONGLET 4 — JUSQU'AU BOUT DES ONGLES -->
           <div class="tarif-pane" id="t-ongles">
-            <div style="font-size:11px;color:var(--terra);letter-spacing:0.08em;text-transform:uppercase;margin:16px 0 8px;font-weight:500">Beauté des mains</div>
+            <div style="display:flex;align-items:center;gap:10px;margin:16px 0 6px">
+              <input type="text" class="field-input" id="subtitle-tbl-mains" value="Beauté des mains" style="font-size:11px;font-weight:500;color:var(--terra);letter-spacing:0.08em;text-transform:uppercase;border:1px dashed var(--beige-dark);padding:4px 8px;border-radius:3px;max-width:280px" title="Modifier l'intitulé de cette sous-catégorie">
+              <span style="font-size:10px;color:var(--muted)">← intitulé de sous-catégorie</span>
+            </div>
             <table class="tarif-table" id="tbl-mains">
               <thead><tr><th style="width:40%">Prestation</th><th style="width:32%">Détail / durée</th><th style="width:15%">Prix</th><th style="width:40px"></th></tr></thead>
               <tbody>
@@ -954,7 +993,10 @@ Protocoles peaux sensibles disponibles</textarea>
             </table>
             <button class="add-row-btn" onclick="addRow('tbl-mains')">+ Ajouter une prestation</button>
 
-            <div style="font-size:11px;color:var(--terra);letter-spacing:0.08em;text-transform:uppercase;margin:24px 0 8px;font-weight:500">Beauté des pieds</div>
+            <div style="display:flex;align-items:center;gap:10px;margin:16px 0 6px">
+              <input type="text" class="field-input" id="subtitle-tbl-pieds" value="Beauté des pieds" style="font-size:11px;font-weight:500;color:var(--terra);letter-spacing:0.08em;text-transform:uppercase;border:1px dashed var(--beige-dark);padding:4px 8px;border-radius:3px;max-width:280px" title="Modifier l'intitulé de cette sous-catégorie">
+              <span style="font-size:10px;color:var(--muted)">← intitulé de sous-catégorie</span>
+            </div>
             <table class="tarif-table" id="tbl-pieds">
               <thead><tr><th style="width:40%">Prestation</th><th style="width:32%">Détail / durée</th><th style="width:15%">Prix</th><th style="width:40px"></th></tr></thead>
               <tbody>
@@ -1674,7 +1716,30 @@ function saveSection(section){
       exp3:{title:v('exp3-title'),desc:v('exp3-desc'),benefits:v('exp3-benefits')}
     };
   } else if(section==='tarifs'){
-    d.sections.tarifs={h2a:v('tarif-h2a'),h2b:v('tarif-h2b'),tables:saveTables()};
+    d.sections.tarifs={
+      h2a:v('tarif-h2a'),
+      h2b:v('tarif-h2b'),
+      // Intitulés des 4 onglets (modifiables dans l'admin)
+      tabLabels:{
+        regard:    v('tarif-tab-regard'),
+        bienetre:  v('tarif-tab-bienetre'),
+        epilation: v('tarif-tab-epilation'),
+        ongles:    v('tarif-tab-ongles')
+      },
+      // Intitulés des sous-catégories (modifiables dans l'admin)
+      subtitles:{
+        'tbl-regard-maquillage':  v('subtitle-tbl-regard-maquillage'),
+        'tbl-regard-teinture':    v('subtitle-tbl-regard-teinture'),
+        'tbl-regard-extensions':  v('subtitle-tbl-regard-extensions'),
+        'tbl-bienetre-visage':    v('subtitle-tbl-bienetre-visage'),
+        'tbl-bienetre-corps':     v('subtitle-tbl-bienetre-corps'),
+        'tbl-epil':               v('subtitle-tbl-epil'),
+        'tbl-epil-forfaits':      v('subtitle-tbl-epil-forfaits'),
+        'tbl-mains':              v('subtitle-tbl-mains'),
+        'tbl-pieds':              v('subtitle-tbl-pieds')
+      },
+      tables: saveTables()
+    };
   } else if(section==='galerie'){
     // Les URLs sont gérées par handlePhotoUpload — on ne les écrase pas
     const existing = (d.sections && d.sections.galerie) || {};
@@ -1768,7 +1833,20 @@ function restoreAllFields(){
     if(s.expertise.exp3){sv('exp3-title',s.expertise.exp3.title);sv('exp3-desc',s.expertise.exp3.desc);sv('exp3-benefits',s.expertise.exp3.benefits);}
   }
   if(s.tarifs){
-    sv('tarif-h2a',s.tarifs.h2a);sv('tarif-h2b',s.tarifs.h2b);
+    sv('tarif-h2a',s.tarifs.h2a);
+    sv('tarif-h2b',s.tarifs.h2b);
+    // Restaure les intitulés des onglets
+    if(s.tarifs.tabLabels){
+      ['regard','bienetre','epilation','ongles'].forEach(function(t){
+        if(s.tarifs.tabLabels[t]) sv('tarif-tab-'+t, s.tarifs.tabLabels[t]);
+      });
+    }
+    // Restaure les intitulés des sous-catégories
+    if(s.tarifs.subtitles){
+      Object.keys(s.tarifs.subtitles).forEach(function(k){
+        if(s.tarifs.subtitles[k]) sv('subtitle-'+k, s.tarifs.subtitles[k]);
+      });
+    }
     if(s.tarifs.tables) restoreTables(s.tarifs.tables);
   }
   if(s.galerie){
@@ -2014,45 +2092,45 @@ function togglePass(inputId, btn) {
 }
 
 
-// ══════════════════════════════════════════════════════════════════
-// PUBLICATION VERS GITHUB — Moteur central
-// Toutes les modifications de l'admin sont poussées directement
-// dans index.html sur GitHub. Le site public se met à jour en ~1 min.
-// ══════════════════════════════════════════════════════════════════
 
 /**
- * Récupère le contenu actuel de index.html depuis GitHub API.
- * Retourne { content: string (HTML décodé), sha: string }
+ * ═══════════════════════════════════════════════════════════════
+ * PUBLICATION VERS GITHUB — Moteur central de synchronisation
+ *
+ * Chaque "Enregistrer" dans l'admin :
+ *   1. Sauvegarde en localStorage (saveSection) — instantané
+ *   2. Lit index.html depuis GitHub API (GET)
+ *   3. Modifie le HTML avec les nouvelles valeurs
+ *   4. Pousse le nouveau index.html vers GitHub (PUT)
+ *   → Site public mis à jour en ~60 secondes sur tous les appareils
+ *
+ * Correspondances admin → index (nommage cohérent) :
+ *   hero-sub       → site-hero-sub
+ *   univ-h2b       → site-univ-h2b (le MOT en italique, max 30 chars)
+ *   exp-h2b        → site-exp-h2a  (le MOT en italique expertise)
+ *   tarif-tab-*    → site-tab-*-label (intitulés onglets)
+ *   subtitle-tbl-* → sous-titres des catégories dans chaque panel
+ * ═══════════════════════════════════════════════════════════════
  */
+
+/** Récupère index.html depuis GitHub → {html, sha} */
 async function fetchIndexFromGitHub() {
   const cfg = getGhConfig();
-  if (!cfg.token) throw new Error('Token GitHub non configuré');
-  const url = `https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/index.html`;
-  const r = await fetch(url, {
-    headers: {
-      'Authorization': `token ${cfg.token}`,
-      'Accept': 'application/vnd.github.v3+json'
-    }
+  if (!cfg.token) throw new Error('Token GitHub non configuré — allez dans Identité → Connexion GitHub');
+  const r = await fetch(`https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/index.html`, {
+    headers: { 'Authorization': `token ${cfg.token}`, 'Accept': 'application/vnd.github.v3+json' }
   });
   if (!r.ok) throw new Error(`GitHub API ${r.status} : impossible de lire index.html`);
   const data = await r.json();
-  // Le contenu est en base64 — on le décode
   const html = decodeURIComponent(escape(atob(data.content.replace(/\n/g,''))));
   return { html, sha: data.sha };
 }
 
-/**
- * Pousse le HTML modifié vers GitHub.
- * @param {string} html    - Nouveau contenu HTML complet
- * @param {string} sha     - SHA actuel du fichier (obligatoire pour l'API)
- * @param {string} message - Message de commit
- */
+/** Pousse le HTML modifié vers GitHub */
 async function pushIndexToGitHub(html, sha, message) {
   const cfg = getGhConfig();
-  // Encode en base64 compatible GitHub (UTF-8 → base64)
   const b64 = btoa(unescape(encodeURIComponent(html)));
-  const url = `https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/index.html`;
-  const r = await fetch(url, {
+  const r = await fetch(`https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/index.html`, {
     method: 'PUT',
     headers: {
       'Authorization': `token ${cfg.token}`,
@@ -2061,127 +2139,70 @@ async function pushIndexToGitHub(html, sha, message) {
     },
     body: JSON.stringify({ message, content: b64, sha, branch: 'main' })
   });
-  if (!r.ok) {
-    const err = await r.json();
-    throw new Error(err.message || `GitHub API ${r.status}`);
-  }
-  return await r.json();
+  if (!r.ok) { const e = await r.json(); throw new Error(e.message || `GitHub API ${r.status}`); }
 }
 
-/**
- * Remplace le textContent d'un élément identifié par son id dans le HTML.
- * Utilisé pour tous les champs texte simples (span, p, div...).
- */
+/** Remplace textContent d'un élément par son id */
 function setTextInHtml(html, id, value) {
   if (!value) return html;
-  // Remplace le contenu entre les balises ouvrante et fermante de l'élément
-  const safe = value
-    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
-    .replace(/"/g,'&quot;');
-  // Regex : id="...", puis balise fermante, puis contenu, puis balise fermante
-  const re = new RegExp(`(id="${id}"[^>]*>)[^<]*(</[^>]+>)`, 'g');
-  const updated = html.replace(re, `$1${safe}$2`);
-  if (updated === html) console.warn(`[JIB] setTextInHtml: id="${id}" non trouvé`);
-  return updated;
+  const safe = value.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  return html.replace(new RegExp(`(id="${id}"[^>]*>)[^<]*(</[a-z]+>)`,'g'), `$1${safe}$2`);
 }
 
-/**
- * Remplace une URL href ou src dans un élément identifié par son id.
- */
-function setAttrInHtml(html, id, attr, value) {
-  if (!value) return html;
-  const re = new RegExp(`(id="${id}"[^>]*\\s${attr}=")[^"]*(")`,'g');
-  return html.replace(re, `$1${value}$2`);
-}
-
-/**
- * Reconstruit un panel de tarifs complet dans le HTML.
- * Remplace tout le contenu entre les balises du panel.
- */
-function buildTarifPanel(tables, tableIds, subtitles) {
-  let html = '\n';
+/** Reconstruit le HTML d'un panel tarifs à partir des données */
+function buildTarifPanelHtml(tables, tableIds, subtitles) {
+  let out = '\n';
   tableIds.forEach(function(tableId) {
     const rows = tables[tableId];
     if (!rows || !rows.length) return;
-    const subtitle = subtitles[tableId] || '';
-    html += `    <div class="tarif-subtitle">${subtitle.replace(/&/g,'&amp;')}</div>\n`;
+    const sub = (subtitles[tableId]||'').replace(/&/g,'&amp;');
+    out += `    <div class="tarif-subtitle">${sub}</div>\n`;
     rows.forEach(function(row) {
       if (!row || !row.name) return;
-      const name   = String(row.name  ||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-      const detail = String(row.detail||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-      const price  = String(row.price ||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-      if (detail) {
-        html += `    <div class="tarif-item"><div><div class="tarif-name">${name}</div><div class="tarif-detail">${detail}</div></div><div><div class="tarif-price">${price}</div></div></div>\n`;
+      const n = String(row.name  ||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+      const d = String(row.detail||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+      const p = String(row.price ||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+      if (d) {
+        out += `    <div class="tarif-item"><div><div class="tarif-name">${n}</div><div class="tarif-detail">${d}</div></div><div><div class="tarif-price">${p}</div></div></div>\n`;
       } else {
-        html += `    <div class="tarif-item"><div><div class="tarif-name">${name}</div></div><div><div class="tarif-price">${price}</div></div></div>\n`;
+        out += `    <div class="tarif-item"><div><div class="tarif-name">${n}</div></div><div><div class="tarif-price">${p}</div></div></div>\n`;
       }
     });
-    html += '\n';
+    out += '\n';
   });
-  return html;
+  return out;
 }
 
 /**
- * Remplace le contenu d'un panel de tarifs dans le HTML.
- */
-function replaceTarifPanel(html, panelId, innerContent) {
-  const re = new RegExp(
-    `(id="${panelId}"[^>]*>)([\\s\\S]*?)(</div>\\s*\\n\\s*(?:<!--.*?-->\\s*\\n\\s*)?<div class="tarifs-content|</div>\\s*\\n\\s*<div class="tarifs-cta)`,
-    'g'
-  );
-  return html.replace(re, `$1${innerContent}  $3`);
-}
-
-/**
- * Reconstruit les lignes de bénéfices d'une expertise dans le HTML.
- */
-function setBenefitsInHtml(html, listId, benefits) {
-  if (!benefits) return html;
-  const items = benefits.split('\n').filter(b => b.trim());
-  let liHtml = '';
-  items.forEach(function(b) {
-    const safe = b.trim().replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-    liHtml += `<li>${safe}</li>`;
-  });
-  const re = new RegExp(`(id="${listId}">)([\\s\\S]*?)(</ul>)`, 'g');
-  return html.replace(re, `$1${liHtml}$3`);
-}
-
-/**
- * Fonction principale : publie une section sur GitHub.
- * Appelée par chaque bouton "Enregistrer" de l'admin.
- * @param {string} section - Nom de la section ('hero', 'tarifs', etc.)
+ * Publie une section vers GitHub.
+ * Appelée automatiquement après saveSection() via saveAndPublish().
  */
 async function publishSection(section) {
   const cfg = getGhConfig();
   if (!cfg.token) {
     showToast('❌ Token GitHub manquant — allez dans Identité → Connexion GitHub', 'err');
-    // Redirige automatiquement vers le panel Identité
-    var navIdentite = document.querySelector('[onclick*="showPanel(\'identite\'"]');
-    if (navIdentite) navIdentite.click();
+    showPanel('identite');
     return false;
   }
 
-  // Indicateur visuel de publication
-  const btns = document.querySelectorAll(`[onclick*="saveSection('${section}')"]`);
-  btns.forEach(b => { b.disabled = true; b.textContent = '⏳ Publication...'; });
+  // Indicateur visuel
+  const btns = document.querySelectorAll(`[onclick*="saveAndPublish('${section}')"]`);
+  btns.forEach(b => { b.disabled = true; b.textContent = '⏳ Publication en cours...'; });
 
   try {
-    // 1. Récupère index.html depuis GitHub
+    // 1. Récupère index.html
     const { html: rawHtml, sha } = await fetchIndexFromGitHub();
     let html = rawHtml;
 
-    // 2. Récupère les données sauvegardées de cette section
+    // 2. Récupère les données de cette section depuis localStorage
     const d = load();
     const s = (d.sections && d.sections[section]) || {};
 
-    // 3. Applique les modifications selon la section
+    // 3. Applique les modifications
     if (section === 'identite') {
-      // Couleur CSS
       if (s.colorTerra && /^#[0-9a-fA-F]{6}$/.test(s.colorTerra)) {
-        html = html.replace(/(--terra:)#[0-9a-fA-F]{6}/, `$1${s.colorTerra}`);
+        html = html.replace(/(--terra\s*:)\s*#[0-9a-fA-F]{6}/, `$1${s.colorTerra}`);
       }
-      // Lien Planity sur tous les boutons
       if (s.planity) {
         html = html.replace(/href="https:\/\/www\.planity\.com\/[^"]+"/g, `href="${s.planity}"`);
       }
@@ -2189,37 +2210,54 @@ async function publishSection(section) {
     } else if (section === 'hero') {
       html = setTextInHtml(html, 'site-hero-eyebrow', s.eyebrow);
       html = setTextInHtml(html, 'site-hero-h1a', s.h1a);
-      html = setTextInHtml(html, 'site-hero-h1c', s.h1c);
-      html = setTextInHtml(html, 'site-hero-sub', s.sub);
       if (s.h1b) {
-        // h1b peut contenir <em> — on l'injecte tel quel après sanitisation
         const safeH1b = String(s.h1b).replace(/<(?!\/?em\b)[^>]*>/gi,'');
-        html = html.replace(/(id="site-hero-h1b">)[^<]*(<\/span>)/, `$1${safeH1b}$2`);
+        html = html.replace(/(id="site-hero-h1b"[^>]*>)[^<]*(<\/span>)/, `$1${safeH1b}$2`);
       }
-      // Texte des boutons CTA
-      if (s.btn1) html = html.replace(/(id="site-hero-btn1"[^>]*>)[^<]*(<\/a>)/, `$1${s.btn1}$2`);
-      if (s.btn2) html = html.replace(/(id="site-hero-btn2"[^>]*>)[^<]*(<\/a>)/, `$1${s.btn2}$2`);
+      html = setTextInHtml(html, 'site-hero-h1c', s.h1c);
+      html = setTextInHtml(html, 'site-hero-sub',  s.sub);
+      if (s.btn1) html = html.replace(/(id="site-hero-btn1"[^>]*>)[^<]*(<\/a>)/, `$1${s.btn1.replace(/&/g,'&amp;')}$2`);
+      if (s.btn2) html = html.replace(/(id="site-hero-btn2"[^>]*>)[^<]*(<\/a>)/, `$1${s.btn2.replace(/&/g,'&amp;')}$2`);
 
     } else if (section === 'univers') {
       html = setTextInHtml(html, 'site-univ-h2a', s.h2a);
-      html = setTextInHtml(html, 'site-univ-h2b', s.h2b);
+      if (s.h2b && s.h2b.length <= 30)
+        html = html.replace(/(id="site-univ-h2b"[^>]*>)[^<]*(<\/em>)/, `$1${s.h2b.replace(/&/g,'&amp;')}$2`);
       html = setTextInHtml(html, 'site-univ-desc', s.desc);
 
     } else if (section === 'expertise') {
-      html = setTextInHtml(html, 'site-exp-h2a', s.h2b); // h2b = le mot italique
-      html = setTextInHtml(html, 'site-exp-sub',  s.sub);
+      // exp-h2b (admin) = mot italique → site-exp-h2a (index)
+      if (s.h2b && s.h2b.length <= 30)
+        html = html.replace(/(id="site-exp-h2a"[^>]*>)[^<]*(<\/em>)/, `$1${s.h2b.replace(/&/g,'&amp;')}$2`);
+      html = setTextInHtml(html, 'site-exp-sub', s.sub);
       ['exp1','exp2','exp3'].forEach(function(key) {
-        const e = s[key];
-        if (!e) return;
+        const e = s[key]; if (!e) return;
         html = setTextInHtml(html, `site-${key}-title`, e.title);
         html = setTextInHtml(html, `site-${key}-desc`,  e.desc);
-        if (e.benefits) html = setBenefitsInHtml(html, `site-${key}-benefits`, e.benefits);
+        if (e.benefits) {
+          const items = e.benefits.split('\n').filter(b=>b.trim());
+          let liHtml = items.map(b=>`<li>${b.trim().replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</li>`).join('');
+          html = html.replace(new RegExp(`(id="site-${key}-benefits">)([\\s\\S]*?)(</ul>)`,'g'), `$1${liHtml}$3`);
+        }
       });
 
     } else if (section === 'tarifs') {
       html = setTextInHtml(html, 'site-tarif-h2a', s.h2a);
-      if (s.h2b) html = html.replace(/(id="site-tarif-h2b"[^>]*>)[^<]*(<\/em>)/, `$1${s.h2b}$2`);
+      if (s.h2b) html = html.replace(/(id="site-tarif-h2b"[^>]*>)[^<]*(<\/em>)/, `$1${s.h2b.replace(/&/g,'&amp;')}$2`);
 
+      // Intitulés onglets
+      if (s.tabLabels) {
+        const tabMap = {regard:'regard', bienetre:'bienetre', epilation:'epilation', ongles:'ongles'};
+        Object.keys(tabMap).forEach(function(k) {
+          if (s.tabLabels[k])
+            html = html.replace(
+              new RegExp(`(id="site-tab-${k}-label">)[^<]*(</span>)`,'g'),
+              `$1${s.tabLabels[k].replace(/&/g,'&amp;')}$2`
+            );
+        });
+      }
+
+      // Reconstruction des panels tarifs
       if (s.tables) {
         const TARIF_MAP = {
           'tab-regard':    ['tbl-regard-maquillage','tbl-regard-teinture','tbl-regard-extensions'],
@@ -2227,9 +2265,10 @@ async function publishSection(section) {
           'tab-epilation': ['tbl-epil','tbl-epil-forfaits'],
           'tab-ongles':    ['tbl-mains','tbl-pieds']
         };
-        const TARIF_SUBTITLES = {
+        // Sous-titres par défaut — écrasés par s.subtitles si présent
+        const SUBS = {
           'tbl-regard-maquillage': 'Maquillage',
-          'tbl-regard-teinture':   'Teinture cils \u0026 sourcils',
+          'tbl-regard-teinture':   'Teinture cils &amp; sourcils',
           'tbl-regard-extensions': 'Extensions de cils',
           'tbl-bienetre-visage':   'Soins visage',
           'tbl-bienetre-corps':    'Soins corps',
@@ -2238,45 +2277,41 @@ async function publishSection(section) {
           'tbl-mains':             'Beaut\u00e9 des mains',
           'tbl-pieds':             'Beaut\u00e9 des pieds'
         };
+        if (s.subtitles) Object.assign(SUBS, s.subtitles);
+
+        // Pour chaque panel, remplace son contenu
         Object.keys(TARIF_MAP).forEach(function(panelId) {
           const tableIds = TARIF_MAP[panelId];
           const hasData  = tableIds.some(tid => s.tables[tid] && s.tables[tid].length);
           if (!hasData) return;
-          const inner = buildTarifPanel(s.tables, tableIds, TARIF_SUBTITLES);
-          html = replaceTarifPanel(html, panelId, inner);
+          const inner = buildTarifPanelHtml(s.tables, tableIds, SUBS);
+          // Remplace le contenu du panel entre ses balises
+          html = html.replace(
+            new RegExp(`(id="${panelId}"[^>]*>)([\\s\\S]*?)(?=\\n\\s*</div>\\s*\\n\\s*(?:<!--.*-->\\s*\\n\\s*)?<div class="tarifs-content|\\n\\s*</div>\\s*\\n\\s*<div class="tarifs-cta)`, 'g'),
+            `$1${inner}  `
+          );
         });
       }
 
     } else if (section === 'galerie') {
       html = setTextInHtml(html, 'site-gal-h2a', s.h2a);
-      html = setTextInHtml(html, 'site-gal-h2b', s.h2b);
-      html = setTextInHtml(html, 'site-gal-sub',  s.sub);
-      // Légendes galerie
+      if (s.h2b && s.h2b.length <= 30)
+        html = html.replace(/(id="site-gal-h2b"[^>]*>)[^<]*(<\/em>)/, `$1${s.h2b.replace(/&/g,'&amp;')}$2`);
+      html = setTextInHtml(html, 'site-gal-sub', s.sub);
       [1,2,3,4,5,6].forEach(function(n) {
-        const p = s['p'+n];
-        if (p && p.legend) {
+        const p = s['p'+n]; if (!p) return;
+        if (p.legend) {
           html = html.replace(
-            new RegExp(`(id="site-gal${n}"[\\s\\S]*?class="gallery-caption">)[^<]*(</figcaption>)`),
+            new RegExp(`(id="site-gal${n}"[\\s\\S]{0,200}?class="gallery-caption">)[^<]*(</figcaption>)`,''),
             `$1${p.legend.replace(/&/g,'&amp;')}$2`
           );
-        }
-        if (p && p.url) {
-          // Ajoute ou met à jour l'image dans la figure
-          const imgTag = `<img class="gal-real-img" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" src="${p.url}" alt="R\u00e9alisation ${n}">`;
-          // Remplace l'img existante ou insère après l'ouverture de la figure
-          const hasImg = new RegExp(`id="site-gal${n}"[\\s\\S]*?<img class="gal-real-img"`).test(html);
-          if (hasImg) {
-            html = html.replace(
-              new RegExp(`(<img class="gal-real-img"[^>]*src=")[^"]*(")`),
-              `$1${p.url}$2`
-            );
-          }
         }
       });
 
     } else if (section === 'avis') {
       html = setTextInHtml(html, 'site-avis-h2a', s.h2a);
-      if (s.h2b) html = html.replace(/(id="site-avis-h2b"[^>]*>)[^<]*(<\/em>)/, `$1${s.h2b}$2`);
+      if (s.h2b && s.h2b.length <= 30)
+        html = html.replace(/(id="site-avis-h2b"[^>]*>)[^<]*(<\/em>)/, `$1${s.h2b.replace(/&/g,'&amp;')}$2`);
       if (s.note) html = html.replace(/(id="badge-score"[^>]*>)[^<]*(<\/span>)/, `$1${s.note}$2`);
 
     } else if (section === 'acces') {
@@ -2289,31 +2324,28 @@ async function publishSection(section) {
       if (s.fb)    html = html.replace(/href="https:\/\/www\.facebook\.com\/[^"]+"/g,  `href="${s.fb}"`);
     }
 
-    // 4. Pousse le HTML modifié vers GitHub
-    const commitMsg = `Admin : mise à jour section ${section} — ${new Date().toLocaleDateString('fr-FR')}`;
-    await pushIndexToGitHub(html, sha, commitMsg);
+    // 4. Pousse vers GitHub
+    await pushIndexToGitHub(html, sha, `Admin : ${section} — ${new Date().toLocaleDateString('fr-FR')}`);
 
-    // 5. Feedback visuel
+    // 5. Feedback
     btns.forEach(b => { b.disabled = false; b.textContent = '✅ Publié sur le site !'; });
-    setTimeout(() => btns.forEach(b => b.textContent = '💾 Enregistrer les modifications'), 2500);
-    showToast(`✅ "${section}" publié — le site se met à jour dans ~1 minute`);
+    setTimeout(() => btns.forEach(b => b.textContent = '💾 Enregistrer les modifications'), 3000);
+    showToast(`✅ Publié ! Le site se met à jour dans ~1 minute.`);
     return true;
 
   } catch(err) {
     btns.forEach(b => { b.disabled = false; b.textContent = '💾 Enregistrer les modifications'; });
-    showToast(`❌ Erreur publication : ${err.message}`, 'err');
+    showToast(`❌ ${err.message}`, 'err');
     return false;
   }
 }
 
-
-// Sauvegarde en localStorage ET publie sur GitHub en une seule action
+/** Sauvegarde locale + publication GitHub en une seule action */
 async function saveAndPublish(section) {
-  // 1. Sauvegarde locale immédiate (pas d'attente GitHub)
   saveSection(section);
-  // 2. Publie sur GitHub (async — le toast informe du résultat)
   await publishSection(section);
 }
+
 
 // ── TOAST ──
 function showToast(msg, type){
