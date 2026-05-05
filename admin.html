@@ -1312,8 +1312,7 @@ initCredentials();
 document.addEventListener('DOMContentLoaded', function() {
   restoreAllFields();
   restorePhotoPreviews();
-  // Initialise l'éditeur de tarifs
-  if (typeof renderTarifsEditor === 'function') renderTarifsEditor();
+  renderTarifsEditor();
 });
 
 // ── LOGIN ──
@@ -1465,6 +1464,8 @@ function showPanel(id, el){
   if(target) target.classList.add('active');
   el.classList.add('active');
   window.scrollTo(0,0);
+  // Initialise l'éditeur dynamique des tarifs à l'ouverture du panel
+  if(id === 'tarifs') renderTarifsEditor();
 }
 
 // ── TARIF TABS ──
