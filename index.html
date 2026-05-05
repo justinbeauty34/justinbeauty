@@ -323,99 +323,69 @@ Une teinture et une épilation des sourcils viendra parfaire la prestation, pour
 <section class="tarifs" id="tarifs" aria-labelledby="tarifs-title">
   <div class="tarifs-header">
     <p class="section-tag">Tarifs</p>
-    <h2 class="section-title" id="tarifs-title"><span id="site-tarif-h2a">Des soins d'exception</span><br>&#224; des <em id="site-tarif-h2b">prix transparents.</em></h2>
+    <h2 class="section-title" id="tarifs-title">
+      <span id="site-tarif-h2a">Des soins d'exception</span><br>
+      &#224; des <em id="site-tarif-h2b">prix transparents.</em>
+    </h2>
   </div>
-  <div class="tarifs-tabs" role="tablist" aria-label="Cat&#233;gories de prestations">
-    <button class="tab active" role="tab" aria-selected="true" aria-controls="tab-regard" id="btn-regard"><span id="site-tab-regard-label">L'Art du Regard</span></button>
-    <button class="tab" role="tab" aria-selected="false" aria-controls="tab-bienetre" id="btn-bienetre"><span id="site-tab-bienetre-label">Parentèse Bien-Être</span></button>
-    <button class="tab" role="tab" aria-selected="false" aria-controls="tab-epilation" id="btn-epilation"><span id="site-tab-epilation-label">Rituels Peau Douce</span></button>
-    <button class="tab" role="tab" aria-selected="false" aria-controls="tab-ongles" id="btn-ongles"><span id="site-tab-ongles-label">Jusqu'au bout des ongles</span></button>
+  <!-- Les onglets et panneaux sont reconstruits dynamiquement par buildTarifsUI() -->
+  <!-- Si JavaScript est désactivé, le contenu statique ci-dessous s'affiche -->
+  <div id="tarifs-tabs-container" class="tarifs-tabs" role="tablist" aria-label="Cat&#233;gories de prestations">
+    <button class="tab active" role="tab" aria-selected="true" aria-controls="tab-cat-0" id="btn-cat-0">L&#39;Art du Regard</button>
+    <button class="tab" role="tab" aria-selected="false" aria-controls="tab-cat-1" id="btn-cat-1">Parent&#232;se Bien-&#202;tre</button>
+    <button class="tab" role="tab" aria-selected="false" aria-controls="tab-cat-2" id="btn-cat-2">Rituels Peau Douce</button>
+    <button class="tab" role="tab" aria-selected="false" aria-controls="tab-cat-3" id="btn-cat-3">Jusqu&#39;au bout des ongles</button>
   </div>
-
-  <!-- TAB 1 — L'ART DU REGARD -->
-  <div class="tarifs-content active" id="tab-regard" role="tabpanel" aria-labelledby="btn-regard">
-    <div class="tarif-subtitle">Maquillage</div>
-    <div class="tarif-item"><div><div class="tarif-name">Maquillage jour</div></div><div><div class="tarif-price">25 €</div></div></div>
-    <div class="tarif-item"><div><div class="tarif-name">Maquillage soir ou cocktail</div></div><div><div class="tarif-price">30 €</div></div></div>
-    <div class="tarif-item"><div><div class="tarif-name">Maquillage mariée</div><div class="tarif-detail">Essai compris + 1 essai offert</div></div><div><div class="tarif-price">75 €</div></div></div>
-
-    <div class="tarif-subtitle">Teinture cils &amp; sourcils</div>
-    <div class="tarif-item"><div><div class="tarif-name">Teinture cils</div></div><div><div class="tarif-price">20 €</div></div></div>
-    <div class="tarif-item"><div><div class="tarif-name">Teinture sourcils</div></div><div><div class="tarif-price">25 €</div></div></div>
-
-    <div class="tarif-subtitle">Extensions de cils</div>
-    <div class="tarif-item"><div><div class="tarif-name">Cil à cil</div></div><div><div class="tarif-price">50 €</div></div></div>
-    <div class="tarif-item"><div><div class="tarif-name">Volume mixte</div></div><div><div class="tarif-price">65 €</div></div></div>
-    <div class="tarif-item"><div><div class="tarif-name">Remplissage 2 semaines</div></div><div><div class="tarif-price">25 €</div></div></div>
-    <div class="tarif-item"><div><div class="tarif-name">Remplissage 3 semaines</div></div><div><div class="tarif-price">35 €</div></div></div>
-    <div class="tarif-item"><div><div class="tarif-name">Dépose des extensions</div></div><div><div class="tarif-price">15 €</div></div></div>
-
+  <div id="tarifs-panels-container">
+    <div class="tarifs-content active" id="tab-cat-0" role="tabpanel" aria-labelledby="btn-cat-0">
+      <div class="tarif-subtitle">Maquillage</div>
+      <div class="tarif-item"><div><div class="tarif-name">Maquillage jour</div></div><div><div class="tarif-price">25 &#8364;</div></div></div>
+      <div class="tarif-item"><div><div class="tarif-name">Maquillage soir ou cocktail</div></div><div><div class="tarif-price">30 &#8364;</div></div></div>
+      <div class="tarif-item"><div><div class="tarif-name">Maquillage mari&#233;e</div><div class="tarif-detail">Essai compris + 1 essai offert</div></div><div><div class="tarif-price">75 &#8364;</div></div></div>
+      <div class="tarif-subtitle">Teinture cils &amp; sourcils</div>
+      <div class="tarif-item"><div><div class="tarif-name">Teinture cils</div></div><div><div class="tarif-price">20 &#8364;</div></div></div>
+      <div class="tarif-item"><div><div class="tarif-name">Teinture sourcils</div></div><div><div class="tarif-price">25 &#8364;</div></div></div>
+      <div class="tarif-subtitle">Extensions de cils</div>
+      <div class="tarif-item"><div><div class="tarif-name">Cil &#224; cil</div></div><div><div class="tarif-price">50 &#8364;</div></div></div>
+      <div class="tarif-item"><div><div class="tarif-name">Volume mixte</div></div><div><div class="tarif-price">65 &#8364;</div></div></div>
+      <div class="tarif-item"><div><div class="tarif-name">Volume russe</div></div><div><div class="tarif-price">85 &#8364;</div></div></div>
+      <div class="tarif-item"><div><div class="tarif-name">Remplissage 2 semaines</div></div><div><div class="tarif-price">25 &#8364;</div></div></div>
+      <div class="tarif-item"><div><div class="tarif-name">Remplissage 3 semaines</div></div><div><div class="tarif-price">35 &#8364;</div></div></div>
+      <div class="tarif-item"><div><div class="tarif-name">D&#233;pose des extensions</div></div><div><div class="tarif-price">15 &#8364;</div></div></div>
+    </div>
+    <div class="tarifs-content" id="tab-cat-1" role="tabpanel" aria-labelledby="btn-cat-1">
+      <div class="tarif-subtitle">Soins visage</div>
+      <div class="tarif-item"><div><div class="tarif-name">Nettoyage de peau</div><div class="tarif-detail">45 min</div></div><div><div class="tarif-price">40 &#8364;</div></div></div>
+      <div class="tarif-item"><div><div class="tarif-name">Coup d&#39;&#233;clat</div><div class="tarif-detail">50 min</div></div><div><div class="tarif-price">50 &#8364;</div></div></div>
+      <div class="tarif-item"><div><div class="tarif-name">Repulpant</div><div class="tarif-detail">50 min</div></div><div><div class="tarif-price">50 &#8364;</div></div></div>
+      <div class="tarif-item"><div><div class="tarif-name">D&#233;tente et hydratation</div><div class="tarif-detail">1h</div></div><div><div class="tarif-price">60 &#8364;</div></div></div>
+      <div class="tarif-item"><div><div class="tarif-name">Anti-&#226;ge global</div><div class="tarif-detail">50 min</div></div><div><div class="tarif-price">55 &#8364;</div></div></div>
+      <div class="tarif-subtitle">Soins corps</div>
+      <div class="tarif-item"><div><div class="tarif-name">Soin du dos</div><div class="tarif-detail">Gommage + masque</div></div><div><div class="tarif-price">38 &#8364;</div></div></div>
+      <div class="tarif-item"><div><div class="tarif-name">Gommage corps</div></div><div><div class="tarif-price">40 &#8364;</div></div></div>
+      <div class="tarif-item"><div><div class="tarif-name">Modelage dos relaxant</div><div class="tarif-detail">30 min</div></div><div><div class="tarif-price">35 &#8364;</div></div></div>
+      <div class="tarif-item"><div><div class="tarif-name">Modelage corps relaxant</div><div class="tarif-detail">1h</div></div><div><div class="tarif-price">55 &#8364;</div></div></div>
+    </div>
+    <div class="tarifs-content" id="tab-cat-2" role="tabpanel" aria-labelledby="btn-cat-2">
+      <div class="tarif-subtitle">&#201;pilation</div>
+      <div class="tarif-item"><div><div class="tarif-name">L&#232;vres</div></div><div><div class="tarif-price">8 &#8364;</div></div></div>
+      <div class="tarif-item"><div><div class="tarif-name">Sourcils</div></div><div><div class="tarif-price">8 &#8364;</div></div></div>
+      <div class="tarif-item"><div><div class="tarif-name">Aisselles</div></div><div><div class="tarif-price">12 &#8364;</div></div></div>
+      <div class="tarif-item"><div><div class="tarif-name">Jambes enti&#232;res</div></div><div><div class="tarif-price">25 &#8364;</div></div></div>
+      <div class="tarif-item"><div><div class="tarif-name">Maillot int&#233;gral</div></div><div><div class="tarif-price">22 &#8364;</div></div></div>
+      <div class="tarif-subtitle">Forfaits &#233;pilation</div>
+      <div class="tarif-item"><div><div class="tarif-name">Forfait Visage</div><div class="tarif-detail">Sourcils + L&#232;vres + Menton</div></div><div><div class="tarif-price">22 &#8364;</div></div></div>
+      <div class="tarif-item"><div><div class="tarif-name">Forfait Corps Complet</div><div class="tarif-detail">Jambes enti&#232;res + Maillot + Aisselles</div></div><div><div class="tarif-price">45 &#8364;</div></div></div>
+    </div>
+    <div class="tarifs-content" id="tab-cat-3" role="tabpanel" aria-labelledby="btn-cat-3">
+      <div class="tarif-subtitle">Beaut&#233; des mains</div>
+      <div class="tarif-item"><div><div class="tarif-name">Manucure + vernis semi-permanent</div></div><div><div class="tarif-price">42 &#8364;</div></div></div>
+      <div class="tarif-item"><div><div class="tarif-name">Capsules am&#233;ricaines + vernis semi-permanent</div></div><div><div class="tarif-price">55 &#8364;</div></div></div>
+      <div class="tarif-subtitle">Beaut&#233; des pieds</div>
+      <div class="tarif-item"><div><div class="tarif-name">P&#233;dicure + vernis simple</div></div><div><div class="tarif-price">32 &#8364;</div></div></div>
+      <div class="tarif-item"><div><div class="tarif-name">P&#233;dicure + vernis semi-permanent</div></div><div><div class="tarif-price">42 &#8364;</div></div></div>
+    </div>
   </div>
-
-  <!-- TAB 2 — BIEN-ÊTRE -->
-  <div class="tarifs-content" id="tab-bienetre" role="tabpanel" aria-labelledby="btn-bienetre">
-    <div class="tarif-subtitle">Soins visage</div>
-    <div class="tarif-item"><div><div class="tarif-name">Nettoyage de peau</div><div class="tarif-detail">45 min</div></div><div><div class="tarif-price">40 €</div></div></div>
-    <div class="tarif-item"><div><div class="tarif-name">Coup d'éclat</div><div class="tarif-detail">50 min</div></div><div><div class="tarif-price">50 €</div></div></div>
-    <div class="tarif-item"><div><div class="tarif-name">Repulpant</div><div class="tarif-detail">50 min</div></div><div><div class="tarif-price">50 €</div></div></div>
-    <div class="tarif-item"><div><div class="tarif-name">Détente et hydratation</div><div class="tarif-detail">1h</div></div><div><div class="tarif-price">60 €</div></div></div>
-    <div class="tarif-item"><div><div class="tarif-name">Anti-âge global</div><div class="tarif-detail">50 min</div></div><div><div class="tarif-price">55 €</div></div></div>
-
-    <div class="tarif-subtitle">Soins corps</div>
-    <div class="tarif-item"><div><div class="tarif-name">Soin du dos</div><div class="tarif-detail">Gommage + masque</div></div><div><div class="tarif-price">38 €</div></div></div>
-    <div class="tarif-item"><div><div class="tarif-name">Soin du dos</div><div class="tarif-detail">Gommage + modelage</div></div><div><div class="tarif-price">38 €</div></div></div>
-    <div class="tarif-item"><div><div class="tarif-name">Gommage corps</div></div><div><div class="tarif-price">40 €</div></div></div>
-    <div class="tarif-item"><div><div class="tarif-name">Modelage dos relaxant</div><div class="tarif-detail">30 min</div></div><div><div class="tarif-price">35 €</div></div></div>
-    <div class="tarif-item"><div><div class="tarif-name">Modelage corps relaxant</div><div class="tarif-detail">30 min</div></div><div><div class="tarif-price">35 €</div></div></div>
-    <div class="tarif-item"><div><div class="tarif-name">Modelage corps relaxant</div><div class="tarif-detail">45 min</div></div><div><div class="tarif-price">45 €</div></div></div>
-    <div class="tarif-item"><div><div class="tarif-name">Modelage corps relaxant</div><div class="tarif-detail">1h</div></div><div><div class="tarif-price">55 €</div></div></div>
-
-  </div>
-
-  <!-- TAB 3 — ÉPILATION -->
-  <div class="tarifs-content" id="tab-epilation" role="tabpanel" aria-labelledby="btn-epilation">
-    <div class="tarif-subtitle">Épilation</div>
-    <div class="tarif-item"><div><div class="tarif-name">Lèvres</div></div><div><div class="tarif-price">8 €</div></div></div>
-    <div class="tarif-item"><div><div class="tarif-name">Sourcils</div></div><div><div class="tarif-price">8 €</div></div></div>
-    <div class="tarif-item"><div><div class="tarif-name">Menton</div></div><div><div class="tarif-price">8 €</div></div></div>
-    <div class="tarif-item"><div><div class="tarif-name">Aisselles</div></div><div><div class="tarif-price">12 €</div></div></div>
-    <div class="tarif-item"><div><div class="tarif-name">Dos ou Torse</div></div><div><div class="tarif-price">25 €</div></div></div>
-    <div class="tarif-item"><div><div class="tarif-name">Bras</div></div><div><div class="tarif-price">15 €</div></div></div>
-    <div class="tarif-item"><div><div class="tarif-name">½ Jambes</div></div><div><div class="tarif-price">15 €</div></div></div>
-    <div class="tarif-item"><div><div class="tarif-name">Cuisses</div></div><div><div class="tarif-price">15 €</div></div></div>
-    <div class="tarif-item"><div><div class="tarif-name">Jambes entières</div></div><div><div class="tarif-price">25 €</div></div></div>
-    <div class="tarif-item"><div><div class="tarif-name">Maillot classique</div></div><div><div class="tarif-price">12 €</div></div></div>
-    <div class="tarif-item"><div><div class="tarif-name">Maillot échancré</div></div><div><div class="tarif-price">16 €</div></div></div>
-    <div class="tarif-item"><div><div class="tarif-name">Maillot intégral</div></div><div><div class="tarif-price">22 €</div></div></div>
-
-    <div class="tarif-subtitle">Forfaits épilation</div>
-    <div class="tarif-item"><div><div class="tarif-name">Forfait Visage</div><div class="tarif-detail">Sourcils + Lèvres + Menton</div></div><div><div class="tarif-price">22 €</div></div></div>
-    <div class="tarif-item"><div><div class="tarif-name">Forfait Corps</div><div class="tarif-detail">½ Jambes + Maillot + Aisselles</div></div><div><div class="tarif-price">35 €</div></div></div>
-    <div class="tarif-item"><div><div class="tarif-name">Forfait Corps Complet</div><div class="tarif-detail">Jambes entières + Maillot + Aisselles</div></div><div><div class="tarif-price">45 €</div></div></div>
-
-  </div>
-
-  <!-- TAB 4 — ONGLES -->
-  <div class="tarifs-content" id="tab-ongles" role="tabpanel" aria-labelledby="btn-ongles">
-    <div class="tarif-subtitle">Beauté des mains</div>
-    <div class="tarif-item"><div><div class="tarif-name">Soin des mains</div></div><div><div class="tarif-price">38 €</div></div></div>
-    <div class="tarif-item"><div><div class="tarif-name">Manucure + vernis simple</div></div><div><div class="tarif-price">32 €</div></div></div>
-    <div class="tarif-item"><div><div class="tarif-name">Pose de vernis classique</div></div><div><div class="tarif-price">14 €</div></div></div>
-    <div class="tarif-item"><div><div class="tarif-name">Manucure + vernis semi-permanent</div></div><div><div class="tarif-price">42 €</div></div></div>
-    <div class="tarif-item"><div><div class="tarif-name">Pose de vernis semi-permanent</div></div><div><div class="tarif-price">25 €</div></div></div>
-    <div class="tarif-item"><div><div class="tarif-name">Dépose + Pose vernis semi-permanent</div></div><div><div class="tarif-price">35 €</div></div></div>
-    <div class="tarif-item"><div><div class="tarif-name">Capsules américaines + vernis semi-permanent</div></div><div><div class="tarif-price">55 €</div></div></div>
-
-    <div class="tarif-subtitle">Beauté des pieds</div>
-    <div class="tarif-item"><div><div class="tarif-name">Soin des pieds</div></div><div><div class="tarif-price">38 €</div></div></div>
-    <div class="tarif-item"><div><div class="tarif-name">Pédicure + vernis simple</div></div><div><div class="tarif-price">32 €</div></div></div>
-    <div class="tarif-item"><div><div class="tarif-name">Pédicure + vernis semi-permanent</div></div><div><div class="tarif-price">42 €</div></div></div>
-    <div class="tarif-item"><div><div class="tarif-name">Pose de vernis classique</div></div><div><div class="tarif-price">14 €</div></div></div>
-    <div class="tarif-item"><div><div class="tarif-name">Pose de vernis semi-permanent</div></div><div><div class="tarif-price">25 €</div></div></div>
-    <div class="tarif-item"><div><div class="tarif-name">Dépose + Pose vernis semi-permanent</div></div><div><div class="tarif-price">35 €</div></div></div>
-
-  </div>
-
   <div class="tarifs-cta">
     <p>Toutes les prestations comprennent la consultation personnalis&#233;e et les produits professionnels.</p>
     <a href="https://www.planity.com/justin-beauty-34290-bassan" class="btn-primary" target="_blank" rel="noopener noreferrer">Consulter les tarifs complets &amp; r&#233;server sur Planity</a>
@@ -849,6 +819,12 @@ Une teinture et une épilation des sourcils viendra parfaire la prestation, pour
         });
       }
       // Reconstruction dynamique des lignes de prestations
+      // Nouveau format : s.tarifs.categories (dynamique)
+      if (s.tarifs.categories && Array.isArray(s.tarifs.categories)) {
+        // Délégué à buildTarifsUI() dans startAll
+        return;
+      }
+      // Ancien format de compatibilité : s.tarifs.tables
       if (s.tarifs.tables) {
         var TARIF_MAP = {
           'tab-regard':    ['tbl-regard-maquillage','tbl-regard-teinture','tbl-regard-extensions'],
@@ -973,6 +949,131 @@ Une teinture et une épilation des sourcils viendra parfaire la prestation, pour
       }
     }
   }
+
+  /**
+   * Reconstruit les onglets et panneaux de tarifs depuis les données admin.
+   * Appelée dans startAll() après applyAdminData().
+   * Si pas de données admin → le HTML statique reste intact.
+   *
+   * Structure de données attendue : s.tarifs.categories = [
+   *   { label: "L'Art du Regard", subcats: [
+   *     { label: "Maquillage", rows: [{name, detail, price}, ...] },
+   *   ]},
+   *   ...
+   * ]
+   */
+  function buildTarifsUI() {
+    var d;
+    try { d = JSON.parse(localStorage.getItem('jib_admin_data') || '{}'); }
+    catch(e) { return; }
+    var s = (d.sections && d.sections.tarifs) || {};
+    var cats = s.categories;
+
+    // Si pas de données dynamiques → garde le HTML statique
+    if (!cats || !Array.isArray(cats) || cats.length === 0) {
+      // Initialise quand même les listeners sur le HTML statique
+      initTarifsListeners();
+      return;
+    }
+
+    var tabsContainer   = document.getElementById('tarifs-tabs-container');
+    var panelsContainer = document.getElementById('tarifs-panels-container');
+    if (!tabsContainer || !panelsContainer) return;
+
+    // Vide les conteneurs
+    tabsContainer.innerHTML   = '';
+    panelsContainer.innerHTML = '';
+
+    cats.forEach(function(cat, i) {
+      var catId = 'tab-cat-' + i;
+      var btnId = 'btn-cat-' + i;
+
+      // ── Bouton onglet ──
+      var btn = document.createElement('button');
+      btn.className    = 'tab' + (i === 0 ? ' active' : '');
+      btn.setAttribute('role', 'tab');
+      btn.setAttribute('aria-selected', i === 0 ? 'true' : 'false');
+      btn.setAttribute('aria-controls', catId);
+      btn.id           = btnId;
+      btn.textContent  = cat.label || ('Catégorie ' + (i+1));
+      tabsContainer.appendChild(btn);
+
+      // ── Panel ──
+      var panel = document.createElement('div');
+      panel.className  = 'tarifs-content' + (i === 0 ? ' active' : '');
+      panel.id         = catId;
+      panel.setAttribute('role', 'tabpanel');
+      panel.setAttribute('aria-labelledby', btnId);
+
+      // ── Sous-catégories et prestations ──
+      if (cat.subcats && Array.isArray(cat.subcats)) {
+        cat.subcats.forEach(function(sub) {
+          if (!sub) return;
+          // Sous-titre
+          var subEl = document.createElement('div');
+          subEl.className = 'tarif-subtitle';
+          subEl.textContent = sub.label || '';
+          panel.appendChild(subEl);
+          // Lignes de tarifs
+          if (sub.rows && Array.isArray(sub.rows)) {
+            sub.rows.forEach(function(row) {
+              if (!row || !row.name) return;
+              var item  = document.createElement('div');
+              item.className = 'tarif-item';
+              var left  = document.createElement('div');
+              var nameEl = document.createElement('div');
+              nameEl.className = 'tarif-name';
+              nameEl.textContent = row.name;
+              left.appendChild(nameEl);
+              if (row.detail) {
+                var detEl = document.createElement('div');
+                detEl.className = 'tarif-detail';
+                detEl.textContent = row.detail;
+                left.appendChild(detEl);
+              }
+              var right    = document.createElement('div');
+              var priceEl  = document.createElement('div');
+              priceEl.className = 'tarif-price';
+              priceEl.textContent = row.price || '';
+              right.appendChild(priceEl);
+              item.appendChild(left);
+              item.appendChild(right);
+              panel.appendChild(item);
+            });
+          }
+        });
+      }
+      panelsContainer.appendChild(panel);
+    });
+
+    initTarifsListeners();
+  }
+
+  /** Attache les listeners de clic sur les onglets tarifs */
+  function initTarifsListeners() {
+    var tabs  = document.querySelectorAll('#tarifs-tabs-container .tab');
+    var panes = document.querySelectorAll('#tarifs-panels-container .tarifs-content');
+    tabs.forEach(function(tab) {
+      tab.addEventListener('click', function() {
+        tabs.forEach(function(t) { t.classList.remove('active'); t.setAttribute('aria-selected','false'); });
+        panes.forEach(function(p) { p.classList.remove('active'); });
+        tab.classList.add('active');
+        tab.setAttribute('aria-selected','true');
+        var pane = document.getElementById(tab.getAttribute('aria-controls'));
+        if (pane) pane.classList.add('active');
+      });
+    });
+    var tablist = document.getElementById('tarifs-tabs-container');
+    if (tablist) {
+      tablist.addEventListener('keydown', function(e) {
+        var at  = Array.from(tabs);
+        var idx = at.indexOf(document.activeElement);
+        if (e.key === 'ArrowRight') { var n = at[(idx+1)%at.length]; n.focus(); n.click(); }
+        else if (e.key === 'ArrowLeft') { var p = at[(idx-1+at.length)%at.length]; p.focus(); p.click(); }
+      });
+    }
+  }
+
   function startAll() {
     // 1. Charge les avis
     loadReviews();
@@ -980,29 +1081,8 @@ Une teinture et une épilation des sourcils viendra parfaire la prestation, pour
     // 2. Met à jour les textes depuis l'admin
     applyAdminData();
 
-    // 3. Onglets tarifs
-    var tabs  = document.querySelectorAll('.tab');
-    var panes = document.querySelectorAll('.tarifs-content');
-    tabs.forEach(function(tab) {
-      tab.addEventListener('click', function() {
-        var target = tab.getAttribute('aria-controls');
-        tabs.forEach(function(t){ t.classList.remove('active'); t.setAttribute('aria-selected','false'); });
-        panes.forEach(function(p){ p.classList.remove('active'); });
-        tab.classList.add('active');
-        tab.setAttribute('aria-selected','true');
-        var pane = document.getElementById(target);
-        if (pane) pane.classList.add('active');
-      });
-    });
-    var tablist = document.querySelector('[role="tablist"]');
-    if (tablist) {
-      tablist.addEventListener('keydown', function(e) {
-        var at = Array.from(tabs);
-        var idx = at.indexOf(document.activeElement);
-        if (e.key==='ArrowRight'){ var n=at[(idx+1)%at.length]; n.focus(); n.click(); }
-        else if (e.key==='ArrowLeft'){ var p=at[(idx-1+at.length)%at.length]; p.focus(); p.click(); }
-      });
-    }
+    // 3. Onglets tarifs — gérés par buildTarifsUI() + initTarifsListeners()
+    buildTarifsUI();
 
     // 4. Construit le carousel après le premier rendu (pour avoir offsetWidth correct)
     requestAnimationFrame(function() {
