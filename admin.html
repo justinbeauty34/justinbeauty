@@ -2085,6 +2085,17 @@ function buildSubcatBlock(sub, ci, si) {
   labelInput.value = sub.label || '';
   labelInput.placeholder = 'Nom de la sous-catégorie';
 
+  // Flèches déplacement sous-catégorie
+  const btnSubUp = document.createElement('button');
+  btnSubUp.className = 'cat-order-btn'; btnSubUp.textContent = '▲';
+  btnSubUp.title = 'Déplacer vers le haut';
+  btnSubUp.addEventListener('click', function() { moveSubcat(ci, si, -1); });
+
+  const btnSubDown = document.createElement('button');
+  btnSubDown.className = 'cat-order-btn'; btnSubDown.textContent = '▼';
+  btnSubDown.title = 'Déplacer vers le bas';
+  btnSubDown.addEventListener('click', function() { moveSubcat(ci, si, 1); });
+
   const btnDel = document.createElement('button');
   btnDel.className = 'btn-del-subcat'; btnDel.textContent = '×';
   btnDel.title = 'Supprimer cette sous-catégorie';
@@ -2094,6 +2105,8 @@ function buildSubcatBlock(sub, ci, si) {
     }
   });
 
+  header.appendChild(btnSubUp);
+  header.appendChild(btnSubDown);
   header.appendChild(labelInput);
   header.appendChild(btnDel);
   block.appendChild(header);
@@ -2199,6 +2212,19 @@ function moveCat(ci, dir) {
   renderTarifsEditor();
 }
 
+/** Déplace une sous-catégorie vers le haut ou le bas */
+function moveSubcat(ci, si, dir) {
+  const cats = readTarifsFromEditor();
+  if (!cats[ci] || !cats[ci].subcats) return;
+  const subs = cats[ci].subcats;
+  const newIdx = si + dir;
+  if (newIdx < 0 || newIdx >= subs.length) return;
+  const tmp = subs[si]; subs[si] = subs[newIdx]; subs[newIdx] = tmp;
+  cats[ci].subcats = subs;
+  saveCatsToLocalStorage(cats);
+  renderTarifsEditor();
+}
+
 /** Ajoute une sous-catégorie dans une catégorie */
 function addSubcat(ci) {
   const cats = readTarifsFromEditor();
@@ -2300,20 +2326,53 @@ async function fetchIndexFromGitHub() {
   return { html, sha: data.sha };
 }
 
-/** Pousse le HTML modifié vers GitHub */
+/** Pousse le HTML modifié vers GitHub.
+ * Retry automatique si le SHA est périmé (ex: GitHub Actions a modifié le fichier entre-temps).
+ */
 async function pushIndexToGitHub(html, sha, message) {
   const cfg = getGhConfig();
   const b64 = btoa(unescape(encodeURIComponent(html)));
-  const r = await fetch(`https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/index.html`, {
-    method: 'PUT',
-    headers: {
-      'Authorization': `token ${cfg.token}`,
-      'Accept': 'application/vnd.github.v3+json',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ message, content: b64, sha, branch: 'main' })
+  const url = `https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/index.html`;
+  const headers = {
+    'Authorization': `token ${cfg.token}`,
+    'Accept': 'application/vnd.github.v3+json',
+    'Content-Type': 'application/json'
+  };
+
+  let currentSha = sha;
+
+  // Premier essai
+  let r = await fetch(url, {
+    method: 'PUT', headers,
+    body: JSON.stringify({ message, content: b64, sha: currentSha, branch: 'main' })
   });
-  if (!r.ok) { const e = await r.json(); throw new Error(e.message || `GitHub API ${r.status}`); }
+
+  // Si SHA périmé (409 Conflict ou message "does not match") → récupère le bon SHA et réessaie
+  if (!r.ok) {
+    const err = await r.json();
+    const msg = err.message || '';
+    if (r.status === 409 || msg.includes('does not match') || msg.includes('SHA')) {
+      // Récupère le SHA actuel du fichier
+      const fresh = await fetch(url, { headers });
+      if (fresh.ok) {
+        const data = await fresh.json();
+        currentSha = data.sha;
+        // Deuxième essai avec le bon SHA
+        r = await fetch(url, {
+          method: 'PUT', headers,
+          body: JSON.stringify({ message, content: b64, sha: currentSha, branch: 'main' })
+        });
+        if (!r.ok) {
+          const e2 = await r.json();
+          throw new Error(e2.message || `GitHub API ${r.status}`);
+        }
+      } else {
+        throw new Error(`SHA périmé et impossible de récupérer le nouveau : ${r.status}`);
+      }
+    } else {
+      throw new Error(msg || `GitHub API ${r.status}`);
+    }
+  }
 }
 
 /** Remplace textContent d'un élément par son id */
