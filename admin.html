@@ -2487,8 +2487,9 @@ async function publishSection(section) {
           const active = i === 0 ? ' active" aria-selected="true"' : '" aria-selected="false"';
           tabsHtml += `    <button class="tab${active} role="tab" aria-controls="tab-cat-${i}" id="btn-cat-${i}">${lbl}</button>\n`;
         });
+        // Remplace le contenu entre tarifs-tabs-container et le marqueur <!-- /JIB-TABS -->
         html = html.replace(
-          /(<div[^>]*id="tarifs-tabs-container"[^>]*>)([\s\S]*?)(<\/div>\s*\n\s*<div[^>]*id="tarifs-panels-container")/,
+          /(<div[^>]*id="tarifs-tabs-container"[^>]*>)([\s\S]*?)(<!-- \/JIB-TABS -->)/,
           `$1${tabsHtml}  $3`
         );
 
@@ -2518,8 +2519,9 @@ async function publishSection(section) {
           }
           panelsHtml += `    </div>\n`;
         });
+        // Remplace le contenu entre tarifs-panels-container et le marqueur <!-- /JIB-PANELS -->
         html = html.replace(
-          /(<div[^>]*id="tarifs-panels-container"[^>]*>)([\s\S]*?)(<\/div>\s*\n\s*<div class="tarifs-cta")/,
+          /(<div[^>]*id="tarifs-panels-container"[^>]*>)([\s\S]*?)(<!-- \/JIB-PANELS -->)/,
           `$1${panelsHtml}  $3`
         );
       }
